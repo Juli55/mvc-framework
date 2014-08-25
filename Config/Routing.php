@@ -21,16 +21,19 @@ class Routing
 							'profile' => array(
 											'pattern' 	 => 'profile/profile/',
 											'controller' => 'profileController',
+											'action'	 => 'test',
 											'dir'		 => '/profile/Controller/'
 										),
 							'project' => array(
 											'pattern' 			=> 'project/project',
 											'controller' 		=> 'projectController',
-											'dir'				=> '/project'
+											'action'	 		=> 'indexAction',
+											'dir'				=> '/project/Controller/'
 										),
 							'idea'	  => array(
 											'pattern'		=> 'idea/',
 											'controller'	=> 'ideaController',
+											'action'	 	=> 'test',
 											'dir'			=> 'idea'
 										),
 						);
