@@ -19,19 +19,19 @@ class Routing
 	{
 		self::$routing = array(
 							'profile' => array(
-											'pattern' 	 => 'profile/profile/',
+											'pattern' 	 => 'profile/{profile}/',
 											'controller' => 'profileController',
 											'action'	 => 'test',
 											'dir'		 => '/profile/Controller/'
 										),
 							'project' => array(
-											'pattern' 			=> 'project/project',
+											'pattern' 			=> 'project/{project}',
 											'controller' 		=> 'projectController',
 											'action'	 		=> 'indexAction',
 											'dir'				=> '/project/Controller/'
 										),
 							'idea'	  => array(
-											'pattern'		=> 'idea/',
+											'pattern'		=> 'idea/{ idea }',
 											'controller'	=> 'ideaController',
 											'action'	 	=> 'test',
 											'dir'			=> 'idea'

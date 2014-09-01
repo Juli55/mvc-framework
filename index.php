@@ -38,6 +38,14 @@ use profile\Controller\profileController;
 						echo $controller->$value['action']();
 
 					}
+					else{
+
+						$cFirstChar = '{';
+						$cSecondChar = '}';
+						preg_match_all("/\\".$cFirstChar."(.*?)\\".$cSecondChar."/", $value['pattern'], $aMatches);
+
+						echo $aMatches[0][0];
+					}
 				}
 			}
 			else
