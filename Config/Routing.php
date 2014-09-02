@@ -18,20 +18,9 @@ class Routing
 	public static function init()
 	{
 		self::$routing = array(
-							'profile' => array(
-											'pattern' 	 => 'profile/profile/',
-											'controller' => 'profileController',
-											'action'	 => 'test',
-											'dir'		 => '/profile/Controller/'
-										),
-							'project' => array(
-											'pattern' 			=> 'project/project',
-											'controller' 		=> 'projectController',
-											'action'	 		=> 'indexAction',
-											'dir'				=> '/project/Controller/'
-										),
+
 							'idea'	  => array(
-											'pattern'		=> 'idea/',
+											'pattern'		=> 'idea/{idea}/{idea2}',
 											'controller'	=> 'ideaController',
 											'action'	 	=> 'test',
 											'dir'			=> 'idea'

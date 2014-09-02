@@ -38,6 +38,43 @@ use profile\Controller\profileController;
 						echo $controller->$value['action']();
 
 					}
+					else{
+
+						$cFirstChar = '{';
+						$cSecondChar = '}';
+						preg_match_all("/\\".$cFirstChar."(.*?)\\".$cSecondChar."/", $value['pattern'], $aMatches);
+						//$output = preg_replace("/\\".$cFirstChar."(.*?)\\".$cSecondChar."/",'',$value['pattern']);
+						$output1 = array_reverse($aMatches[0]);
+						$output2 = $value['pattern'];
+						foreach ($output1 as $key => $value) {
+							$output2 =  rtrim($output2,$value);
+							// echo "<br />";
+							$output2 =  rtrim($output2,'/');
+							//echo "<br />";
+							
+							//echo rtrim($_GET['url'],$uri[0]);
+						}
+						$uri = explode('/',$_GET['url']);
+						//echo $uri[1];
+
+						$output_uri = $_GET['url'];
+						$variable_count =  count($output1);
+						$i = 0;
+						foreach($uri as $key => $value){
+							if($i <= $variable_count){
+								$output_uri =  rtrim($output_uri,$value);
+
+								$output_uri =  rtrim($output_uri,'/');
+								$i++;
+							}
+							else{
+								break;
+							}
+						}
+						echo $output_uri;
+						 
+						 $output2;
+					}
 				}
 			}
 			else
