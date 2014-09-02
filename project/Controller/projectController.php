@@ -1,5 +1,5 @@
 <?php
-namespace profile\Controller;
+namespace project\Controller;
 
 use Kernel\HttpKernel\Request;
 use Kernel\View;
@@ -7,12 +7,12 @@ use Kernel\View;
 /**
  * @author Julian Bertsch <julian.bertsch42@gmail.de>
  */
-class profileController
+class projectController
 {
 	/**
 	 * @return View 
 	 */
-	public static function test($eins,$zwei)
+	public static function indexAction()
 	{
 		$request = new Request();
 		$get = 'nothing';
@@ -20,13 +20,13 @@ class profileController
 			$get = $request->Get['g'];
 		}
 
-		return View::render("templates:default.html",
+		return View::render("templates:test:test.php",
 							array(
-								'hey1' => $zwei,
+								'hey1' => "hey_value",
 								'was geht' => array('hey' => array(
-																'nummer3' => $eins, 
-																'nummer4' => 'ja es klappt juhhuuu!!!'),
-													'hey2' => "klappt auch hammer :)"
+																'nummer3' => $get, 
+																'nummer4' => 'joho'),
+													'hey1' => "klappt auch hammer :)"
 													),
 								)
 							);
