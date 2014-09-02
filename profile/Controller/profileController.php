@@ -12,7 +12,7 @@ class profileController
 	/**
 	 * @return View 
 	 */
-	public static function test()
+	public static function test($eins,$zwei)
 	{
 		$request = new Request();
 		$get = 'nothing';
@@ -22,9 +22,9 @@ class profileController
 
 		return View::render("templates:default.html",
 							array(
-								'hey1' => "hey_value",
+								'hey1' => $zwei,
 								'was geht' => array('hey' => array(
-																'nummer3' => $get, 
+																'nummer3' => $eins, 
 																'nummer4' => 'ja es klappt juhhuuu!!!'),
 													'hey2' => "klappt auch hammer :)"
 													),
