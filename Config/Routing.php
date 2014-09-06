@@ -19,7 +19,7 @@ class Routing
 	{
 		self::$routing = array(
 							'profile' => array(
-											'pattern' 	 => 'profile/{profile}/{variable}',
+											'pattern' 	 => '/profile/{profile}/{variable}',
 											'controller' => 'profileController',
 											'action'	 => 'test',
 											'dir'		 => '/profile/Controller/'
@@ -61,7 +61,7 @@ class Routing
 
 			if($value['pattern'] === $uri){
 
-				require $value['dir'].$value['controller'].'.php';
+				require 'src/'.$value['dir'].$value['controller'].'.php';
 				$namespace = str_replace("/","\\",$value['dir']);
 				$class = $namespace.$value['controller'];
 				$controller = new $class();
@@ -75,9 +75,9 @@ class Routing
 				$cSecondChar 	 = '}';
 				$patternVariable = "/\\".$cFirstChar."(.*?)\\".$cSecondChar."/";
 
-				//remove the last '/' in pattern and uri
-				$pattern = rtrim($value['pattern'], '/');
-				$uri	 = rtrim($uri, '/');
+				//remove the first and last '/' in pattern and uri
+				$pattern = trim($value['pattern'], '/');
+				$uri	 = trim($uri, '/');
 
 				//explode pattern and uri by '/'
 				$pattern_parts = explode('/', $pattern);
@@ -110,7 +110,7 @@ class Routing
 						}
 						if($i === $pattern_parts_count-1){
 
-							require $value['dir'].$value['controller'].'.php';
+							require 'src/'.$value['dir'].$value['controller'].'.php';
 							$namespace = str_replace("/","\\",$value['dir']);
 							$class = $namespace.$value['controller'];
 							$controller = new $class();

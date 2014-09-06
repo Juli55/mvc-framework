@@ -11,20 +11,41 @@ use profile\Controller\profileController;
 
 	final class App
 	{
+
+		/**
+		 * @var string
+		 */
+		private static $uri;
+
 		function __construct()
 		{
+
+			if(isset($_SERVER['PATH_INFO'])){
+
+				self::$uri = $_SERVER['PATH_INFO'];
+				
+			}
+			elseif($_SERVER['SCRIPT_NAME'] === $_SERVER['PHP_SELF']){
+				self::$uri = $_SERVER['REQUEST_URI'];
+			}
+			else{
+
+				self::$uri = $_SERVER['REQUEST_URI'];
+			}
+
 			self::routing();
 		}
 
 		private static function routing()
 		{
-			if(isset($_GET['url']))
-			{	
-				echo Routing::handleRouting($_GET['url']);
+			
+			if(self::$uri !== $_SERVER['PHP_SELF'] && self::$uri !== '/')
+			{
+				echo Routing::handleRouting(self::$uri);
 			}
 			else
 			{
-				echo "root";
+				echo 'root';
 			}
 		}
 		
