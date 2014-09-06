@@ -6,7 +6,7 @@ use profile\Controller\profileController;
 
 	function __autoload($class_name)
 	{
-	    include $class_name . '.php';
+	    include '../'.$class_name . '.php';
 	}
 
 	final class App

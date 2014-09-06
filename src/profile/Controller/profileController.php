@@ -20,11 +20,11 @@ class profileController
 			$get = $request->Get['g'];
 		}
 
-		return View::render("templates:default.html",
+		return View::render("..:templates:default.html",
 							array(
 								'hey1' => $zwei,
 								'was geht' => array('hey' => array(
-																'nummer3' => $eins, 
+																'nummer3' => $get, 
 																'nummer4' => 'ja es klappt juhhuuu!!!'),
 													'hey2' => "klappt auch hammer :)"
 													),
