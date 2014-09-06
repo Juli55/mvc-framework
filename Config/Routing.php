@@ -59,9 +59,11 @@ class Routing
 		//
 		foreach(self::getRouting() as $key => $value){
 
+			$dir = ltrim($value['dir'], '/');
+
 			if($value['pattern'] === $uri){
 
-				require 'src/'.$value['dir'].$value['controller'].'.php';
+				require '../src/'.$dir.$value['controller'].'.php';
 				$namespace = str_replace("/","\\",$value['dir']);
 				$class = $namespace.$value['controller'];
 				$controller = new $class();
@@ -110,7 +112,7 @@ class Routing
 						}
 						if($i === $pattern_parts_count-1){
 
-							require 'src/'.$value['dir'].$value['controller'].'.php';
+							require '../src/'.$dir.$value['controller'].'.php';
 							$namespace = str_replace("/","\\",$value['dir']);
 							$class = $namespace.$value['controller'];
 							$controller = new $class();
