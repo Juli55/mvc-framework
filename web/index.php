@@ -1,12 +1,12 @@
 <?php
 
 use Kernel\Controller;
-use Config\Routing;
+use Kernel\RoutingEngine\RoutingEngine;
 use profile\Controller\profileController;
 
 function __autoload($class_name)
 {
-    include '../'.$class_name . '.php';
+    include '..\\'.$class_name . '.php';
 }
 
 final class App
@@ -40,7 +40,8 @@ final class App
 			
 		if(self::$uri !== $_SERVER['PHP_SELF'] && self::$uri !== '/'){
 			
-			echo Routing::handleRouting(self::$uri);
+			echo RoutingEngine::handleRouting(self::$uri);
+
 		}else{
 			
 			echo 'root';
