@@ -20,7 +20,7 @@ class profileController extends Controller
 			$get = $request->Get['g'];
 		}
 
-		return $this->render("..:templates:default.html",
+		return $this->render("profile:default.html",
 							array(
 								'hey1' => $zwei,
 								'was geht' => array('hey' => array(
