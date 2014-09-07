@@ -25,7 +25,7 @@ class Routing
 											'dir'		 => '/profile/Controller/'
 										),
 							'project' => array(
-											'pattern' 			=> 'project/{project}/',
+											'pattern' 			=> 'project/{project}/{hey}',
 											'controller' 		=> 'projectController',
 											'action'	 		=> 'indexAction',
 											'dir'				=> '/project/Controller/'

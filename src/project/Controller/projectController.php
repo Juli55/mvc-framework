@@ -12,7 +12,7 @@ class projectController
 	/**
 	 * @return View 
 	 */
-	public static function indexAction()
+	public static function indexAction($eins,$zwei)
 	{
 		$request = new Request();
 		$get = 'nothing';
@@ -25,7 +25,8 @@ class projectController
 								'hey1' => "hey_value",
 								'was geht' => array('hey' => array(
 																'nummer3' => $get, 
-																'nummer4' => 'joho'),
+																'nummer4' => $eins
+															),
 													'hey1' => "klappt auch hammer :)"
 													),
 								)
