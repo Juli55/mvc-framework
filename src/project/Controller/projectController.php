@@ -20,7 +20,7 @@ class projectController
 			$get = $request->Get['g'];
 		}
 
-		return View::render("..:templates:test:test.php",
+		return View::render("profile:templates:test:test.php",
 							array(
 								'hey1' => "hey_value",
 								'was geht' => array('hey' => array(
