@@ -1,18 +1,18 @@
 <?php
 namespace profile\Controller;
 
+use Kernel\Controller;
 use Kernel\HttpKernel\Request;
-use Kernel\View;
 
 /**
  * @author Julian Bertsch <julian.bertsch42@gmail.de>
  */
-class profileController
+class profileController extends Controller
 {
 	/**
 	 * @return View 
 	 */
-	public static function test($eins,$zwei)
+	public function test($eins,$zwei)
 	{
 		$request = new Request();
 		$get = 'nothing';
@@ -20,11 +20,11 @@ class profileController
 			$get = $request->Get['g'];
 		}
 
-		return View::render("..:templates:default.html",
+		return $this->render("profile:default.html",
 							array(
 								'hey1' => $zwei,
 								'was geht' => array('hey' => array(
-																'nummer3' => $get, 
+																'nummer3' => $eins, 
 																'nummer4' => 'ja es klappt juhhuuu!!!'),
 													'hey2' => "klappt auch hammer :)"
 													),
