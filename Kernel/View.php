@@ -19,12 +19,16 @@ class View extends TemplateEngine
 	{
 		//encode the decoded template-path 
 		$template_decode = explode(':',$template_encode);
+
+		$ldefault_path = '..'. DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR;
+		$rdefault_path = DIRECTORY_SEPARATOR . 'Resources' . DIRECTORY_SEPARATOR . 'views';
+
 		foreach($template_decode as $key => $value){
 			if(!empty($template_path)){
 				$template_path .= DIRECTORY_SEPARATOR . $value;
 			}
 			else{
-				$template_path = $value;
+				$template_path = $ldefault_path.$value.$rdefault_path;
 			}	
 		}
 
