@@ -1,5 +1,5 @@
 <?php
-namespace profile;
+namespace profile\Controller;
 
 use Kernel\Controller;
 use Kernel\HttpKernel\Request;
@@ -12,21 +12,21 @@ class profileController extends Controller
 	/**
 	 * @return View 
 	 */
-	public static function test()
+	public function test($eins,$zwei)
 	{
 		$request = new Request();
-
 		$get = 'nothing';
 		if(isset($request->Get['g'])){
 			$get = $request->Get['g'];
 		}
-		return View::render("templates:test:test.php",
+
+		return $this->render("profile:default.html",
 							array(
-								'hey1' => "hey_value",
+								'hey1' => $zwei,
 								'was geht' => array('hey' => array(
-																'nummer3' => $get, 
+																'nummer3' => $eins, 
 																'nummer4' => 'ja es klappt juhhuuu!!!'),
-													'hey1' => "klappt auch hammer :)"
+													'hey2' => "klappt auch hammer :)"
 													),
 								)
 							);
