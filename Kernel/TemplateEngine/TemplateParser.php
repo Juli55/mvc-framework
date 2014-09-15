@@ -43,6 +43,7 @@ class TemplateParser extends GlobalParser
 			$pattern = '/{%'.$value.'%}/';
 			$output = preg_replace($pattern,'',$output);
 
+		// set Template Variables
 			$substr = explode(' ', trim($value));
 			if($substr[0] == 'set'){
 
@@ -64,6 +65,18 @@ class TemplateParser extends GlobalParser
 				}elseif(array_key_exists($VariableValue,$parameters)){
 
 					$this->parameters[$VariableKey] = $parameters[$VariableValue];
+					print_r($this->parameters);
+				}elseif(strpos($VariableValue,'.')){
+					$array = explode('.',$VariableValue);
+
+					$array_storage = $parameters;
+					foreach($array as $key2 => $value2){
+						if(array_key_exists(trim($value2), $array_storage)) {
+							$array_storage =  $array_storage[trim($value2)];
+						}
+					}
+					$this->parameters[$VariableKey] = $array_storage;
+
 				}
 			}
 		}
@@ -93,11 +106,13 @@ class TemplateParser extends GlobalParser
 
 				$array_storage = $parameters;
 				foreach($array as $key2 => $value2){
-					if(array_key_exists(trim($value2), $parameters)) {
-						$array_storage = $parameters[trim($value2)];
+					if(array_key_exists(trim($value2), $array_storage)) {
+						$array_storage =  $array_storage[trim($value2)];
+
 					}
 				}
 				$replace = $array_storage;
+
 				$pattern = '/{{'.$value.'}}/';
 				if(is_string($replace)){
 					$output = preg_replace($pattern,$replace,$output);
@@ -106,7 +121,7 @@ class TemplateParser extends GlobalParser
 					$output = preg_replace($pattern,$value,$output);
 				}
 			}else{
-				
+
 				if(isset($parameters[trim($value)])){
 					$replace = $parameters[trim($value)];
 
