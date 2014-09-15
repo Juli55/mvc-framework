@@ -16,18 +16,20 @@ class profileController extends Controller
 	{
 		$request = new Request();
 		$get = 'nothing';
-		if(isset($request->Get['g'])){
-			$get = $request->Get['g'];
+		if(isset($request->Get['eins'])){
+			$get = $request->Get['eins'];
 		}
+
 
 		return $this->render("profile:default.html",
 							array(
-								'hey1' => $zwei,
+								'hey1' => $get,
 								'was geht' => array('hey' => array(
-																'nummer3' => $eins, 
+																'nummer3' => $get, 
 																'nummer4' => 'ja es klappt juhhuuu!!!'),
 													'hey2' => "klappt auch hammer :)"
 													),
+								'hey3' => 'joho1',
 								)
 							);
 	}

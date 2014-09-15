@@ -23,7 +23,7 @@ class projectController
 		return View::render("profile:templates:test:test.php",
 							array(
 								'hey1' => "hey_value",
-								'was geht' => array('hey' => array(
+								'kk' => array('hey' => array(
 																'nummer3' => $get, 
 																'nummer4' => $eins
 															),
