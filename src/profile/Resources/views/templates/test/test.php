@@ -1,8 +1,14 @@
+{% extends 'project::.twig' %}
 <html>
 	<head>
-		<title>Test_Dir</title>
+		<title>{{ kk .hey.nummer4 }}</title>
+
 	</head>
 	<body>
-		<h1>{{was geht .hey.nummer4}}</h1>
+		{% block content %}
+			<h1>{{kk .hey.nummer4}}</h1>
+		{% endblock %}
 	</body>
+	{% set variable = 1 %}
+	{{ variable }}
 </html>

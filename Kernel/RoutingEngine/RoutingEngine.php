@@ -62,7 +62,7 @@ class RoutingEngine
 							preg_match($patternVariable,$pattern_parts[$i],$match); 
 
 							//restore the patternvariable into the parameter_array
-							$parameters[trim($match[1])] = trim($uri_parts[$i]);
+							$parameters[trim($match[1])] = preg_replace("#[?].*#", "", trim($uri_parts[$i]));
 
 						}else{
 
