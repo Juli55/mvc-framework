@@ -23,7 +23,7 @@ class profileController extends Controller
 
 		return $this->render("profile:default.html",
 							array(
-								'hey1' => $get,
+								'hey1' => 'hey',
 								'was geht' => array('hey' => array(
 																'nummer3' => $get, 
 																'nummer4' => 'ja es klappt juhhuuu!!!'),
