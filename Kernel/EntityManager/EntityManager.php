@@ -1,33 +1,54 @@
 <?php
 
-namespace Kernel\EntityManager; 
+namespace Kernel\EntityManager;
+
+use Kernel\DataBase\DB;
 
 /**
  * @author Dennis Eisele  <dennis.eisele@online.de>
  */
-
 class EntityManager{
+
+	/** 
+     * @var DB 
+     */
+	private $db;
 	
 
-	function __construct(Connection $conn, Configuration $config, EventManager $eventManager){
+	function __construct(){
 
-		$this->conn              = $conn;
-        $this->config            = $config;
-        $this->eventManager      = $eventManager;
-
+        $db = new DB;
 		
-
 	}
 
 	public function getConnection(){
 
-		return $this->conn = $conn;
+		return $this->db;
 
 	}
+ 	
+ 	public function getEntity($entity){
 
-	public function createQuery(){
-		
-	}
+ 		$entityDir = explode(':',$entity);
+
+ 		include('src/'.$entityDir[0].'/Entity/'.$entityDir[1].'.php');
+
+ 		$entityObject = new $entityDir[1];
+
+ 		return $entityObject;
+
+ 	}
+
+ 	public function find($finder,$target){
+
+ 		
+
+ 	}
+
+
+ 	public function flush($entity){
+
+
+ 	}
 
 }
-?>
