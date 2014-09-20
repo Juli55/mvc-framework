@@ -13,6 +13,16 @@ class EntityManager{
      * @var DB 
      */
 	private $db;
+
+	/** 
+     * @var string
+     */
+	private $entityObject_name;
+
+	/** 
+     * @var object
+     */
+	private $entityObject;
 	
 
 	function __construct(){
@@ -35,13 +45,21 @@ class EntityManager{
 
  		$entityObject = new $entityDir[1];
 
+ 		$this->entityObject_name = get_class($entityObject);
+ 		$this->entityObject = $entityObject;
  		return $entityObject;
 
  	}
 
  	public function find($finder,$target){
 
- 		
+ 		$query = "SELECT * FROM $this->db::$db_user.$this->entityObject_name WHERE $finder = $target";
+ 		$request = $this->db->query($query) or die($this->db->error);
+ 		foreach ($this->request->fetch_assoc() as $key => $value){
+
+ 			$setter = 'set'.ucfirst($key);
+ 			call_user_func($this->entityObject,$setter);
+  		}
 
  	}
 
