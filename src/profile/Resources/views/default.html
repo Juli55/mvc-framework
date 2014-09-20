@@ -1,10 +1,17 @@
 <html>
 	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8">
 		<title>MVC</title>
 		<script src="js/js.js"></script>
 	</head>
 	<body>
-		<h1><p>{{ was geht .hey.nummer3 }}</p></h1>
 		<h1>{{ hey1  }}</h1>
+		<h1>{% set he2 = was geht.hey.nummer4 %}</h1>
+		<h1>{{ was geht.hey.nummer3  }}</h1>
+		<h1>{{ he2  }}</h1>
+		<form method="post" enctype="multipart/form-data">
+			<input type='file' name='eins' />
+			<input type='submit' value='abschießen' />
+		</form>
 	</body>
 </html>
