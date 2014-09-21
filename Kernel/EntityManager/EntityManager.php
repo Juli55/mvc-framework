@@ -79,19 +79,38 @@ class EntityManager{
 
  	}
 
+ 	public function findAll()
+ 	{
+ 		$query = "SELECT * FROM $this->db_user.$this->entityObject_name WHERE ID >= 0";
+ 		$request = $this->db->query($query) or die($this->db->error);
+ 		while($request->fetch_assoc())
+ 		{
+ 			foreach ($request->fetch_assoc() as $key => $value){
+
+ 				$setter = 'set'.ucfirst($key);
+ 				call_user_func_array(array($this->entityObject,$setter),array($value));
+ 				echo $value,'<br></br>';
+
+  			}	
+
+  			return $this->entityObject;
+
+ 		}
+ 	}
 
  	public function flush($entity){
 
  		$arr = (array)$this->entityFirst;
   		$arr2= (array)$entity;
-  		$ID = $arr["[userID]"]; 
+  		
   		foreach ($arr as $key => $val) {
 
   			if($val !== $arr2[$key])
   			{
-  				$column = str_replace($this->entityObject_name,"",$key);
-  				$column_ltrim = ltrim($column);
-  				$this->query = "UPDATE $this->db_user.$this->entityObject_name SET $column_ltrim = $arr2[$key] WHERE ID = $ID ";
+  				$column_ltrim = ltrim($key);
+  			    $column_ltrim2= ltrim($column_ltrim,$this->entityObject_name);
+  				$column_ltrim3 = ltrim($column_ltrim2);
+  				$this->query = "UPDATE $this->db_user.$this->entityObject_name SET $column_ltrim3 = $arr2[$key] WHERE ID = $target ";
  		   		$request = $this->db->query($this->query) or die($this->db->error);
   			}
 			
