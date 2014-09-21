@@ -18,9 +18,9 @@ class profileController extends Controller
 
 		$em = new EntityManager;
 
-		$entity= $em->getEntity("profile:User");
+		$entity= $em->getEntity("profile:user");
 
-		echo $id = $em->find('id',1)->getId();
+		echo $id = $em->find('ID',76)->getId();
 		$request = new Request();
 		$get = 'nothing';
 		if(isset($request->Get['g'])){

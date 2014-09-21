@@ -15,6 +15,11 @@ class EntityManager{
 	private $db;
 
 	/** 
+     * @var DB 
+     */
+	private $db_user;
+
+	/** 
      * @var string
      */
 	private $entityObject_name;
@@ -28,6 +33,8 @@ class EntityManager{
 	function __construct(){
 
         $db = new DB;
+        $this->db  = $db::$db;
+        $this->db_user  = $db::$db_user;
 		
 	}
 
@@ -53,12 +60,14 @@ class EntityManager{
 
  	public function find($finder,$target){
 
- 		echo $query = "SELECT * FROM $this->db::db_user.$this->entityObject_name WHERE $finder = $target";
+ 		$query = "SELECT * FROM $this->db_user.$this->entityObject_name WHERE $finder = $target";
  		$request = $this->db->query($query) or die($this->db->error);
- 		foreach ($this->request->fetch_assoc() as $key => $value){
+ 		foreach ($request->fetch_assoc() as $key => $value){
 
  			$setter = 'set'.ucfirst($key);
- 			call_user_func($this->entityObject,$setter);
+ 			call_user_func_array(array($this->entityObject,$setter),array($value));
+ 			$getter = 'get'.ucfirst($key);
+ 			call_user_func_array(array($this->entityObject,$getter),array($value));
   		}
 
   		return $this->entityObject;
