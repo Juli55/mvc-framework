@@ -33,7 +33,7 @@ class EntityManager{
      * @var object
      */
 	private $entityFirst;
-	
+
 
 	function __construct(){
 
@@ -74,6 +74,7 @@ class EntityManager{
 
   		}
 
+  		$this->target = $target;
   		$this->entityFirst = (array)$this->entityObject;
   		return $this->entityObject;
 
@@ -81,21 +82,26 @@ class EntityManager{
 
  	public function findAll()
  	{
- 		$query = "SELECT * FROM $this->db_user.$this->entityObject_name WHERE ID >= 0";
+ 		$query = "SELECT * FROM $this->db_user.$this->entityObject_name WHERE 1";
  		$request = $this->db->query($query) or die($this->db->error);
- 		while($request->fetch_assoc())
+ 		$count = 0;
+ 		while($count < 10)
  		{
  			foreach ($request->fetch_assoc() as $key => $value){
 
  				$setter = 'set'.ucfirst($key);
  				call_user_func_array(array($this->entityObject,$setter),array($value));
- 				echo $value,'<br></br>';
+ 				//echo $value,"</br>";
 
-  			}	
+  			}
 
+  			$count++;
+
+   		}
+  			$this->entityFirst = (array)$this->entityObject;
   			return $this->entityObject;
-
- 		}
+  			
+  		
  	}
 
  	public function flush($entity){
@@ -110,7 +116,7 @@ class EntityManager{
   				$column_ltrim = ltrim($key);
   			    $column_ltrim2= ltrim($column_ltrim,$this->entityObject_name);
   				$column_ltrim3 = ltrim($column_ltrim2);
-  				$this->query = "UPDATE $this->db_user.$this->entityObject_name SET $column_ltrim3 = $arr2[$key] WHERE ID = $target ";
+  				$this->query = "UPDATE $this->db_user.$this->entityObject_name SET $column_ltrim3 = $arr2[$key] WHERE ID = $this->target ";
  		   		$request = $this->db->query($this->query) or die($this->db->error);
   			}
 			
