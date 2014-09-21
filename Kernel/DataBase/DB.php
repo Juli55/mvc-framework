@@ -1,4 +1,6 @@
-<?php 
+<?php
+
+namespace Kernel\DataBase; 
 
 /**
  * @author Julian Bertsch <julian.bertsch42@gmail.de>
@@ -26,7 +28,7 @@ Class DB
 
 	{
 
-		self::$db = new mysqli($host, $username, $password);
+		self::$db = new \mysqli($host, $username, $password);
 
 
 		if (mysqli_connect_errno()) {

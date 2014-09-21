@@ -41,7 +41,7 @@ class EntityManager{
 
  		$entityDir = explode(':',$entity);
 
- 		include('src/'.$entityDir[0].'/Entity/'.$entityDir[1].'.php');
+ 		require('../src/'.$entityDir[0].'/Entity/'.$entityDir[1].'.php');
 
  		$entityObject = new $entityDir[1];
 
@@ -53,7 +53,7 @@ class EntityManager{
 
  	public function find($finder,$target){
 
- 		$query = "SELECT * FROM $this->db::$db_user.$this->entityObject_name WHERE $finder = $target";
+ 		echo $query = "SELECT * FROM $this->db::db_user.$this->entityObject_name WHERE $finder = $target";
  		$request = $this->db->query($query) or die($this->db->error);
  		foreach ($this->request->fetch_assoc() as $key => $value){
 
@@ -61,10 +61,13 @@ class EntityManager{
  			call_user_func($this->entityObject,$setter);
   		}
 
+  		return $this->entityObject;
+
  	}
 
 
  	public function flush($entity){
+
 
 
  	}

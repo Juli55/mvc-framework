@@ -3,6 +3,7 @@ namespace profile\Controller;
 
 use Kernel\Controller;
 use Kernel\HttpKernel\Request;
+use Kernel\EntityManager\EntityManager;
 
 /**
  * @author Julian Bertsch <julian.bertsch42@gmail.de>
@@ -14,6 +15,12 @@ class profileController extends Controller
 	 */
 	public function test($eins,$zwei)
 	{
+
+		$em = new EntityManager;
+
+		$entity= $em->getEntity("profile:User");
+
+		echo $id = $em->find('id',1)->getId();
 		$request = new Request();
 		$get = 'nothing';
 		if(isset($request->Get['g'])){
