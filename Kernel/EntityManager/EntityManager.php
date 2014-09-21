@@ -28,6 +28,11 @@ class EntityManager{
      * @var object
      */
 	private $entityObject;
+
+	/** 
+     * @var object
+     */
+	private $entityFirst;
 	
 
 	function __construct(){
@@ -66,10 +71,10 @@ class EntityManager{
 
  			$setter = 'set'.ucfirst($key);
  			call_user_func_array(array($this->entityObject,$setter),array($value));
- 			$getter = 'get'.ucfirst($key);
- 			call_user_func_array(array($this->entityObject,$getter),array($value));
+
   		}
 
+  		$this->entityFirst = (array)$this->entityObject;
   		return $this->entityObject;
 
  	}
@@ -77,6 +82,20 @@ class EntityManager{
 
  	public function flush($entity){
 
+ 		$arr = (array)$this->entityFirst;
+  		$arr2= (array)$entity;
+  		$ID = $arr["[userID]"]; 
+  		foreach ($arr as $key => $val) {
+
+  			if($val !== $arr2[$key])
+  			{
+  				$column = str_replace($this->entityObject_name,"",$key);
+  				$column_ltrim = ltrim($column);
+  				$this->query = "UPDATE $this->db_user.$this->entityObject_name SET $column_ltrim = $arr2[$key] WHERE ID = $ID ";
+ 		   		$request = $this->db->query($this->query) or die($this->db->error);
+  			}
+			
+  		} 		
 
 
  	}

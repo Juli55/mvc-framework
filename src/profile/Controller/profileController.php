@@ -20,7 +20,9 @@ class profileController extends Controller
 
 		$entity= $em->getEntity("profile:user");
 
-		echo $id = $em->find('ID',76)->getId();
+		echo $id = $em->find('ID',88)->getID();
+		$entity->setID(20);
+		$em->flush($entity);
 		$request = new Request();
 		$get = 'nothing';
 		if(isset($request->Get['g'])){
