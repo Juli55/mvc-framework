@@ -19,9 +19,7 @@ class profileController extends Controller
 		$em = new EntityManager;
 
 		$entity= $em->getEntity("profile:user");
-
-		
-		$em->findAll();
+		$em->findAll('password',20);
 		//$em->flush($entity);
 		$request = new Request();
 		$get = 'nothing';

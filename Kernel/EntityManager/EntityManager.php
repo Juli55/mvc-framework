@@ -63,6 +63,13 @@ class EntityManager{
 
  	}
 
+ 	public function create(){
+
+
+
+
+ 	}
+
  	public function find($finder,$target){
 
  		$query = "SELECT * FROM $this->db_user.$this->entityObject_name WHERE $finder = $target";
@@ -80,26 +87,30 @@ class EntityManager{
 
  	}
 
- 	public function findAll()
+ 	public function findAll($finder='',$target='')
  	{
- 		$query = "SELECT * FROM $this->db_user.$this->entityObject_name WHERE 1";
- 		$request = $this->db->query($query) or die($this->db->error);
- 		$count = 0;
- 		while($count < 10)
+
+ 		if($finder='')
  		{
- 			foreach ($request->fetch_assoc() as $key => $value){
+ 			$query = "SELECT * FROM $this->db_user.$this->entityObject_name";
+ 			$request = $this->db->query($query) or die($this->db->error);
+			$result=array();
+ 			while($row=$request->fetch_assoc())
+ 			{
+ 				$result[]=$row;
+ 			} 
+ 			return $result;
+ 		}
+ 		else{
 
- 				$setter = 'set'.ucfirst($key);
- 				call_user_func_array(array($this->entityObject,$setter),array($value));
- 				//echo $value,"</br>";
+ 			$query = "SELECT * FROM $this->db_user.$this->entityObject_name";
+ 			$request = $this->db->query($query) or die($this->db->error);
+ 			while($row=$request->fetch_assoc())
+ 			{
+ 				$result[]=$row;
+ 			} 
 
-  			}
-
-  			$count++;
-
-   		}
-  			$this->entityFirst = (array)$this->entityObject;
-  			return $this->entityObject;
+ 		}	   
   			
   		
  	}
@@ -109,13 +120,13 @@ class EntityManager{
  		$arr = (array)$this->entityFirst;
   		$arr2= (array)$entity;
   		
-  		foreach ($arr as $key => $val) {
+  		foreach ($arr2 as $key => $val) {
 
   			if($val !== $arr2[$key])
   			{
   				$column_ltrim = ltrim($key);
   			    $column_ltrim2= ltrim($column_ltrim,$this->entityObject_name);
-  				$column_ltrim3 = ltrim($column_ltrim2);
+  				$column_ltrim3= ltrim($column_ltrim2);
   				$this->query = "UPDATE $this->db_user.$this->entityObject_name SET $column_ltrim3 = $arr2[$key] WHERE ID = $this->target ";
  		   		$request = $this->db->query($this->query) or die($this->db->error);
   			}
