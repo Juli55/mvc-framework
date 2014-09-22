@@ -130,7 +130,7 @@ class EntityManager{
 
  	public function flush($entity){
 
- 		$arr = (array)$this->entityFirst;
+ 		$arr = $this->entityFirst;
   		$arr2= (array)$entity;
    		foreach ($arr2 as $key => $val) {
 
@@ -140,7 +140,8 @@ class EntityManager{
   				$column_ltrim = ltrim($key);
   			    $column_ltrim2= ltrim($column_ltrim,$this->entityObject_name);
   				$column_ltrim3= ltrim($column_ltrim2);
-  				echo $this->query = "UPDATE $this->db_user.$this->entityObject_name SET $column_ltrim3 = $arr2[$key] WHERE $ID = $arr['userID'] ";
+  				$arr =
+  				echo $this->query = "UPDATE $this->db_user.$this->entityObject_name SET $column_ltrim3 = $arr2[$key] WHERE $ID = $arr[userID] ";
  		   		$request = $this->db->query($this->query) or die($this->db->error);
   			}
 			

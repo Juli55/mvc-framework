@@ -20,7 +20,7 @@ class profileController extends Controller
 
 		$entity= $em->getEntity("profile:user");
 		$em->find('password',20);
-		$entity->setGender('0');
+		$entity->setGender('1');
 		$em->flush($entity);
 		$request = new Request();
 		$get = 'nothing';
