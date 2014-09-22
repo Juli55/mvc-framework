@@ -82,6 +82,7 @@ class EntityManager{
   		}
 
   		$this->target = $target;
+  		$this->finder = $finder;
   		$this->entityFirst = (array)$this->entityObject;
   		return $this->entityObject;
 
@@ -90,7 +91,7 @@ class EntityManager{
  	public function findAll($finder='',$target='')
  	{
 
- 		if($finder='')
+ 		if(empty($finder))
  		{
  			$query = "SELECT * FROM $this->db_user.$this->entityObject_name";
  			$request = $this->db->query($query) or die($this->db->error);
@@ -103,12 +104,24 @@ class EntityManager{
  		}
  		else{
 
- 			$query = "SELECT * FROM $this->db_user.$this->entityObject_name";
+ 			$query = "SELECT * FROM $this->db_user.$this->entityObject_name WHERE $finder = $target";
  			$request = $this->db->query($query) or die($this->db->error);
  			while($row=$request->fetch_assoc())
  			{
  				$result[]=$row;
- 			} 
+ 			}
+ 				foreach ($result as $key => $value) {
+ 			 		foreach ($value as $key => $val){
+
+ 			 			$setter = 'set'.ucfirst($key);
+ 						call_user_func_array(array($this->entityObject,$setter),array($val));
+ 					}
+ 			 	}
+
+ 			$this->target = $target;
+ 			$this->finder = $finder;
+  			$this->entityFirst = (array)$this->entityObject;
+  			return $this->entityObject;
 
  		}	   
   			
@@ -119,15 +132,15 @@ class EntityManager{
 
  		$arr = (array)$this->entityFirst;
   		$arr2= (array)$entity;
-  		
-  		foreach ($arr2 as $key => $val) {
+   		foreach ($arr2 as $key => $val) {
 
-  			if($val !== $arr2[$key])
+  			if($val !== $arr[$key])
   			{
+  				echo "joho";
   				$column_ltrim = ltrim($key);
   			    $column_ltrim2= ltrim($column_ltrim,$this->entityObject_name);
   				$column_ltrim3= ltrim($column_ltrim2);
-  				$this->query = "UPDATE $this->db_user.$this->entityObject_name SET $column_ltrim3 = $arr2[$key] WHERE ID = $this->target ";
+  				echo $this->query = "UPDATE $this->db_user.$this->entityObject_name SET $column_ltrim3 = $arr2[$key] WHERE $ID = $arr['userID'] ";
  		   		$request = $this->db->query($this->query) or die($this->db->error);
   			}
 			
