@@ -44,9 +44,10 @@ class View extends TemplateEngine
 			ob_end_clean();
 			
 			//transformate the template variables in PHP variables
-			TemplateEngine::init($output, $parameters);
+			$TemplateEngine = new TemplateEngine;
+			$TemplateEngine->init($output, $parameters);
 
-			return TemplateEngine::getOutput();
+			return $TemplateEngine->getOutput();
 		}
 		else{
 

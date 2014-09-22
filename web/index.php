@@ -18,14 +18,19 @@ final class App
 
 	function __construct()
 	{
-
 		if(isset($_SERVER['PATH_INFO'])){
 
 			self::$uri = $_SERVER['PATH_INFO'];
 				
 		}elseif($_SERVER['SCRIPT_NAME'] === $_SERVER['PHP_SELF']){
+			
+			if($_SERVER['REQUEST_URI'] !== '/'){
+				
+				self::$uri = ltrim($_SERVER['REQUEST_URI'],dirname($_SERVER['PHP_SELF']));
+			}else{
 
-			self::$uri = $_SERVER['REQUEST_URI'];
+				self::$uri = $_SERVER['REQUEST_URI'];
+			}
 
 		}else{
 
