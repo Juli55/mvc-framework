@@ -7,6 +7,7 @@ use Kernel\EntityManager\EntityManager;
 
 /**
  * @author Julian Bertsch <julian.bertsch42@gmail.de>
+ * @author Dennis Eisele  <dennis.eisele@online.de>
  */
 class profileController extends Controller
 {
@@ -21,7 +22,7 @@ class profileController extends Controller
 		$entity= $em->getEntity("profile:user");
 		$em->find('password',20);
 		$entity->setGender('1');
-		$em->flush($entity);
+		$em->flush();
 		$request = new Request();
 		$get = 'nothing';
 		if(isset($request->Get['g'])){
