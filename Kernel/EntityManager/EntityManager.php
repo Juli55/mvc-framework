@@ -82,96 +82,97 @@ class EntityManager{
 
     }
 
-      $this->target = $target;
-      $this->finder = $finder;
-      $this->entityFirst = (array)$this->entityObject;
+      $entityFirst = (array)$this->entityObject;
+      foreach ($entityFirst as $k => $v){
+          $k = preg_match('/^\x00(?:.*?)\x00(.+)/', $k, $matches) ? $matches[1] : $k;
+          $entityFirst_clean[$k] = $v;
+      }
+      $this->entityFirst = $entityFirst_clean;
       return $this->entityObject;
   }
 
- public function findAll($finder='',$target=''){
-      
-      $query   = "SELECT * FROM $this->db_user.$this->entityObject_name";
-      $request = $this->db->query($query) or die($this->db->error);
-      $result  = array();
-      while($row=$request->fetch_assoc())
+ public function findAll($finder='',$target='')
+  {
+      if(empty($finder))
       {
-        $setter = 'set'.ucfirst($key);
-        $cloned_EntityObject = clone $this->entityObject;
-        call_user_func_array(array($cloned_EntityObject,$setter),array($value));
-        $result[]= $cloned_EntityObject;
-      } 
-      $this->entityFirst = $result;
-      return $result;
-    /*
-    if(empty($finder))
-    {
-      $query = "SELECT * FROM $this->db_user.$this->entityObject_name";
-      $request = $this->db->query($query) or die($this->db->error);
-      $result=array();
-      while($row=$request->fetch_assoc())
-      {
-        $result[]=$row;
-      } 
-      return $result;
-    }
-    else{
-
-      $query = "SELECT * FROM $this->db_user.$this->entityObject_name WHERE $finder = $target";
-      $request = $this->db->query($query) or die($this->db->error);
-      while($row=$request->fetch_assoc())
-      {
-        $result[]=$row;
+        $query = "SELECT * FROM $this->db_user.$this->entityObject_name";
+      }else{
+        $query = "SELECT * FROM $this->db_user.$this->entityObject_name WHERE $finder = $target";
       }
-        foreach ($result as $key => $value) {
-          foreach ($value as $key => $val){
 
-            $setter = 'set'.ucfirst($key);
-            call_user_func_array(array($this->entityObject,$setter),array($val));
-          }
+      $request = $this->db->query($query) or die($this->db->error);
+
+      $entityObject_clean = array();
+      $entityFirst = array();
+      $entityObject = array();
+      while($row=$request->fetch_assoc())
+      {
+        $cloned_EntityObject = clone $this->entityObject;
+        foreach ($row as $key => $value){
+          $setter = 'set'.ucfirst($key);
+
+          call_user_func_array(array($cloned_EntityObject,$setter),array($value));
         }
+        
+        foreach ((array)$cloned_EntityObject as $key => $value) {
+          $key = preg_match('/^\x00(?:.*?)\x00(.+)/', $key, $matches) ? $matches[1] : $key;
+          $entityObject_clean[$key] = $value;
+        }
+        $entityFirst[]  = $entityObject_clean;
+        $entityObject[] = $cloned_EntityObject;
+      }
 
-      $this->target = $target;
-      $this->finder = $finder;
-        $this->entityFirst = (array)$this->entityObject;
-        return $this->entityObject;
-    }    
-     */   
-      
+      $this->entityFirst  = $entityFirst;
+      $this->entityObject = $entityObject;
+      return $this->entityObject;      
   }
 
   public function flush(){
 
-      $arr = $this->entityFirst;
-      $arr2= (array)$this->entityObject;
-      $arr_clean = array();
-      $arr_clean2 = array();
-      
-      if(is_object($this->entityFirst)){
+      $entityFirst        = $this->entityFirst;
 
-      }
-      else if(is_array($this->entityFirst)){
-        
-      }
-      
-       foreach ($arr as $k => $v) {
-        $k = preg_match('/^\x00(?:.*?)\x00(.+)/', $k, $matches) ? $matches[1] : $k;
-        $arr_clean[$k] = $v;
-        }
-        foreach ($arr2 as $k => $v) {
-        $k = preg_match('/^\x00(?:.*?)\x00(.+)/', $k, $matches) ? $matches[1] : $k;
-        $arr_clean2[$k] = $v;
-        }
-      foreach ($arr_clean2 as $key => $val) {
-        
-        if($val !== $arr_clean[$key])
-        {          
-          echo $this->query = "UPDATE $this->db_user.$this->entityObject_name SET $key = $arr_clean2[$key] WHERE ID = $arr_clean[ID] ";
-          $request = $this->db->query($this->query) or die($this->db->error);
-        }
-      
-      }     
+      if(is_object($this->entityObject)){
 
+          $entityObject = (array)$this->entityObject;
+        foreach ($entityObject as $k => $v) {
+            $k = preg_match('/^\x00(?:.*?)\x00(.+)/', $k, $matches) ? $matches[1] : $k;
+            $entityObject_clean[$k] = $v;
+        }
 
+        foreach ($entityObject_clean as $key => $val) {
+              
+              if($val !== $entityFirst[$key]){
+                echo "joho";
+          
+  
+                $this->query = "UPDATE $this->db_user.$this->entityObject_name SET $key = $entityObject_clean[$key] WHERE ID = $entityObject_clean[ID] ";
+                $request = $this->db->query($this->query) or die($this->db->error);
+              
+              }
+      
+        }     
+
+      }elseif(is_array($this->entityObject)){
+
+        $entityObject = array();
+        foreach($this->entityObject as $key => $value){
+          $entityObject_clean = array();
+          foreach ((array)$value as $key => $value) {
+            $key = preg_match('/^\x00(?:.*?)\x00(.+)/', $key, $matches) ? $matches[1] : $key;
+            $entityObject_clean[$key] = $value;
+          }
+          $entityObject[] = $entityObject_clean;
+        }
+        foreach ($entityFirst as $key => $value) {
+            foreach($value as $key2 => $value2){
+              if($value2 !== $entityObject[$key][$key2]){
+                $this->query = "UPDATE $this->db_user.$this->entityObject_name SET $key2 = '".$entityObject[$key][$key2]."' WHERE ID = ".$value['ID'];
+                $request = $this->db->query($this->query) or die($this->db->error);
+              }
+            }
+        }
+           
+    }
   }
 
 }
