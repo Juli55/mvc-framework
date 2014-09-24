@@ -142,7 +142,6 @@ class EntityManager{
         foreach ($entityObject_clean as $key => $val) {
               
               if($val !== $entityFirst[$key]){
-                echo "joho";
           
   
                 $this->query = "UPDATE $this->db_user.$this->entityObject_name SET $key = $entityObject_clean[$key] WHERE ID = $entityObject_clean[ID] ";
