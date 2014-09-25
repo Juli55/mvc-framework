@@ -20,10 +20,9 @@ class profileController extends Controller
 		$em = new EntityManager;
 
 		$entity= $em->getEntity("profile:user");
-		$result_object = $em->findAll("gender",0);
-		foreach ($result_object as $key => $value) {
-			$value->setFocusing(1);
-		}
+		$entity->setGender(2);
+		$entity->setFocusing(3);
+		$em->persist($entity);
 		$em->flush();
 		$request = new Request();
 		$get = 'nothing';

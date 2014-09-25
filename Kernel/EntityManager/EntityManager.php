@@ -64,10 +64,30 @@ class EntityManager{
 
   }
 
-  public function create(){
+  public function persist($entity){
 
-
-
+    $entityObject = (array)$entity;
+    foreach ($entityObject as $k => $v){
+    $k = preg_match('/^\x00(?:.*?)\x00(.+)/', $k, $matches) ? $matches[1] : $k;
+    $entityObject_clean[$k] = $v;
+    }
+    $all_keys = '';
+    $all_values = '';
+    foreach ($entityObject_clean as $key => $value) {
+     if(is_null($value))
+     {
+      $value= '0'; 
+     }
+     if(is_int($value))
+     {
+      $value = (string)$value;
+     }
+     $all_values = $all_values.",".$value;
+     $all_keys = $all_keys.",".$key;
+     $all_values = ltrim($all_values,',');
+     $all_keys = ltrim($all_keys,',');
+    }
+      $this->query = "INSERT INTO $this->db_user.$this->entityObject_name($all_keys) VALUES($all_values)";
 
   }
 
@@ -129,9 +149,13 @@ class EntityManager{
 
   public function flush(){
 
-      $entityFirst        = $this->entityFirst;
+      $entityFirst = $this->entityFirst;
 
-      if(is_object($this->entityObject)){
+      if(!empty($this->query))
+      {
+        $request = $this->db->query($this->query) or die ($this->db->error);
+      }
+      elseif(is_object($this->entityObject)){
 
           $entityObject = (array)$this->entityObject;
         foreach ($entityObject as $k => $v) {
@@ -144,8 +168,8 @@ class EntityManager{
               if($val !== $entityFirst[$key]){
           
   
-                $this->query = "UPDATE $this->db_user.$this->entityObject_name SET $key = $entityObject_clean[$key] WHERE ID = $entityObject_clean[ID] ";
-                $request = $this->db->query($this->query) or die($this->db->error);
+                $query = "UPDATE $this->db_user.$this->entityObject_name SET $key = $entityObject_clean[$key] WHERE ID = $entityObject_clean[ID] ";
+                $request = $this->db->query($query) or die($this->db->error);
               
               }
       
@@ -165,8 +189,8 @@ class EntityManager{
         foreach ($entityFirst as $key => $value) {
             foreach($value as $key2 => $value2){
               if($value2 !== $entityObject[$key][$key2]){
-                $this->query = "UPDATE $this->db_user.$this->entityObject_name SET $key2 = '".$entityObject[$key][$key2]."' WHERE ID = ".$value['ID'];
-                $request = $this->db->query($this->query) or die($this->db->error);
+                $query = "UPDATE $this->db_user.$this->entityObject_name SET $key2 = '".$entityObject[$key][$key2]."' WHERE ID = ".$value['ID'];
+                $request = $this->db->query($query) or die($this->db->error);
               }
             }
         }
