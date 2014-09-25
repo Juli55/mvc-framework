@@ -3,11 +3,11 @@ namespace profile\Controller;
 
 use Kernel\Controller;
 use Kernel\HttpKernel\Request;
-<<<<<<< HEAD
+
 use Tools\Files\Upload\FileUpload;
-=======
+
 use Kernel\EntityManager\EntityManager;
->>>>>>> entitymanager
+
 
 /**
  * @author Julian Bertsch <julian.bertsch42@gmail.de>
