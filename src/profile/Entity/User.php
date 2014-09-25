@@ -1,11 +1,10 @@
 <?php 
 
-namespace projectify\Entity;
- 
+
  /**
   * @author Julian Bertsch <julian.bertsch42@gmail.de>
   */
-class User
+class user
 {
 	/**
 	 * @var int
@@ -56,6 +55,18 @@ class User
 	 * @var integer
 	 */
 	private $img_id;
+
+	/**
+     * Get ID
+     * @param integer $ID
+     * @return integer 
+     */
+	public function setID($ID)
+	{
+		$this->ID = $ID;
+
+		return $this;
+	}
 
 	/**
      * Get ID

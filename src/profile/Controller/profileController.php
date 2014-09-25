@@ -3,10 +3,15 @@ namespace profile\Controller;
 
 use Kernel\Controller;
 use Kernel\HttpKernel\Request;
+<<<<<<< HEAD
 use Tools\Files\Upload\FileUpload;
+=======
+use Kernel\EntityManager\EntityManager;
+>>>>>>> entitymanager
 
 /**
  * @author Julian Bertsch <julian.bertsch42@gmail.de>
+ * @author Dennis Eisele  <dennis.eisele@online.de>
  */
 class profileController extends Controller
 {
@@ -15,6 +20,14 @@ class profileController extends Controller
 	 */
 	public function test($eins,$zwei)
 	{
+
+		$em = new EntityManager;
+
+		$entity= $em->getEntity("profile:user");
+		$entity->setGender(2);
+		$entity->setFocusing(3);
+		$em->persist($entity);
+		$em->flush();
 		$request = new Request();
 		$get = 'nothing';
 		if(isset($request->Files['eins'])){
