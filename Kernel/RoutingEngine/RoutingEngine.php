@@ -27,7 +27,7 @@ class RoutingEngine
 				$class = $namespace.$value['controller'];
 				$controller = new $class();
 				
-				return call_user_func($controller, $value['action']);
+				return call_user_func(array($controller, $value['action']));
 
 			}else{
 
