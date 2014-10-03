@@ -1,0 +1,111 @@
+<?php
+
+if ($argc != 2 || in_array($argv[1], array('--help'))) {
+
+	echo $argv[2]."\n";
+
+}else{
+	if(isset($argv[1])){
+		$commands =  explode(':',$argv[1]);
+
+		if(!empty($commands)){
+
+			switch($commands[0]){
+
+				case 'generate':
+					switch($commands[1]){
+
+						case 'entity':
+							echo "First you need to give the entity name you want to generate.\nYou must use the shortcut notation like SourceFolder:User\n";
+							echo "The Entity shortcut name: ";
+							$line = trim(fgets(STDIN));
+							$explodedLine =  explode(':',$line);
+							while(!isset($explodedLine[1])){
+								echo "The Entity shortcut name: ";
+								$line = trim(fgets(STDIN));
+								$explodedLine =  explode(':',$line);
+							}
+							$srcDir = $explodedLine[0];
+							$entityName = $explodedLine[1];
+								
+							while(!is_dir("src/$srcDir") || file_exists("src/$srcDir/Entity/$entityName.php")){
+								if(!is_dir("src/$srcDir")){
+
+									echo "This SourceFolder doesn't exist!\n";
+								}
+								if(file_exists("src/$srcDir/Entity/$entityName.php")){
+
+									echo "This EntityFile already exist! Do you want to overwrite this File?\npress y for yes and another for no:";
+										$answer = trim(fgets(STDIN));
+										if($answer === 'y'){
+											break;
+										}
+								}
+								echo "The Entity shortcut name: ";
+								$line = trim(fgets(STDIN));
+								$explodedLine =  explode(':',$line);
+								while(!isset($explodedLine[1])){
+									echo "The Entity shortcut name: ";
+									$line = trim(fgets(STDIN));
+									$explodedLine =  explode(':',$line);
+								}
+								$srcDir = $explodedLine[0];
+								$entityName = $explodedLine[1];
+							}				
+							$line = 1;
+							$columns = array();
+							$columns[] = 'id';
+							while(!empty($line)){
+								echo "\nNew field name <press <return> to stop adding fields>: ";
+								$line = trim(fgets(STDIN));
+								if(!empty($line)){
+									$columns[] = $line;
+								}
+							}
+							$fileValue = "<?php \n\nnamespace $srcDir\\Entity;\n\nclass $entityName\n{\n";
+							foreach ($columns as $value) {
+								$fileValue .= "	/**\n";
+								$fileValue .= "	 * @var string\n";
+								$fileValue .= "	 */\n";
+								$fileValue .= "	private \$$value;\n\n";
+							}
+							foreach ($columns as $value) {
+
+								$fileValue .= "	/**\n";
+								$fileValue .= "	 * Set $value\n";
+								$fileValue .= "	 *\n";
+								$fileValue .= "	 * @param string \$$value\n";
+								$fileValue .= "	 * @return $entityName\n";
+								$fileValue .= "	 */\n";
+
+								$fileValue .= "	public function set".ucfirst($value)."(\$$value)\n	{\n		\$this->$value = \$$value;\n\n		return \$this;\n	}\n\n";
+
+								$fileValue .= "	/**\n";
+								$fileValue .= "	 * Get $value\n";
+								$fileValue .= "	 *\n";
+								$fileValue .= "	 * @return string\n";
+								$fileValue .= "	 */\n";
+
+								$fileValue .= "	public function get".ucfirst($value)."()\n	{\n		return \$this->$value;\n	}\n\n";
+							}
+							if(!is_dir('src/'.$srcDir.'/Entity')){
+								mkdir('src/'.$srcDir.'/Entity',0700);
+							}
+							$myfile = fopen("src/$srcDir/Entity/$entityName.php", "w") or die("Unable to open file!\n");
+							fwrite($myfile, '');
+							fwrite($myfile, trim($fileValue)."\n}");
+							fclose($myfile);
+						break;
+					}
+				break;
+
+				case 'createdir':
+					if(!is_dir('src/login')){
+			
+						mkdir('src/login', 0700);
+					}
+				break;
+			}
+		}
+	}
+}
