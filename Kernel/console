@@ -1,7 +1,13 @@
 <?php
 
+use Kernel\DataBase\DB;
 use Config\DBConfig;
-use Kernel\DB;
+
+function __autoload($class_name)
+{
+    include $class_name . '.php';
+}
+
 
 function deleteDir($dirPath) {
     if (! is_dir($dirPath)) {
@@ -169,6 +175,22 @@ if ($argc != 2 || in_array($argv[1], array('--help'))) {
 								fwrite($template, '');
 								fwrite($template, trim($templateValue));
 								fclose($template);			
+						break;
+					}
+				break;
+
+				case 'create':
+					switch($commands[1]){
+
+						case 'database':
+							$db = new DB();
+							DBConfig::init();
+							foreach(DBConfig::getDatabases() as $key => $value){
+
+								$sql = "CREATE DATABASE IF NOT EXISTS $value";
+								$db::$db->query($sql) or die($db::$db->error);
+							}
+							echo "Creating Databases where succesfull!\n";
 						break;
 					}
 				break;
