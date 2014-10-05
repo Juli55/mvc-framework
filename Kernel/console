@@ -187,10 +187,24 @@ if ($argc != 2 || in_array($argv[1], array('--help'))) {
 							DBConfig::init();
 							foreach(DBConfig::getDatabases() as $key => $value){
 
-								$sql = "CREATE DATABASE IF NOT EXISTS $value";
-								$db::$db->query($sql) or die($db::$db->error);
+								$sql_check = "SHOW DATABASES LIKE '$value'";
+								$result = $db::$db->query($sql_check);
+
+								if(!mysqli_num_rows($result) > 0){
+									$sql = "CREATE DATABASE $value";
+									$db::$db->query($sql) or die($db::$db->error);
+								}else{
+									echo "The Database '$value' does already exist do you want to replace it\npress y for yes and another for no:";
+									$answer = trim(fgets(STDIN));
+									if($answer === 'y'){
+										$sql = "DROP DATABASE $value";
+										$db::$db->query($sql) or die($db::$db->error);
+
+										$sql = "CREATE DATABASE $value";
+										$db::$db->query($sql) or die($db::$db->error);
+									}
+								}
 							}
-							echo "Creating Databases where succesfull!\n";
 						break;
 					}
 				break;
