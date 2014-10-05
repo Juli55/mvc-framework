@@ -2,6 +2,8 @@
 
 namespace Kernel\DataBase; 
 
+use Config\DBConfig;
+
 /**
  * @author Julian Bertsch <julian.bertsch42@gmail.de>
  * @author Dennis Eisele  <dennis.eisele@online.de>
@@ -15,17 +17,21 @@ Class DB
 	public static $db_user;
 
 
-	function __construct()
-
+	public function __construct()
 	{
+		DBConfig::init();
 
-		self::init('localhost', 'root', '');
+		$host 	  = DBConfig::getDbConfig()['host'];
+		$username = DBConfig::getDbConfig()['username'];
+		$password = DBConfig::getDbConfig()['password'];
 
+		$databases = DBConfig::getDatabases();
+
+		self::init($host, $username, $password, $databases);
 	}
 
 
-	private static function init($host, $username, $password)
-
+	private static function init($host, $username, $password, $databases)
 	{
 
 		self::$db = new \mysqli($host, $username, $password);
@@ -39,11 +45,8 @@ Class DB
 
 		}
 
-
-		self::$db_user = "projectify";
+		self::$db_user = $databases['primary'];
 
 		return self::$db;
-
 	}
-
 }

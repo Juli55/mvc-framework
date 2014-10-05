@@ -1,5 +1,8 @@
 <?php
 
+use Config\DBConfig;
+use Kernel\DB;
+
 function deleteDir($dirPath) {
     if (! is_dir($dirPath)) {
         throw new InvalidArgumentException("$dirPath must be a directory");
