@@ -3,6 +3,7 @@
 namespace Kernel\RoutingEngine;
 
 use Config\Routing;
+use Config\SrcInit;
 
 class RoutingEngine
 {
@@ -15,83 +16,89 @@ class RoutingEngine
 		//initalize the routings
 		Routing::init();
 
+		//initalize the srcFolders
+		SrcInit::init();
+
 		//check if uri fits in a routing pattern
 		foreach(Routing::getRouting() as $key => $value){
 
-			$dir = ltrim($value['dir'], '/');
+			if(array_key_exists($value['srcFolder'], SrcInit::getSrcFolder())){
 
-			if($value['pattern'] === $uri){
+				$dir = ltrim(SrcInit::getSrcFolder()[$value['srcFolder']], '/');
 
-				require '../src/'.$dir.$value['controller'].'.php';
-				$namespace = str_replace("/","\\",$value['dir']);
-				$class = $namespace.$value['controller'];
-				$controller = new $class();
-				
-				return call_user_func(array($controller, $value['action']));
+				if($value['pattern'] === $uri){
 
-			}else{
+					$controllerFile = '../src/'.$dir.'/Controller/'.$value['controller'].'.php';
+					require $controllerFile;
+					$namespace = str_replace("/","\\",$dir);
+					$class = $namespace.'\\Controller\\'.$value['controller'];
+					$controller = new $class();
+					
+					return call_user_func(array($controller, $value['action']));
 
-				//set the pattern to check if a string is a patternVariable
-				$cFirstChar 	 = '{';
-				$cSecondChar 	 = '}';
-				$patternVariable = "/\\".$cFirstChar."(.*?)\\".$cSecondChar."/";
+				}else{
 
-				//remove the first and last '/' in pattern and uri
-				$pattern = trim($value['pattern'], '/');
-				$uri	 = trim($uri, '/');
+					//set the pattern to check if a string is a patternVariable
+					$cFirstChar 	 = '{';
+					$cSecondChar 	 = '}';
+					$patternVariable = "/\\".$cFirstChar."(.*?)\\".$cSecondChar."/";
 
-				//explode pattern and uri by '/'
-				$pattern_parts = explode('/', $pattern);
-				$uri_parts	   = explode('/', $uri);
+					//remove the first and last '/' in pattern and uri
+					$pattern = trim($value['pattern'], '/');
+					$uri	 = trim($uri, '/');
 
-				//count the array to check if they have the same size
-				$pattern_parts_count = count($pattern_parts);
-				$uri_parts_count 	 = count($uri_parts);
+					//explode pattern and uri by '/'
+					$pattern_parts = explode('/', $pattern);
+					$uri_parts	   = explode('/', $uri);
 
-				if($pattern_parts_count === $uri_parts_count){
+					//count the array to check if they have the same size
+					$pattern_parts_count = count($pattern_parts);
+					$uri_parts_count 	 = count($uri_parts);
 
-					$parameters = array();
+					if($pattern_parts_count === $uri_parts_count){
 
-					for($i = 0; $i < $pattern_parts_count;$i++){
+						$parameters = array();
 
-						if($pattern_parts[$i] === $uri_parts[$i]){
+						for($i = 0; $i < $pattern_parts_count;$i++){
 
-						 //check if the part is a variable	
-						}elseif(preg_match($patternVariable,$pattern_parts[$i])){
+							if($pattern_parts[$i] === $uri_parts[$i]){
 
-							preg_match($patternVariable,$pattern_parts[$i],$match); 
+							 //check if the part is a variable	
+							}elseif(preg_match($patternVariable,$pattern_parts[$i])){
 
-							//restore the patternvariable into the parameter_array
-							$parameters[trim($match[1])] = preg_replace("#[?].*#", "", trim($uri_parts[$i]));
+								preg_match($patternVariable,$pattern_parts[$i],$match); 
 
-						}else{
-
-							//if the part of the uri was empty for this pattern
-							break;
-						}
-						if($i === $pattern_parts_count-1){
-
-							$controllerFile = '../src/'.$dir.$value['controller'].'.php';
-							$exist = file_exists($controllerFile);
-							if($exist){
-								require '../src/'.$dir.$value['controller'].'.php';
-								$namespace = str_replace("/","\\",$value['dir']);
-								$class = $namespace.$value['controller'];
-								$controller = new $class();
-
-								return call_user_func_array(array($controller, $value['action']), $parameters);
+								//restore the patternvariable into the parameter_array
+								$parameters[trim($match[1])] = preg_replace("#[?].*#", "", trim($uri_parts[$i]));
 
 							}else{
 
-								return 'Controller: "'.$value['controller'].'" existiert nicht in: "'.$dir.'"!';
+								//if the part of the uri was empty for this pattern
+								break;
+							}
+							if($i === $pattern_parts_count-1){
 
-							}	
+								$controllerFile = '../src/'.$dir.'/Controller/'.$value['controller'].'.php';
+								$exist = file_exists($controllerFile);
+								if($exist){
+									require $controllerFile;
+									$namespace = str_replace("/","\\",$dir);
+									$class = $namespace.'\\Controller\\'.$value['controller'];
+									$controller = new $class();
+
+									return call_user_func_array(array($controller, $value['action']), $parameters);
+
+								}else{
+
+									return 'Controller: "'.$value['controller'].'" existiert nicht in: "'.$dir.'"!';
+
+								}	
+							}
 						}
-					}
 
+					}
 				}
 			}
-
 		}
 
 	}
