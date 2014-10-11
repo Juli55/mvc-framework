@@ -1,0 +1,46 @@
+<?php
+
+use Kernel\ConsoleFunctions\ConsoleFunctions;
+
+function __autoload($class_name)
+{
+    include $class_name . '.php';
+}
+
+if ($argc != 2 || in_array($argv[1], array('--help'))) {
+
+	echo $argv[2]."\n";
+
+}else{
+	if(isset($argv[1])){
+		$commands =  explode(':',$argv[1]);
+
+		if(!empty($commands)){
+
+			switch($commands[0]){
+
+				case 'generate':
+					switch($commands[1]){
+
+						case 'entity':
+							ConsoleFunctions::generateEntity();
+						break;
+
+						case 'srcFolder':
+							ConsoleFunctions::generateSrcFolder();	
+						break;
+					}
+				break;
+
+				case 'create':
+					switch($commands[1]){
+
+						case 'database':
+							ConsoleFunctions::createDatabase();
+						break;
+					}
+				break;
+			}
+		}
+	}
+}

@@ -1,4 +1,8 @@
-<?php 
+<?php
+
+namespace Kernel\DataBase; 
+
+use Config\DBConfig;
 
 /**
  * @author Julian Bertsch <julian.bertsch42@gmail.de>
@@ -13,20 +17,24 @@ Class DB
 	public static $db_user;
 
 
-	function __construct()
-
+	public function __construct()
 	{
+		DBConfig::init();
 
-		self::init('localhost', 'root', '');
+		$host 	  = DBConfig::getDbConfig()['host'];
+		$username = DBConfig::getDbConfig()['username'];
+		$password = DBConfig::getDbConfig()['password'];
 
+		$databases = DBConfig::getDatabases();
+
+		self::init($host, $username, $password, $databases);
 	}
 
 
-	private static function init($host, $username, $password)
-
+	private static function init($host, $username, $password, $databases)
 	{
 
-		self::$db = new mysqli($host, $username, $password);
+		self::$db = new \mysqli($host, $username, $password);
 
 
 		if (mysqli_connect_errno()) {
@@ -37,11 +45,8 @@ Class DB
 
 		}
 
-
-		self::$db_user = "projectify";
+		self::$db_user = $databases['primary'];
 
 		return self::$db;
-
 	}
-
 }
