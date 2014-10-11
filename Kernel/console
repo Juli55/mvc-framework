@@ -1,6 +1,8 @@
 <?php
 
-use Kernel\ConsoleFunctions\ConsoleFunctions;
+use Kernel\ConsoleFunctions\Database;
+use Kernel\ConsoleFunctions\Entity;
+use Kernel\ConsoleFunctions\SrcFolder;
 
 function __autoload($class_name)
 {
@@ -23,11 +25,11 @@ if ($argc != 2 || in_array($argv[1], array('--help'))) {
 					switch($commands[1]){
 
 						case 'entity':
-							ConsoleFunctions::generateEntity();
+							Entity::generate();
 						break;
 
 						case 'srcFolder':
-							ConsoleFunctions::generateSrcFolder();	
+							SrcFolder::generate();	
 						break;
 					}
 				break;
@@ -36,7 +38,7 @@ if ($argc != 2 || in_array($argv[1], array('--help'))) {
 					switch($commands[1]){
 
 						case 'database':
-							ConsoleFunctions::createDatabase();
+							Database::create();
 						break;
 					}
 				break;
