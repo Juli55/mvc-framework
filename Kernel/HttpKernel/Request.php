@@ -27,6 +27,16 @@ class Request
 	public $Files;
 
 	/**
+	 * @var array $_SERVER 
+	 */
+	public $Server;
+
+	/**
+	 * @var array $_SESSION
+	 */
+	public $Session;
+
+	/**
 	 * Get the Custom Parameters and call the init method with this parameter
 	 *
 	 * @param array $Post
@@ -34,8 +44,9 @@ class Request
 	 * @param array $Cookie
 	 * @param array $Files
 	 * @param array $Server
+	 * @param array $Session
 	 */
-	public function __construct(array $Post = array(), array $Get = array(), array $Cookie = array(), array $Files = array(), array $Server = array()){		
+	public function __construct(array $Post = array(), array $Get = array(), array $Cookie = array(), array $Files = array(), array $Server = array(), array $Session = array()){		
 
 		self::init($Post, $Get, $Cookie, $Files, $Server);
 	}
@@ -48,8 +59,9 @@ class Request
 	 * @param array $Cookie
 	 * @param array $Files
 	 * @param array $Server
+	 * @param array $Session
 	 */
-	private function init(array $Post, array $Get, array $Cookie, array $Files, array $Server){
+	private function init(array $Post, array $Get, array $Cookie, array $Files, array $Server,array $Session){
 
 		self::getFromGlobal($Post, $Get, $Cookie, $Files, $Server);
 	}
@@ -62,6 +74,7 @@ class Request
 	 * @param array $Cookie
 	 * @param array $Files
 	 * @param array $Server
+	 * @param array $Session
 	 */
 	private function getFromGlobal(array $Post, array $Get, array $Cookie, array $Files, array $Server){
 		
@@ -89,106 +102,143 @@ class Request
 		if(!empty($Server)){
 			$this->Server = $Server;
 		}
+
+		$this->Session = $_SESSION;
+		if(!empty($Session)){
+			$this->Session = $Session;
+		}
 	}
 
 	/**
 	 * Set the intern $Post variable and call the method setGlobalPost to set the global variable
 	 * 
-	 * @param array $Post
+	 * @param $key
+	 * @param $value
 	 */
-	public function setPost(array $Post){
-		$this->Post[] = $Post;
-		self::setGlobalPost($Post);
+	public function setPost($key,$value){
+		$this->Post[$key] = $value;
+		self::setGlobalPost($key,$value);
 	}
 
 	/**
 	 * Set the the global variable
 	 * 
-	 * @param array $Post
+	 * @param $key
+	 * @param $value
 	 */
-	private static function setGlobalPost(array $Post){
+	private static function setGlobalPost($key,$value){
 
-		$_POST[] = $Post;
+		$_POST[$key] = $value;
 	}
 
 	/**
 	 * Set the intern $Get variable and call the method setGlobalGet to set the global variable
 	 * 
-	 * @param array $Get
+	 * @param $key
+	 * @param $value
 	 */
-	public function setGet(array $Get){
+	public function setGet($key,$value){
 		
-		$this->Get[] = $Get;
-		self::setGlobalGet($Get);
+		$this->Get[$key] = $value;
+		self::setGlobalGet($key,$value);
 	}
 
 	/**
 	 * Set the the global variable
 	 * 
-	 * @param array $Get
+	 * @param $key
+	 * @param $value
 	 */
-	private static function setGlobalGet(array $Get){
+	private static function setGlobalGet($key,$value){
 
-		$_GET[] = $Get;
+		$_GET[$key] = $value;
 	}
 
 	/**
 	 * Set the intern $Cookie variable and call the method setGlobalCookie to set the global variable
 	 * 
-	 * @param array $Cookie
+	 * @param $key
+	 * @param $value
 	 */
-	public function setCookie(array $Cookie){
-		$this->Cookie[] = $Cookie;
-		self::setGlobalCookie($Cookie);
+	public function setCookie($key,$value){
+		$this->Cookie[$key] = $value;
+		self::setGlobalCookie($key,$value);
 	}
 
 	/**
 	 * Set the the global variable
 	 * 
-	 * @param array $Cookie
+	 * @param $key
+	 * @param $value
 	 */
-	private static function setGlobalCookie(array $Cookie){
+	private static function setGlobalCookie($key,$value){
 
-		$_COOKIE[] = $Cookie;
+		$_COOKIE[$key] = $value;
 	}
 
 	/**
 	 * Set the intern $Files variable and call the method setGlobalFiles to set the global variable
 	 * 
-	 * @param array $Files
+	 * @param $key
+	 * @param $value
 	 */
-	public function setFiles(array $Files){
-		$this->Files[] = $Files;
-		self::setGlobalFiles($Files);
+	public function setFiles($key,$value){
+		$this->Files[$key] = $value;
+		self::setGlobalFiles($key,$value);
 	}
 
 	/**
 	 * Set the the global variable
 	 * 
-	 * @param array $Files
+	 * @param $key
+	 * @param $value
 	 */
-	private static function setGlobalFiles(array $Files){
+	private static function setGlobalFiles($key,$value){
 
-		$_FILES[] = $Files;
+		$_FILES[$key] = $value;
 	}
 
 	/**
 	 * Set the intern $Server variable and call the method setGlobalServer to set the global variable
 	 * 
-	 * @param array $Server
+	 * @param $key
+	 * @param $value
 	 */
-	public function setServer(array $Server){
-		$this->Server[] = $Server;
-		self::setGlobalServer($Server);
+	public function setServer($key,$value){
+		$this->Server[$key] = $value;
+		self::setGlobalServer($key,$value);
 	}
 
 	/**
 	 * Set the the global variable
 	 * 
-	 * @param array $Server
+	 * @param $key
+	 * @param $value
 	 */
-	private static function setGlobalServer(array $Server){
+	private static function setGlobalServer($key,$value){
 
-		$_SERVER[] = $Server;
+		$_SERVER[$key] = $value;
+	}
+
+	/**
+	 * Set the intern $Session variable and call the method setGlobalSession to set the global variable
+	 * 
+	 * @param $key
+	 * @param $value
+	 */
+	public function setSession($key,$value){
+		$this->Session[$key] = $value;
+		self::setGlobalSession($key,$value);
+	}
+
+	/**
+	 * Set the the global variable
+	 * 
+	 * @param $key
+	 * @param $value
+	 */
+	private static function setGlobalSession($key,$value){
+
+		$_SESSION[$key] = $value;
 	}
 }
