@@ -30,7 +30,7 @@ class login_script{
 		{
 			$em->find('email',$email);
 
-			if(!empty($entity->getEmail() && !empty($entity->getPassword())
+			if(!empty($entity->getEmail() && ($entity->getPassword() === $password)
 			{
 				$request->setSession('userid',$entity->getID());
 			}
