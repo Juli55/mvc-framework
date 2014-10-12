@@ -9,7 +9,7 @@ use Kernel\HttpKernel\Request;
  * @author Dennis Eisele <dennis.eisele@online.de>
  */
 
-class login_script{
+class LoginScript{
 
 	public function login($identificator,$password_key)
 	{
