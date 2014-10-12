@@ -11,7 +11,7 @@ use Kernel\HttpKernel\Request;
 
 class login_script{
 
-	public function login($identificator)
+	public function login($identificator,$password_key)
 	{
 		$em = new EntityManger;
 		$request = new Request
@@ -20,7 +20,7 @@ class login_script{
 		$entity = $em->getEntity("profile:user");
 
 		$identificator_value = $request->Post[$identificator];
-		$password= $request->Post['password']);
+		$password= $request->Post[$password_key]);
 		
 		$salt_1 = "74930slei93kdie9i3kdie93kdie9kdie93kdie93kdie93kdie9kei309ioögeut3fhsoöiutusü0emiß+m0gü8wvtpomuv,ß+,xiü.uim vüiri3mß";
 		$salt_2 = "dsajkflsafis543908530ljfksld4sdf34453ß0klsdjflkdslkjflksjflkdsjflkjdslkfjdslkfjlkdsjflkdsjfldsjlfdslkflsdjflkdsjlfdslkjfldskjflkjdslfjdslklsl";
