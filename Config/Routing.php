@@ -23,6 +23,7 @@ class Routing
 											'controller' => 'loginController',
 											'action'	 => 'login',
 											'srcFolder'	 => 'authentification'
+											'security'	 =>  false;
 										),
 							'registration' => array(
 											'pattern' 	 => '/registration/{ parameter }',
