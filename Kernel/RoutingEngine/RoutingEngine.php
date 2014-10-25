@@ -4,6 +4,8 @@ namespace Kernel\RoutingEngine;
 
 use Config\Routing;
 use Config\SrcInit;
+use Config\securityConfig;
+use Tools\Authentification\Security;
 
 class RoutingEngine
 {
@@ -19,6 +21,28 @@ class RoutingEngine
 		//initalize the srcFolders
 		SrcInit::init();
 
+		//initalize the securityConfig
+		securityConfig::init();
+
+		if(!isset($value['security']){
+
+			$security = true;
+		}else{
+
+			$security = $value['security'];
+		}
+					
+		if($security){
+			$securityConfig = securityConfig::getSecurityConfig();
+			$securityFunction = new Security;
+			$loggedIn = $securityFunction->login($securityConfig['identificator'],$securityConfig['passwordKey'],$securityConfig['entityShortcut']);
+
+			if(!$loggedIn){
+				
+				header('Location:'.$securityConfig['redirectTo']);
+			}
+		}
+
 		//check if uri fits in a routing pattern
 		foreach(Routing::getRouting() as $key => $value){
 
@@ -33,7 +57,7 @@ class RoutingEngine
 					$namespace = str_replace("/","\\",$dir);
 					$class = $namespace.'\\Controller\\'.$value['controller'];
 					$controller = new $class();
-					
+
 					return call_user_func(array($controller, $value['action']));
 
 				}else{
