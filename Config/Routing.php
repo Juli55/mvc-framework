@@ -22,7 +22,7 @@ class Routing
 											'pattern' 	 => '/authentification',
 											'controller' => 'loginController',
 											'action'	 => 'login',
-											'srcFolder'	 => 'authentification'
+											'srcFolder'	 => 'authentification',
 											'security'	 =>  false
 										),
 							'registration' => array(
