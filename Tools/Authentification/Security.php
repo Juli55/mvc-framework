@@ -24,13 +24,17 @@ class Security{
 
 
 	/**
-	 * @param identificator, passwordKey
 	 * @return boolean
 	 */
 	public function login()
 	{
 		$request = new Request;
 		$em = new EntityManager;
+
+		//initalize the securityConfig
+		securityConfig::init();
+
+		$securityConfig = securityConfig::getSecurityConfig();
 
 		$identificator  = $securityConfig['identificator'];
 		$passwordKey    = $securityConfig['passwordKey'];
