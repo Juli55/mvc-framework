@@ -4,6 +4,7 @@ namespace Tools\Authentification;
 
 use Kernel\HttpKernel\Request;
 use Kernel\EntityManager\EntityManager;
+use Config\securityConfig;
 
 /**
  * @author Dennis Eisele <dennis.eisele@online.de>
@@ -26,10 +27,14 @@ class Security{
 	 * @param identificator, passwordKey
 	 * @return boolean
 	 */
-	public function login($identificator,$passwordKey,$entityShortcut)
+	public function login()
 	{
 		$request = new Request;
 		$em = new EntityManager;
+
+		$identificator  = $securityConfig['identificator'];
+		$passwordKey    = $securityConfig['passwordKey'];
+		$entityShortcut = $securityConfig['entityShortcut'];
 
 		$em->getConnection();
 		$entity = $em->getEntity($entityShortcut);

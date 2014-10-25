@@ -33,12 +33,13 @@ class RoutingEngine
 		}
 					
 		if($security){
-			$securityConfig = securityConfig::getSecurityConfig();
+
 			$securityFunction = new Security;
-			$loggedIn = $securityFunction->login($securityConfig['identificator'],$securityConfig['passwordKey'],$securityConfig['entityShortcut']);
+			$loggedIn = $securityFunction->login();
 
 			if(!$loggedIn){
-				
+
+				$securityConfig = securityConfig::getSecurityConfig();
 				header('Location:'.$securityConfig['redirectTo']);
 			}
 		}
