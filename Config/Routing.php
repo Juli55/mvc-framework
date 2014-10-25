@@ -22,14 +22,15 @@ class Routing
 											'pattern' 	 => '/authentification',
 											'controller' => 'loginController',
 											'action'	 => 'login',
-											'srcFolder'	 => 'authentification'
-											'security'	 =>  false;
+											'srcFolder'	 => 'authentification',
+											'security'	 =>  false
 										),
 							'registration' => array(
 											'pattern' 	 => '/registration/{ parameter }',
 											'controller' => 'registerController',
 											'action'	 => 'register',
-											'srcFolder'	 => 'registration'
+											'srcFolder'	 => 'registration',
+											'security'	 =>  false
 										),
 							'profile' => array(
 											'pattern' 	 => '/profile/{profile}/{variable}',

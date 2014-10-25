@@ -55,12 +55,9 @@ class EntityManager{
   {
 
     $entityDir = explode(':',$entity);
-
-    require('../src/'.$entityDir[0].'/Entity/'.$entityDir[1].'.php');
-
-    $entityObject = new $entityDir[1];
-
-    $this->entityObject_name = get_class($entityObject);
+    $entityObjectNS =  '\\src\\'.$entityDir[0].'\\Entity\\'.$entityDir[1];
+    $entityObject = new $entityObjectNS;
+    $this->entityObject_name =  $entityDir[1];
     $this->entityObject = $entityObject;
     return $entityObject;
 

@@ -7,7 +7,8 @@ use Kernel\EntityManager\EntityManager;
 use Config\securityConfig;
 
 /**
- * @author Dennis Eisele <dennis.eisele@online.de>
+ * @author Dennis Eisele  <dennis.eisele@online.de>
+ * @author Julian Bertsch <Julian.bertsch42@gmail.de>
  */
 
 class Security{
@@ -24,13 +25,17 @@ class Security{
 
 
 	/**
-	 * @param identificator, passwordKey
 	 * @return boolean
 	 */
 	public function login()
 	{
 		$request = new Request;
 		$em = new EntityManager;
+
+		//initalize the securityConfig
+		securityConfig::init();
+
+		$securityConfig = securityConfig::getSecurityConfig();
 
 		$identificator  = $securityConfig['identificator'];
 		$passwordKey    = $securityConfig['passwordKey'];
