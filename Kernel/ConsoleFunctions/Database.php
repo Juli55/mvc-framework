@@ -43,6 +43,7 @@ class Database
 			$db = new DB();
 			DBConfig::init();
 
+		$affected = 0;
 		// read entitys from initialized srcFolders
 			foreach(SrcInit::getSrcFolder() as $srcFolder){
 				if(file_exists('src/'.$srcFolder.'/Entity')){
@@ -51,9 +52,9 @@ class Database
 
 						if ($entityFile != "." && $entityFile != "..") {
 				        	
-				        	include 'src/'.$srcFolder.'/Entity/'.$entityFile;
 				        	$entityName =  rtrim($entityFile,'.php');
-				        	$entityObject = new $entityName;
+				        	$entityObjectNS =  '\\src\\'.$srcFolder.'\\Entity\\'.$entityName;
+				        	$entityObject = new $entityObjectNS;
 
 				        	// check if every Variable has a setter and getter method
 				        		$entityObjectClean = array();
@@ -78,55 +79,39 @@ class Database
 								    		
 								    		if($result->num_rows > 0)
 											{
+												$sql_columns ="SELECT * FROM $dbName.$entityName ";
+												$result = $db::$db->query($sql_columns) or die($db::$db->error);
+												$i = 0;
+
 												foreach ($entityObjectClean as $key => $value) {
-									    			echo $key;
+									    			if($i < $result->field_count){
+									    				if($result->fetch_field_direct($i)->name !== strtolower($key)){
+									    					$sql_change_columnname ="ALTER TABLE $dbName.$entityName change ".$result->fetch_field_direct($i)->name." $key varchar(".$result->fetch_field_direct($i)->length.
+										    					")";
+										    				$db::$db->query($sql_change_columnname) or die($db::$db->error);
+										    				$affected++;
+									    				}
+									    			}else{
+									    				$sql_new_column ="ALTER TABLE $dbName.$entityName ADD $key varchar(100
+										    					)";
+										    			$db::$db->query($sql_new_column) or die($db::$db->error);
+										    			$affected++;
+									    			} 
+									    			$i++;
 									    		}
 											}else{
-												$sql = "CREATE TABLE IF NOT EXISTS $dbName.`$entityName` (
-	 
-														`id` int(11) NOT NULL AUTO_INCREMENT,
-	 
-														`name` varchar(100) NOT NULL,
-	 
-														`email` varchar(150) NOT NULL,
-	 
-														`address` varchar(255) NOT NULL,
-	 
-														`mob` varchar(15) NOT NULL,
-	 
-														PRIMARY KEY (`id`)
-	 
-														)";
+
+												$sql = "CREATE TABLE IF NOT EXISTS $dbName.`$entityName` (\n";
+												foreach ($entityObjectClean as $key => $value) {
+													if(strtolower($key) == 'id'){
+														$sql .= "`id` int(11) NOT NULL AUTO_INCREMENT,\n";
+													}else{
+														$sql .= "`$key` varchar(100) NOT NULL,\n";
+													}
+												}
+												$sql .= "PRIMARY KEY (`id`) )";
 									    		$db::$db->query($sql) or die($db::$db->error);
 											}
-											/*
-									    	if(mysqli_num_rows($result) > 0){
-									    		//echo "hey";
-									    		foreach ($entityObjectClean as $key => $value) {
-									    			
-									    		}
-								    		}else{
-								    			$sql = "CREATE TABLE IF NOT EXISTS $dbName.`userese` (
-	 
-														`id` int(11) NOT NULL AUTO_INCREMENT,
-	 
-														`name` varchar(100) NOT NULL,
-	 
-														`email` varchar(150) NOT NULL,
-	 
-														`address` varchar(255) NOT NULL,
-	 
-														`mob` varchar(15) NOT NULL,
-	 
-														PRIMARY KEY (`id`)
-	 
-														)";
-									    		$db::$db->query($sql) or die($db::$db->error);
-								    			foreach ($entityObjectClean as $key => $value) {
-
-									    		}
-								    		}
-								    		*/
 								    
 								}else{
 									die("\n You have to create the Databases first\n");
@@ -137,6 +122,11 @@ class Database
 					}
 					closedir($handle); 
 				}
+			}
+			if($affected !== 0){
+				echo "The Database was updated successfull with $affected changes!\n";
+			}else{
+				echo "The Database is already up to date!\n";
 			}
 	}
 }
