@@ -10,7 +10,7 @@ class SrcInit
 	/**
 	 * @var array
 	 */
-	public static $srcFolder = array();
+	private static $srcFolder = array();
 
 	/**
 	 * @return void
