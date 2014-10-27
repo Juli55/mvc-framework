@@ -18,31 +18,12 @@ class Routing
 	public static function init()
 	{
 		self::$routing = array(
-							'authentification' => array(
-											'pattern' 	 => '/authentification',
-											'controller' => 'loginController',
-											'action'	 => 'login',
-											'srcFolder'	 => 'authentification',
-											'security'	 =>  false
-										),
-							'registration' => array(
-											'pattern' 	 => '/registration/{ parameter }',
-											'controller' => 'registerController',
-											'action'	 => 'register',
-											'srcFolder'	 => 'registration',
-											'security'	 =>  false
-										),
-							'profile' => array(
-											'pattern' 	 => '/profile/{profile}/{variable}',
-											'controller' => 'profileController',
+							'test' => array(
+											'pattern' 	 => '/test',
+											'controller' => 'testController',
 											'action'	 => 'test',
-											'srcFolder'	 => 'profile'
-										),
-							'project' => array(
-											'pattern' 			=> 'project/{project}/{hey}',
-											'controller' 		=> 'projectController',
-											'action'	 		=> 'indexAction',
-											'srcFolder'			=> 'project'
+											'srcFolder'	 => 'test',
+											'security'	 =>  false
 										),
 						);
 	}

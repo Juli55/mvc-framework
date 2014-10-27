@@ -18,10 +18,7 @@ class SrcInit
 	public static function init()
 	{
 		self::$srcFolder = array(
-							'profile' 			=> 'profile',
-							'project' 			=> 'project',
-							'authentification'	=> 'authentification',
-							'registration'		=> 'registration'
+							'test' 			=> 'test',
 						);
 	}
 

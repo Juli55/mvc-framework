@@ -1,6 +1,6 @@
 <?php 
 
-namespace src\profile\Entity;
+namespace src\test\Entity;
 
  /**
   * @author Julian Bertsch <julian.bertsch42@gmail.de>

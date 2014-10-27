@@ -18,10 +18,10 @@ class securityConfig
 	public static function init()
 	{
 		self::$securityConfig = array(
-									'identificator'  =>	'email',
-									'passwordKey'	 =>	'password',
-									'entityShortcut' =>	'profile:user',
-									'redirectTo'	 => 'authentification'
+									'identificator'  =>	' ',
+									'passwordKey'	 =>	' ',
+									'entityShortcut' =>	'test:user',
+									'redirectTo'	 => ' '
 								);
 	}
 
