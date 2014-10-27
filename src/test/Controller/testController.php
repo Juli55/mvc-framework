@@ -1,5 +1,5 @@
 <?php
-namespace profile\Controller;
+namespace test\Controller;
 
 use Kernel\Controller;
 use Kernel\HttpKernel\Request;
@@ -13,7 +13,7 @@ use Kernel\EntityManager\EntityManager;
  * @author Julian Bertsch <julian.bertsch42@gmail.de>
  * @author Dennis Eisele  <dennis.eisele@online.de>
  */
-class profileController extends Controller
+class testController extends Controller
 {
 	/**
 	 * @return View 
