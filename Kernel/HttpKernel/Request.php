@@ -48,7 +48,7 @@ class Request
 	 */
 	public function __construct(array $Post = array(), array $Get = array(), array $Cookie = array(), array $Files = array(), array $Server = array(), array $Session = array()){		
 
-		self::init($Post, $Get, $Cookie, $Files, $Server);
+		self::init($Post, $Get, $Cookie, $Files, $Server, $Session);
 	}
 
 	/**
@@ -77,6 +77,8 @@ class Request
 	 * @param array $Session
 	 */
 	private function getFromGlobal(array $Post, array $Get, array $Cookie, array $Files, array $Server){
+		
+
 		
 		$this->Post = $_POST;
 		if(!empty($Post)){

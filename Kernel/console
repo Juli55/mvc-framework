@@ -42,6 +42,14 @@ if ($argc != 2 || in_array($argv[1], array('--help'))) {
 						break;
 					}
 				break;
+
+				case 'sync':
+					switch($commands[1]){
+
+						case 'database':
+							Database::sync();
+						break;
+					}
 			}
 		}
 	}

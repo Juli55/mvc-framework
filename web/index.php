@@ -45,6 +45,7 @@ final class App
 			
 		if(self::$uri !== $_SERVER['PHP_SELF'] && self::$uri !== '/'){
 			
+			session_start();
 			echo RoutingEngine::handleRouting(self::$uri);
 
 		}else{

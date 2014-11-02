@@ -4,6 +4,8 @@ namespace Kernel\RoutingEngine;
 
 use Config\Routing;
 use Config\SrcInit;
+use Config\securityConfig;
+use Tools\Authentification\Security;
 
 class RoutingEngine
 {
@@ -19,6 +21,9 @@ class RoutingEngine
 		//initalize the srcFolders
 		SrcInit::init();
 
+		//initalize the securityConfig
+		securityConfig::init();
+
 		//check if uri fits in a routing pattern
 		foreach(Routing::getRouting() as $key => $value){
 
@@ -33,7 +38,27 @@ class RoutingEngine
 					$namespace = str_replace("/","\\",$dir);
 					$class = $namespace.'\\Controller\\'.$value['controller'];
 					$controller = new $class();
-					
+					if(!isset($value['security'])){
+
+						$security = true;
+					}else{
+						
+						$security = $value['security'];
+					}
+					if($security){
+						
+						$securityFunction = new Security;
+						$loggedIn = $securityFunction->login();
+
+						if(!$loggedIn){
+
+							$securityConfig = securityConfig::getSecurityConfig();
+							if($key !== $securityConfig['redirectTo']){
+								$redirectAddress = trim(Routing::getRouting()[$securityConfig['redirectTo']]['pattern'],'/');
+								header('Location:/'.$redirectAddress);
+							}
+						}
+					}
 					return call_user_func(array($controller, $value['action']));
 
 				}else{
@@ -85,7 +110,26 @@ class RoutingEngine
 									$namespace = str_replace("/","\\",$dir);
 									$class = $namespace.'\\Controller\\'.$value['controller'];
 									$controller = new $class();
+									if(!isset($value['security'])){
 
+										$security = true;
+									}else{
+										
+										$security = $value['security'];
+									}
+									if($security){
+										$securityFunction = new Security;
+										$loggedIn = $securityFunction->login();
+
+										if(!$loggedIn){
+
+											$securityConfig = securityConfig::getSecurityConfig();
+											if($key !== $securityConfig['redirectTo']){
+												$redirectAddress = trim(Routing::getRouting()[$securityConfig['redirectTo']]['pattern'],'/');
+												header('Location:/'.$redirectAddress);
+											}
+										}
+									}
 									return call_user_func_array(array($controller, $value['action']), $parameters);
 
 								}else{

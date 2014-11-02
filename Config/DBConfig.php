@@ -24,8 +24,7 @@ class DBConfig
 							'password'	=>	'',
 						);
 		self::$databases = array(
-							'primary' => 'projectify',
-							'img'
+							'primary' => 'test'
 						);
 	}
 
