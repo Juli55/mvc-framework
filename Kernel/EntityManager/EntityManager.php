@@ -82,7 +82,7 @@ class EntityManager{
      {
       $value = (string)$value;
      }
-     $all_values = $all_values.",".$value;
+     $all_values = $all_values.","."'".$value."'";
      $all_keys = $all_keys.",".$key;
      $all_values = ltrim($all_values,',');
      $all_keys = ltrim($all_keys,',');
@@ -94,7 +94,7 @@ class EntityManager{
   public function find($finder,$target)
   {
 
-    $query = "SELECT * FROM $this->db_user.$this->entityObject_name WHERE $finder = '$target' ";
+    $query = "SELECT * FROM $this->db_user.$this->entityObject_name WHERE $finder = '$target'";
     $request = $this->db->query($query) or die($this->db->error);
     if($request->num_rows){
   
@@ -121,7 +121,7 @@ class EntityManager{
       {
         $query = "SELECT * FROM $this->db_user.$this->entityObject_name";
       }else{
-        $query = "SELECT * FROM $this->db_user.$this->entityObject_name WHERE $finder = $target";
+        $query = "SELECT * FROM $this->db_user.$this->entityObject_name WHERE $finder = '$target'";
       }
 
       $request = $this->db->query($query) or die($this->db->error);
@@ -173,7 +173,7 @@ class EntityManager{
               if($val !== $entityFirst[$key]){
           
   
-                $query = "UPDATE $this->db_user.$this->entityObject_name SET $key = $entityObject_clean[$key] WHERE ID = $entityObject_clean[ID] ";
+                $query = "UPDATE $this->db_user.$this->entityObject_name SET $key = '$entityObject_clean[$key]' WHERE ID = $entityObject_clean[ID] ";
                 $request = $this->db->query($query) or die($this->db->error);
               
               }
