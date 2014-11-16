@@ -15,7 +15,7 @@ class Entity
 
 		// loop asking for shortcut name if entityname isn't set
 			while(!isset($explodedShort[1])) {
-				echo "The Entity shortcut name: s";
+				echo "The Entity shortcut name: ";
 				$shortcut = trim(fgets(STDIN));
 				$explodedShort =  explode(':',$shortcut);
 			}
