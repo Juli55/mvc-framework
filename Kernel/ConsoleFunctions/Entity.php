@@ -14,14 +14,14 @@ class Entity
 			$explodedShort =  explode(':',$shortcut);
 
 		// loop asking for shortcut name if entityname isn't set
-			while(!isset($explodedLine[1])){
-				echo "The Entity shortcut name: ";
+			while(!isset($explodedShort[1])) {
+				echo "The Entity shortcut name: s";
 				$shortcut = trim(fgets(STDIN));
-				$explodedLine =  explode(':',$shortcut);
+				$explodedShort =  explode(':',$shortcut);
 			}
 		// set splittet shortcutname in variables
-			$srcDir = $explodedLine[0];
-			$entityName = $explodedLine[1];
+			$srcDir = $explodedShort[0];
+			$entityName = $explodedShort[1];
 
 		// loop if dir doesn't exist or the entity file for this already exist
 			while(!is_dir("src/$srcDir") || file_exists("src/$srcDir/Entity/$entityName.php")){
@@ -40,14 +40,14 @@ class Entity
 				}
 				echo "The Entity shortcut name: ";
 				$shortcut = trim(fgets(STDIN));
-				$explodedLine =  explode(':',$shortcut);
-				while(!isset($explodedLine[1])){
+				$explodedShort =  explode(':',$shortcut);
+				while(!isset($explodedShort[1])){
 					echo "The Entity shortcut name: ";
 					$shortcut = trim(fgets(STDIN));
-					$explodedLine =  explode(':',$shortcut);
+					$explodedShort =  explode(':',$shortcut);
 				}
-				$srcDir = $explodedLine[0];
-				$entityName = $explodedLine[1];
+				$srcDir = $explodedShort[0];
+				$entityName = $explodedShort[1];
 			}
 		// set the entity fields		
 			$shortcut = 1;
