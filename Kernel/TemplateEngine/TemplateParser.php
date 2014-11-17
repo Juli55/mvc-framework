@@ -3,6 +3,7 @@
 namespace Kernel\TemplateEngine;
 
 use Kernel\TemplateEngine\GlobalParser;
+use Kernel\RoutingEngine\RoutingEngine;
 
 class TemplateParser extends GlobalParser
 {
@@ -78,6 +79,9 @@ class TemplateParser extends GlobalParser
 					$this->parameters[$VariableKey] = $array_storage;
 
 				}
+			}elseif($substr[0] == 'import') {
+
+				$output .= RoutingEngine::handleRouting($substr[1]);
 			}
 		}
 

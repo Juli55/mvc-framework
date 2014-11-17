@@ -25,6 +25,13 @@ class Routing
 											'srcFolder'	 => 'test',
 											'security'	 =>  false
 										),
+							'test1' => array(
+											'pattern' 	 => '/test1',
+											'controller' => 'test1Controller',
+											'action'	 => 'test1',
+											'srcFolder'	 => 'test',
+											'security'	 =>  false
+										)
 						);
 	}
 

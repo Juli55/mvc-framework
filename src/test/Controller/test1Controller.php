@@ -13,33 +13,17 @@ use Kernel\EntityManager\EntityManager;
  * @author Julian Bertsch <julian.bertsch42@gmail.de>
  * @author Dennis Eisele  <dennis.eisele@online.de>
  */
-class testController extends Controller
+class test1Controller extends Controller
 {
 	/**
 	 * @return View 
 	 */
-	public function test()
+	public function test1()
 	{
 
-		$em = new EntityManager;
+		
 
-		$entity= $em->getEntity("test:user");
-		$entity->setGender(2);
-		$entity->setFocusing(3);
-		$em->persist($entity);
-		$em->flush();
-		$request = new Request();
-		$get = 'nothing';
-		if(isset($request->Files['eins'])){
-			$upload = new FileUpload('img',$request->Files['eins']);
-			if($upload->upload()){
-				echo  "Uploaden ist geglückt!";
-			}else{
-				echo  "Uploaden fehlgeschlagen";
-			}
-		}
-
-		return $this->render("test:default.html",
+		return $this->render("test:templates:default.html",
 							array(
 								'hey1' => 'hey',
 								'was geht' => array('hey' => array(
