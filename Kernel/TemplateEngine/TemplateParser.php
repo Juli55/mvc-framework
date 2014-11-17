@@ -104,19 +104,24 @@ class TemplateParser extends GlobalParser
 	{
 		//read TemplateVariables
 		$template_variable = self::parseTemplateIssues($output);
-		$replace = '';
 		$pattern = array();
 	    foreach($template_variable[1] as $key => $value){
 
 			if(strpos($value,'.')){
 
 				$array = explode('.',$value);
-
+				
 				$array_storage = $parameters;
 				foreach($array as $key2 => $value2){
-					if(array_key_exists(trim($value2), $array_storage)) {
-						$array_storage =  $array_storage[trim($value2)];
+					
+					if(is_object($array_storage)){
+						
+						$methodName = 'get'.ucfirst(trim($value2));
+						$array_storage = $array_storage->$methodName();
 
+					}elseif(array_key_exists(trim($value2), $array_storage)) {
+
+						$array_storage =  $array_storage[trim($value2)];
 					}
 				}
 				$replace = $array_storage;
@@ -137,7 +142,9 @@ class TemplateParser extends GlobalParser
 					if(is_string($replace)){
 						$output = preg_replace($pattern,$replace,$output);
 					}
-					else{
+					elseif(is_object($replace)){
+
+					}else{
 						$output = preg_replace($pattern,$value,$output);
 					}
 				}
