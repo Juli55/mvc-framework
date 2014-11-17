@@ -4,6 +4,7 @@ namespace Kernel\TemplateEngine;
 
 use Kernel\TemplateEngine\GlobalParser;
 use Kernel\RoutingEngine\RoutingEngine;
+use Kernel\View;
 
 class TemplateParser extends GlobalParser
 {
@@ -82,6 +83,9 @@ class TemplateParser extends GlobalParser
 			}elseif($substr[0] == 'import') {
 
 				$output .= RoutingEngine::handleRouting($substr[1]);
+			}elseif($substr[0] == 'include') {
+
+				echo View::render($substr[1], $parameters);
 			}
 		}
 
