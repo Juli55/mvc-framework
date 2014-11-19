@@ -24,10 +24,10 @@ class GlobalParser
 	 *
 	 * @return String
 	 */
-	protected static function GetBetween($start,$end,$string)
+	protected static function GetBetween($start = '', $end = '', $string)
 	{
-		$temp1 	= strpos($string,$start)+strlen($start);
-		$result = substr($string,$start,strlen($string));
+		$temp 	= strpos($string,$start)+strlen($start);
+		$result = substr($string,$temp,strlen($string));
 		$dd 	= strpos($result,$end);
 		if($dd == 0){
 			$dd = strlen($result);
