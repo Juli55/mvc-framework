@@ -79,14 +79,16 @@ class TemplateParser extends GlobalParser
 				}
 			}elseif($substr[0] == 'import') {
 
-				$output .= RoutingEngine::handleRouting($substr[1]);
+				$pattern = '/{%'.$value.'%}/';
+				$replace = RoutingEngine::handleRouting($substr[1]);
+				$output = preg_replace($pattern,$replace,$output);
 			}elseif($substr[0] == 'include') {
 
-				echo View::render($substr[1], $parameters);
+				$pattern = '/{%'.$value.'%}/';
+				$replace =  View::render($substr[1], $parameters);
+				$output = preg_replace($pattern,$replace,$output);
 			}elseif($substr[0] == 'for') {
-
-				
-				
+						
 				$endString = self::parseTemplateFunctions($output);
 				foreach($endString[1] as $keyFor => $valueFor){
 					$substr2 = explode(' ', trim($valueFor));
