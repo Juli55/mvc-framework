@@ -42,9 +42,6 @@ class TemplateParser extends GlobalParser
 		$template_issues = self::parseTemplateFunctions($output);
 		foreach($template_issues[1] as $key => $value){
 
-			$pattern = '/{%'.$value.'%}/';
-			$output = preg_replace($pattern,'',$output);
-
 		// set Template Variables
 			$substr = explode(' ', trim($value));
 			if($substr[0] == 'set'){
@@ -86,9 +83,35 @@ class TemplateParser extends GlobalParser
 			}elseif($substr[0] == 'include') {
 
 				echo View::render($substr[1], $parameters);
+			}elseif($substr[0] == 'for') {
+
+				
+				
+				$endString = self::parseTemplateFunctions($output);
+				foreach($endString[1] as $keyFor => $valueFor){
+					$substr2 = explode(' ', trim($valueFor));
+					if($substr2[0] == 'endfor'){
+						$end = '{%'.$valueFor.'%}';
+					}
+				}
+				$start = '{%'.$value.'%}';
+				$forContent = self::GetBetween($start, $end, $output);
+				$result = '';
+				foreach($parameters[$substr[1]] as $key2 => $value2){
+
+					$parameters[$substr[3]] = $parameters[$substr[1]][$key2]; 
+					$result .=  self::parseTemplateEngine($forContent,$parameters);
+					
+				}
+				$pattern = '('.$start.$forContent.$end.')i';
+				$output = preg_replace($pattern,$result,$output);
+	    		
 			}
+			$pattern = '/{%'.$value.'%}/';
+			$output = preg_replace($pattern,'',$output);
 		}
 
+		
 		return $output;
 	}
 
