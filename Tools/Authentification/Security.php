@@ -63,7 +63,11 @@ class Security{
 					$this->userObject = $entity;
 					$request->setSession('userid',$entity->getID());
 					return true;
-				}
+				}else{
+					$this->errorNumber = 1;
+				} 
+			}else{
+				$this->errorNumber = 2;
 			}
 		}else{
 			
