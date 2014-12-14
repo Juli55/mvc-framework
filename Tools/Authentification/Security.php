@@ -65,11 +65,11 @@ class Security{
 					return true;
 				}
 				else{
-					return 2;
+					$this->errorNumber = 1;
 				} 
 			}
 			else{
-				return 3;
+				$this->errorNumber = 2;
 			}
 		}else{
 			
