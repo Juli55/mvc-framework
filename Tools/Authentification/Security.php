@@ -64,6 +64,12 @@ class Security{
 					$request->setSession('userid',$entity->getID());
 					return true;
 				}
+				else{
+					return 2;
+				} 
+			}
+			else{
+				return 3;
 			}
 		}else{
 			
