@@ -46,7 +46,7 @@ class Security{
 
 		if(empty($request->Session['userid'])){
 
-			if(isset($request->Post[$identificator]) && isset($request->Post[$passwordKey])) {
+			if(!empty($request->Post[$identificator]) && !empty($request->Post[$passwordKey])) {
 				$identificatorValue = $request->Post[$identificator];
 				$password= $request->Post[$passwordKey];
 				
