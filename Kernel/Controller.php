@@ -16,4 +16,9 @@ class Controller
 	{
 		return View::render($template_encode, $parameters);
 	}
-}
+
+	protected function JSON_return(array $parameters = array())
+	{
+		return json_encode($parameters, JSON_FORCE_OBJECT);
+	}
+}  	
