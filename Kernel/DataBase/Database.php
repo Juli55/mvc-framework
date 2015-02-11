@@ -10,10 +10,20 @@ use Config\DBConfig;
  */
 class Database
 {
+	/**
+	 * @var mysqli
+	 */
 	public static $db;
-	public static $db_user;
 
 	/**
+	 * @var string
+	 */
+	public static $dbUser;
+
+	/**
+	 *
+	 * The Constructor sets the dbConfigs and inits the DataBase
+	 *
 	 * @return void
 	 */
 	public function __construct()
@@ -31,23 +41,26 @@ class Database
 
 	/**
 	 *
-	 * @param String $host,$username,$password
+	 * The init Function generates the DatabaseObject, sets the dbUser and returns this Object
+	 *
+	 * @param string $host,$username,$password
 	 * @param Array  $databases
 	 *
-	 * @return Object
+	 * @return object
 	 */
 	private static function init($host, $username, $password, $databases)
 	{
-		//generate the MySQL-Database Object
-			self::$db = new \mysqli($host, $username, $password);
+		//generate the MySQLi-Database Object
+			$db = new \mysqli($host, $username, $password);
+			self::$db = $db;
 		//throw error, when the connection fails
 			if(mysqli_connect_errno()){
 			  printf("Verbindung fehlgeschlagen: %s\n", mysqli_connect_error());
 			  exit();
 			}
 		//set the primary DataBase
-			self::$db_user = $databases['primary'];
+			self::$dbUser = $databases['primary'];
 
-		return self::$db;
+		return $db;
 	}
 }
