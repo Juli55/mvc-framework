@@ -9,140 +9,145 @@ use Tools\Authentification\Security;
 
 class RoutingEngine
 {
+	/**
+	 * @var array
+	 */
+	private $parameters = array();
 
 	/**
-	 * @return Controller
+	 *
+	 * The callController Function calls the Controller from the required srcFolder, if it exists
+	 *
+	 * @param string $dir
+	 * @param array $config 
+	 *
+	 * @return dynamic
+	 */
+	private function callController($dir, $config)
+	{
+		//get the Controller and check if the user have the rights, if not it redirects to the Controller wich is set in the Configs
+			$controllerFile = '../src/'.$dir.'/Controller/'.$config['controller'].'.php';
+			$exist 			= file_exists($controllerFile);
+			if($exist){
+				require $controllerFile;
+				$namespace  = str_replace("/","\\",$dir);
+				$class      = $namespace.'\\Controller\\'.$config['controller'];
+				$controller = new $class();
+			
+				if($security){
+					$this->handleSecurity();	
+				}
+				return call_user_func(array($controller, $config['action']), $this->parameters);
+			}else{
+				//throw exception file doesn't exist
+			}
+	}
+
+	/**
+	 *
+	 * The handleSecurity Function checks if the User is loggedIn and headers to the defined redirectTo
+	 *
+	 * @return boolean
+	 */
+	private function handleSecurity()
+	{
+		$securityObject = new Security;
+		$loggedIn = $securityObject->login();
+		if(!$loggedIn){
+			//redirect to defined
+				$securityConfig = securityConfig::getSecurityConfig();
+				if($key !== $securityConfig['redirectTo']){
+					$redirectAddress = trim(Routing::getRouting()[$securityConfig['redirectTpattern'],'/');
+					header('Location:/'.$redirectAddress);
+				}else{
+					//throw exceptions
+				}
+		}
+		return true;
+	}
+
+	/**
+	 *
+	 * The handlePatternVariables Function checks the patternParts,
+	 * if it is a Variable and saves it in the parameters objectProberty
+	 *
+	 * @param array $value
+	 * @param string $uri
+	 *
+	 * @return void
+	 */
+	private function handlePatternVariables($value, $uri)
+	{
+		//set the pattern to check if a string is a patternVariable
+			$cFirstChar 	 = '{';
+			$cSecondChar 	 = '}';
+			$patternVariable = "/\\".$cFirstChar."(.*?)\\".$cSecondChar."/";
+		//remove the first and last '/' in pattern and uri
+			$pattern = trim($value['pattern'], '/');
+			$uri	 = trim($uri, '/');
+		//explode pattern and uri by '/'
+			$patternParts  = explode('/', $pattern);
+			$uriParts	   = explode('/', $uri);
+		//count the array to check if they have the same size
+			$patternPartsCount = count($patternParts);
+			$uriPartsCount 	   = count($uriParts);
+		//handle the patternParts
+			$parameters = $this->parameters;
+			for($i = 0; $i < $patternPartsCount; $i++){
+				//identify patternVariables an store in Pattern Array
+					if($patternParts[$i] === $uriParts[$i]){	
+					}elseif(preg_match($patternVariable,$patternParts[$i])){
+						//identify the patternVariable
+							preg_match($patternVariable,$patternParts[$i],$match); 
+						//restore the patternVariable into the parameter Array
+							$parameters[trim($match[1])] = preg_replace("#[?].*#", "", trim($uriParts[$i]));
+							$this->parameters = $parameters;
+					}else{
+						//if the part of the uri was empty for this pattern
+							break;
+					}
+			}		
+	}
+
+	/**
+	 *
+	 * The handleRouting function reads the routingPattern and handles the routingVariables, 
+	 * checks if required that the User is logged in
+	 *
+	 * @param string $uri
+	 *
+	 * @return Controller, string
 	 */
 	public static function handleRouting($uri)
 	{
-		//initalize the routings
-		Routing::init();
-
-		//initalize the srcFolders
-		SrcInit::init();
-
-		//initalize the securityConfig
-		securityConfig::init();
-
+		//init configs
+			Routing::init();
+			SrcInit::init();
+			securityConfig::init();
 		//check if uri fits in a routing pattern
 		foreach(Routing::getRouting() as $key => $value){
-
-			if(array_key_exists($value['srcFolder'], SrcInit::getSrcFolder())){
-
-				$dir = ltrim(SrcInit::getSrcFolder()[$value['srcFolder']], '/');
-
-				if($value['pattern'] === $uri){
-
-					$controllerFile = '../src/'.$dir.'/Controller/'.$value['controller'].'.php';
-					require $controllerFile;
-					$namespace = str_replace("/","\\",$dir);
-					$class = $namespace.'\\Controller\\'.$value['controller'];
-					$controller = new $class();
-					if(!isset($value['security'])){
-
-						$security = true;
-					}else{
-						
-						$security = $value['security'];
-					}
-					if($security){
-						
-						$securityFunction = new Security;
-						$loggedIn = $securityFunction->login();
-
-						if(!$loggedIn){
-
-							$securityConfig = securityConfig::getSecurityConfig();
-							if($key !== $securityConfig['redirectTo']){
-								$redirectAddress = trim(Routing::getRouting()[$securityConfig['redirectTo']]['pattern'],'/');
-								header('Location:/'.$redirectAddress);
-							}
-						}
-					}
-					return call_user_func(array($controller, $value['action']));
-
-				}else{
-
-					//set the pattern to check if a string is a patternVariable
-					$cFirstChar 	 = '{';
-					$cSecondChar 	 = '}';
-					$patternVariable = "/\\".$cFirstChar."(.*?)\\".$cSecondChar."/";
-
-					//remove the first and last '/' in pattern and uri
-					$pattern = trim($value['pattern'], '/');
-					$uri	 = trim($uri, '/');
-
-					//explode pattern and uri by '/'
-					$pattern_parts = explode('/', $pattern);
-					$uri_parts	   = explode('/', $uri);
-
-					//count the array to check if they have the same size
-					$pattern_parts_count = count($pattern_parts);
-					$uri_parts_count 	 = count($uri_parts);
-
-					if($pattern_parts_count === $uri_parts_count){
-
-						$parameters = array();
-
-						for($i = 0; $i < $pattern_parts_count;$i++){
-
-							if($pattern_parts[$i] === $uri_parts[$i]){
-
-							 //check if the part is a variable	
-							}elseif(preg_match($patternVariable,$pattern_parts[$i])){
-
-								preg_match($patternVariable,$pattern_parts[$i],$match); 
-
-								//restore the patternvariable into the parameter_array
-								$parameters[trim($match[1])] = preg_replace("#[?].*#", "", trim($uri_parts[$i]));
-
-							}else{
-
-								//if the part of the uri was empty for this pattern
-								break;
-							}
-							if($i === $pattern_parts_count-1){
-
-								$controllerFile = '../src/'.$dir.'/Controller/'.$value['controller'].'.php';
-								$exist = file_exists($controllerFile);
-								if($exist){
-									require $controllerFile;
-									$namespace = str_replace("/","\\",$dir);
-									$class = $namespace.'\\Controller\\'.$value['controller'];
-									$controller = new $class();
-									if(!isset($value['security'])){
-
-										$security = true;
-									}else{
-										
-										$security = $value['security'];
-									}
-									if($security){
-										$securityFunction = new Security;
-										$loggedIn = $securityFunction->login();
-
-										if(!$loggedIn){
-
-											$securityConfig = securityConfig::getSecurityConfig();
-											if($key !== $securityConfig['redirectTo']){
-												$redirectAddress = trim(Routing::getRouting()[$securityConfig['redirectTo']]['pattern'],'/');
-												header('Location:/'.$redirectAddress);
-											}
+			//check if the srcFolder from the Routing is initialized
+				if(array_key_exists($value['srcFolder'], SrcInit::getSrcFolder())){
+					//check if the pattern equals the requested URI
+						$dir = ltrim(SrcInit::getSrcFolder()[$value['srcFolder']], '/');
+						if($value['pattern'] === $uri){
+							return $this->callController($dir, $value);
+						}else{
+							//check if the patternParts equals the uriParts
+								if($patternPartsCount === $uriPartsCount){
+									//handle the patternParts
+										for($i = 0; $i < $patternPartsCount; $i++){
+											//identify patternVariables an store in Pattern Array
+												$this->handlePatternVariables($value, $uri);
+											//at the last continuous call the Controller
+												if($i === $patternPartsCount-1){
+													$this->callController($dir, $value);	
+												}
 										}
-									}
-									return call_user_func_array(array($controller, $value['action']), $parameters);
 
-								}else{
-
-									return 'Controller: "'.$value['controller'].'" existiert nicht in: "'.$dir.'"!';
-
-								}	
-							}
+								}
 						}
-
-					}
 				}
-			}
 		}
 
 	}
