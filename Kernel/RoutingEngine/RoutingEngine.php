@@ -23,7 +23,7 @@ class RoutingEngine
 	 *
 	 * @return dynamic
 	 */
-	private function callController($dir, $config)
+	public function callController($dir, $config)
 	{
 		//get the Controller and check if the user have the rights, if not it redirects to the Controller wich is set in the Configs
 			$controllerFile = '../src/'.$dir.'/Controller/'.$config['controller'].'.php';
@@ -33,11 +33,16 @@ class RoutingEngine
 				$namespace  = str_replace("/","\\",$dir);
 				$class      = $namespace.'\\Controller\\'.$config['controller'];
 				$controller = new $class();
-			
+				//set security activity
+					if(!isset($config['security'])){
+						$security = true;
+					}else{										
+						$security = $config['security'];
+					}
 				if($security){
-					$this->handleSecurity();	
+					//$this->handleSecurity();	
 				}
-				return call_user_func(array($controller, $config['action']), $this->parameters);
+				return call_user_func_array(array($controller, $config['action']), $this->parameters);
 			}else{
 				//throw exception file doesn't exist
 			}
@@ -57,7 +62,7 @@ class RoutingEngine
 			//redirect to defined
 				$securityConfig = securityConfig::getSecurityConfig();
 				if($key !== $securityConfig['redirectTo']){
-					$redirectAddress = trim(Routing::getRouting()[$securityConfig['redirectTpattern'],'/');
+					$redirectAddress = trim(Routing::getRouting()[$securityConfig['redirectTo']]['pattern'],'/');
 					header('Location:/'.$redirectAddress);
 				}else{
 					//throw exceptions
@@ -118,7 +123,7 @@ class RoutingEngine
 	 *
 	 * @return Controller, string
 	 */
-	public static function handleRouting($uri)
+	public function handleRouting($uri)
 	{
 		//init configs
 			Routing::init();
@@ -133,6 +138,15 @@ class RoutingEngine
 						if($value['pattern'] === $uri){
 							return $this->callController($dir, $value);
 						}else{
+							//remove the first and last '/' in pattern and uri
+								$pattern = trim($value['pattern'], '/');
+								$uri	 = trim($uri, '/');
+							//explode pattern and uri by '/'
+								$patternParts  = explode('/', $pattern);
+								$uriParts	   = explode('/', $uri);
+							//count the array to check if they have the same size
+								$patternPartsCount = count($patternParts);
+								$uriPartsCount 	   = count($uriParts);
 							//check if the patternParts equals the uriParts
 								if($patternPartsCount === $uriPartsCount){
 									//handle the patternParts
@@ -141,7 +155,7 @@ class RoutingEngine
 												$this->handlePatternVariables($value, $uri);
 											//at the last continuous call the Controller
 												if($i === $patternPartsCount-1){
-													$this->callController($dir, $value);	
+													return $this->callController($dir, $value);	
 												}
 										}
 

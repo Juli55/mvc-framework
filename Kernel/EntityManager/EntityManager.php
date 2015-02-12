@@ -61,7 +61,7 @@ class EntityManager
   	{
   		foreach ((array)$entityObject as $key => $value){
 		    $key = preg_match('/^\x00(?:.*?)\x00(.+)/', $key, $matches) ? $matches[1] : $key;
-		    $cleanEntityObject[$key] = $value;
+		    $cleanEntityArray[$key] = $value;
 		}
 		return $cleanEntityArray;
   	}
@@ -186,13 +186,13 @@ class EntityManager
 		    	if(is_int($value)){
 		      		$value = (string)$value;
 		    	}
-		     	$allValues = $all_values.","."'".$value."'";
-		     	$allKeys = $all_keys.",".$key;
-		     	$allValues = ltrim($all_values,',');
-		     	$allKeys = ltrim($all_keys,',');
+		     	$allValues = $allValues.","."'".$value."'";
+		     	$allKeys = $allKeys.",".$key;
+		     	$allValues = ltrim($allValues,',');
+		     	$allKeys = ltrim($allKeys,',');
 		    }
 		//set the queryVariable
-	    	$this->query = "INSERT INTO $this->db_user.$this->entityObject_name($all_keys) VALUES($all_values)";
+	    	$this->query = "INSERT INTO $this->dbUser.$this->entityObject_name($allKeys) VALUES($allValues)";
   	}
 
   	/**

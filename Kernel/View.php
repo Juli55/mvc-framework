@@ -50,7 +50,7 @@ class View extends TemplateEngine
 			return $TemplateEngine->getOutput();
 		}
 		else{
-
+			echo "nix";
 			return 'could not found Template';
 		}
 	}

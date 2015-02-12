@@ -18,7 +18,7 @@ class testController extends Controller
 	/**
 	 * @return View 
 	 */
-	public function test()
+	public function test($hey)
 	{
 
 		$em = new EntityManager;

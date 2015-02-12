@@ -80,7 +80,8 @@ class TemplateParser extends GlobalParser
 			}elseif($substr[0] == 'import') {
 
 				$pattern = '/{%'.$value.'%}/';
-				$replace = RoutingEngine::handleRouting($substr[1]);
+				$routingEngine = new RoutingEngine;
+				$replace = $routingEngine->handleRouting($substr[1]);
 				$output = preg_replace($pattern,$replace,$output);
 			}elseif($substr[0] == 'include') {
 
