@@ -4,35 +4,36 @@ namespace Config;
 
 /**
  * @author Julian Bertsch <Julian.bertch42@gmail.com>
+ * @author Dennis Eisele  <dennis.eisele@online.de>
  */
 class Routing
 {
-	/**
-	 * @var array
-	 */
-	public static $routing = array();
+
 
 	/**
 	 * @return void
 	 */
 	public static function init()
 	{
-		self::$routing = array(
-							'test' => array(
-											'pattern' 	 => '/test',
-											'controller' => 'testController',
-											'action'	 => 'test',
-											'srcFolder'	 => 'test',
-											'security'	 =>  false
-										),
-							'test1' => array(
-											'pattern' 	 => '/test1',
-											'controller' => 'test1Controller',
-											'action'	 => 'test1',
-											'srcFolder'	 => 'test',
-											'security'	 =>  false
-										)
-						);
+		self::$routing <<<EOD
+---
+								test: 
+										-	pattern 	: /test
+											controller  : testController
+											action	    : test
+											srcFolder   : test
+											security	: false
+										
+								test1:
+										-	pattern 	: /test1
+											controller 	: test1Controller
+											action	 	: test1
+											srcFolder	: test
+											security	: false
+...
+EOD;
+
+
 	}
 
 	/**
