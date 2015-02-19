@@ -1,0 +1,13 @@
+
+test: 
+  pattern: /test
+  controller: testController
+  action: test
+  srcFolder: test
+  security: false	
+test1:
+  pattern: /test1
+  controller: test1Controller
+  action: test1
+  srcFolder: test
+  security: false
