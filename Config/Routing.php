@@ -8,31 +8,32 @@ namespace Config;
  */
 class Routing
 {
-
+	/**
+	 * @var array
+	 */
+	public static $routing;
 
 	/**
 	 * @return void
 	 */
 	public static function init()
 	{
-		self::$routing <<<EOD
+		self::$routing = <<<EOD
 ---
-								test: 
-										-	pattern 	: /test
-											controller  : testController
-											action	    : test
-											srcFolder   : test
-											security	: false
-										
-								test1:
-										-	pattern 	: /test1
-											controller 	: test1Controller
-											action	 	: test1
-											srcFolder	: test
-											security	: false
+test: 
+  pattern: /test
+  controller: testController
+  action: test
+  srcFolder: test
+  security: false	
+test1:
+  pattern: /test1
+  controller: test1Controller
+  action: test1
+  srcFolder: test
+  security: false
 ...
 EOD;
-
 
 	}
 
@@ -41,6 +42,7 @@ EOD;
 	 */
 	public static function getRouting()
 	{
-		return self::$routing;
+		self::$routing = yaml_parse(self::$routing);
+	  	return self::$routing;
 	}
 }
