@@ -76,27 +76,27 @@ class Request
 				$this->post = $post;
 			}
 
-			$this->get = $_get;
+			$this->get = $_GET;
 			if(!empty($get)){
 				$this->get = $get;
 			}
 
-			$this->cookie = $_cookie;
+			$this->cookie = $_COOKIE;
 			if(!empty($post)){
 				$this->cookie = $post;
 			}
 
-			$this->files = $_files;
+			$this->files = $_FILES;
 			if(!empty($files)){
 				$this->files = $files;
 			}
 
-			$this->server = $_server;
+			$this->server = $_SERVER;
 			if(!empty($server)){
 				$this->server = $server;
 			}
 
-			$this->session = $_session;
+			$this->session = $_SESSION;
 			if(!empty($session)){
 				$this->session = $session;
 			}

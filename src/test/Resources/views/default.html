@@ -5,15 +5,14 @@
 		<script src="js/js.js"></script>
 	</head>
 	<body>
-	
 		{% import test1 %}
-		{% for hey1 as user %}
-			<h1>{{ user.first_namE  }}</h1>
-			hey
+		{{wasgeht.hey.nummer3}}
+		{{hey.password}}
+		{% for wasgeht as user %}
+			<h2>{{user.nummer3}}</h2>
 		{% endfor %}
-		<h1>{% set he2 = was geht.hey.nummer4 %}</h1>
-		<h1>{{ was geht.hey.nummer3  }}</h1>
-		<h1>{{ he2  }}</h1>
+		
+		
 		<form method="post" enctype="multipart/form-data">
 			<input type='file' name='eins' />
 			<input type='submit' value='abschießen' />

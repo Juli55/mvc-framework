@@ -20,32 +20,32 @@ class testController extends Controller
 	 */
 	public function test($hey)
 	{
-
+		
 		$em = new EntityManager;
 
 		$entity= $em->getEntity("test:user");
-		$entity->setGender(2);
-		$entity->setFocusing(3);
-		$em->persist($entity);
-		$em->flush();
+		$entity->setfirst_namE(2);
+		$entity->setPassword(3);
 		$request = new Request();
 		$get = 'nothing';
-		if(isset($request->Files['eins'])){
-			$upload = new FileUpload('img',$request->Files['eins']);
+		if(isset($request->files['eins'])){
+			$upload = new FileUpload('img',$request->files['eins']);
 			if($upload->upload()){
 				echo  "Uploaden ist geglückt!";
 			}else{
 				echo  "Uploaden fehlgeschlagen";
 			}
 		}
-
+		
 		return $this->render("test:default.html",
 							array(
-								'hey1' => 'hey',
-								'was geht' => array('hey' => array(
+								'hey' => $entity,
+								'wasgeht' => array('hey' => array(
 																'nummer3' => 'hey', 
 																'nummer4' => 'ja es klappt juhhuuu!!!'),
-													'hey2' => "klappt auch hammer :)"
+													'hey2' => array(
+																'nummer3' => 'hey2', 
+																'nummer4' => 'ja es klappt juhhuuu!!!')
 													),
 								'hey3' => 'joho1',
 								)
