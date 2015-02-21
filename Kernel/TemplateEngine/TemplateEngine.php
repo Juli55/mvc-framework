@@ -12,16 +12,28 @@ class TemplateEngine
 	/**
 	 * @var string
 	 */
-	private static $output;
+	private $output;
 
+	/**
+	 *
+	 * The init Function calls the TemplateParser and sets the objectProberty $output
+	 *
+	 * @param string $output
+	 * @param array $parameters
+	 *
+	 * @return void
+	 */
 	public function init($output, $parameters)
 	{
 		$TemplateParser = new TemplateParser($output,$parameters);
-		self::$output = $TemplateParser->getOutput();
+		$this->output = $TemplateParser->getOutput();
 	}
 
+	/**
+	 * @return string
+	 */
 	public function getOutput()
 	{
-		return self::$output;
+		return $this->output;
 	}
 }

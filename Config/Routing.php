@@ -19,7 +19,7 @@ class Routing
 	{
 		self::$routing = array(
 							'test' => array(
-											'pattern' 	 => '/test',
+											'pattern' 	 => '/test/{hey}',
 											'controller' => 'testController',
 											'action'	 => 'test',
 											'srcFolder'	 => 'test',
