@@ -1,4 +1,5 @@
 <?php
+
 namespace Kernel\ConsoleFunctions;
 
 class Entity
