@@ -23,7 +23,7 @@ class RoutingEngine
 		Config::securityConfig();
 
 		//check if uri fits in a routing pattern
-		foreach(Routing::getRouting() as $key => $value){
+		foreach(Config::routing() as $key => $value){
 
 			if(array_key_exists($value['srcFolder'], SrcInit::getSrcFolder())){
 
