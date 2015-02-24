@@ -8,11 +8,6 @@ namespace Kernel\Decoder;
 
 class Decoder
 {
-
-	/**
-	* @var array
-	*/
-	private $parsedArray = array();
 	
 	public static function yamlParseFile($filename)
 	{

@@ -11,14 +11,6 @@ use Kernel\Decoder\Decoder;
 class Config
 {
 
-	/**
-	* @var array
-	*/
-	private  $routing  		 = array();
- 	private  $dbConfig 		 = array();
-	private  $securityConfig = array();
-	private  $srcFolder		 = array();
-
 	public static function dbConfig()
 	{
 		return $dbConfig 		= Decoder::yamlParseFile("../DBConfig.yml");
