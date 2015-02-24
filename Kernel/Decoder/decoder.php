@@ -16,9 +16,7 @@ class Decoder
 	
 	public static function yamlParseFile($filename)
 	{
-
-		return self::$parsedArray = yaml_parse_file($filename)
-	
+		return self::$parsedArray = yaml_parse($filename);
 	}
 	
 }
