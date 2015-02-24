@@ -1,12 +1,12 @@
 <?php
 
-namespace Kernel\Decoder
+namespace Kernel\Decoder;
 
 /**
  * @author Dennis Eisele <dennis.eisele@online.de>
  */
 
-class decoder
+class Decoder
 {
 
 	/**
