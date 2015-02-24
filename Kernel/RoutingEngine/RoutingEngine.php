@@ -2,9 +2,7 @@
 
 namespace Kernel\RoutingEngine;
 
-use Config\Routing;
-use Config\SrcInit;
-use Config\securityConfig;
+use Kernel\Config;
 use Tools\Authentification\Security;
 
 class RoutingEngine
@@ -16,13 +14,13 @@ class RoutingEngine
 	public static function handleRouting($uri)
 	{
 		//initalize the routings
-		Routing::init();
+		Config::routing();
 
 		//initalize the srcFolders
-		SrcInit::init();
+		Config::srcInit();
 
 		//initalize the securityConfig
-		securityConfig::init();
+		Config::securityConfig();
 
 		//check if uri fits in a routing pattern
 		foreach(Routing::getRouting() as $key => $value){
