@@ -12,11 +12,11 @@ class Decoder
 	/**
 	* @var array
 	*/
-	public static $parsedArray;
+	private $parsedArray = array();
 	
 	public static function yamlParseFile($filename)
 	{
-		return self::$parsedArray = yaml_parse($filename);
+		return $parsedArray = yaml_parse($filename);
 	}
 	
 }
