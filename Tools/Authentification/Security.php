@@ -4,7 +4,7 @@ namespace Tools\Authentification;
 
 use Kernel\HttpKernel\Request;
 use Kernel\EntityManager\EntityManager;
-use Config\securityConfig;
+use Kernel\Config;
 
 /**
  * @author Dennis Eisele  <dennis.eisele@online.de>
@@ -32,10 +32,7 @@ class Security{
 		$request = new Request;
 		$em = new EntityManager;
 
-		//initalize the securityConfig
-		securityConfig::init();
-
-		$securityConfig = securityConfig::getSecurityConfig();
+		$securityConfig = Config::securityConfig();
 
 		$identificator  = $securityConfig['identificator'];
 		$passwordKey    = $securityConfig['passwordKey'];

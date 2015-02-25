@@ -5,6 +5,11 @@ namespace Kernel\RoutingEngine;
 use Kernel\Config;
 use Tools\Authentification\Security;
 
+/**
+ * @author Julian Bertsch <julian.bertsch42@gmail.de>
+ * @author Dennis Eisele  <dennis.eisele@online.de>
+ */
+
 class RoutingEngine
 {
 
@@ -13,21 +18,13 @@ class RoutingEngine
 	 */
 	public static function handleRouting($uri)
 	{
-		//initalize the routings
-		Config::routing();
-
-		//initalize the srcFolders
-		Config::srcInit();
-
-		//initalize the securityConfig
-		Config::securityConfig();
-
+		
 		//check if uri fits in a routing pattern
 		foreach(Config::routing() as $key => $value){
 
-			if(array_key_exists($value['srcFolder'], SrcInit::getSrcFolder())){
+			if(array_key_exists($value['srcFolder'], Config::srcInit() )){
 
-				$dir = ltrim(SrcInit::getSrcFolder()[$value['srcFolder']], '/');
+				$dir = ltrim(Config::srcInit()[$value['srcFolder']], '/');
 
 				if($value['pattern'] === $uri){
 
@@ -50,9 +47,9 @@ class RoutingEngine
 
 						if(!$loggedIn){
 
-							$securityConfig = securityConfig::getSecurityConfig();
+							$securityConfig = Config::securityConfig();
 							if($key !== $securityConfig['redirectTo']){
-								$redirectAddress = trim(Routing::getRouting()[$securityConfig['redirectTo']]['pattern'],'/');
+								$redirectAddress = trim(Config::routing()[$securityConfig['redirectTo']]['pattern'],'/');
 								header('Location:/'.$redirectAddress);
 							}
 						}
@@ -121,9 +118,9 @@ class RoutingEngine
 
 										if(!$loggedIn){
 
-											$securityConfig = securityConfig::getSecurityConfig();
+											$securityConfig = Config::securityConfig();
 											if($key !== $securityConfig['redirectTo']){
-												$redirectAddress = trim(Routing::getRouting()[$securityConfig['redirectTo']]['pattern'],'/');
+												$redirectAddress = trim(Config::routing()[$securityConfig['redirectTo']]['pattern'],'/');
 												header('Location:/'.$redirectAddress);
 											}
 										}

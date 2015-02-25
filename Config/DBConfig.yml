@@ -1,6 +1,5 @@
-
 host: localhost
 username: root
-password:	
-primary: test
-						
+password:
+databases:	
+    primary: test

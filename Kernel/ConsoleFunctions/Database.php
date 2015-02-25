@@ -2,8 +2,12 @@
 namespace Kernel\ConsoleFunctions;
 
 use Kernel\DataBase\DB;
-use Config\DBConfig;
-use Config\SrcInit;
+use Kernel\Config;
+
+/**
+ * @author Julian Bertsch <julian.bertsch42@gmail.de>
+ * @author Dennis Eisele  <dennis.eisele@online.de>
+ */
 
 class Database
 {
@@ -11,9 +15,8 @@ class Database
 	{
 		// init DB
 			$db = new DB();
-			DBConfig::init();
 
-		foreach(DBConfig::getDatabases() as $key => $value){
+		foreach(Config::dbConfig() as $key => $value){
 
 			$sql_check = "SHOW DATABASES LIKE '$value'";
 			$result = $db::$db->query($sql_check);
@@ -37,15 +40,12 @@ class Database
 
 	public static function sync()
 	{
-		// init srcFolders
-			SrcInit::init();
 		// init DB
 			$db = new DB();
-			DBConfig::init();
 
 		$affected = 0;
 		// read entitys from initialized srcFolders
-			foreach(SrcInit::getSrcFolder() as $srcFolder){
+			foreach(Config::srcInit() as $srcFolder){
 				if(file_exists('src/'.$srcFolder.'/Entity')){
 					$handle = opendir ('src/'.$srcFolder.'/Entity'); 
 					while (false !== $entityFile = readdir($handle)) {
@@ -68,7 +68,7 @@ class Database
 							    	}
 							    }
 							// check if database exists
-							    $dbName = DBConfig::getDatabases()['primary'];
+							    $dbName = Config::dbConfig()['databases']['primary'];
 							    $sql_check = "SHOW DATABASES LIKE '$dbName'";
 								$result = $db::$db->query($sql_check);
 								if(mysqli_num_rows($result) > 0){
