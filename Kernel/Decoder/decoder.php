@@ -8,10 +8,19 @@ namespace Kernel\Decoder;
 
 class Decoder
 {
+
+	/**
+	 *
+	 * the function returns a parsed array of a yaml file
+	 *
+	 * @param String $filename
+	 *
+	 * @return array
+	 */
 	
 	public static function yamlParseFile($filename)
 	{
-		return $parsedArray = yaml_parse_file($filename);
+		return yaml_parse_file($filename);
 	}
 	
 }
