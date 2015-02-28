@@ -9,47 +9,46 @@ function __autoload($class_name)
     include $class_name . '.php';
 }
 
-if ($argc != 2 || in_array($argv[1], array('--help'))) {
-
-	echo $argv[2]."\n";
-
+if($argc != 2 || in_array($argv[1], array('--help'))){
+	//Terminalhelper to describe how wich function is to use
+		echo 'a helper for this application coming soon :)'."\n";
 }else{
 	if(isset($argv[1])){
+		//explode commandstring by ':' and call the requested Function
 		$commands =  explode(':',$argv[1]);
-
 		if(!empty($commands)){
-
 			switch($commands[0]){
+				//genearate commands
+					case 'generate':
+						switch($commands[1]){
+							//generate an entity in an srcFolder
+								case 'entity':
+									Entity::generate();
+								break;
+							//generate an srcFoldert to develope an Application
+								case 'srcFolder':
+									SrcFolder::generate();	
+								break;
+						}
+					break;
+				//create commands
+					case 'create':
+						switch($commands[1]){
 
-				case 'generate':
-					switch($commands[1]){
-
-						case 'entity':
-							Entity::generate();
-						break;
-
-						case 'srcFolder':
-							SrcFolder::generate();	
-						break;
-					}
-				break;
-
-				case 'create':
-					switch($commands[1]){
-
-						case 'database':
-							Database::create();
-						break;
-					}
-				break;
-
-				case 'sync':
-					switch($commands[1]){
-
-						case 'database':
-							Database::sync();
-						break;
-					}
+							case 'database':
+								Database::create();
+							break;
+						}
+					break;
+				//sync commands
+					case 'sync':
+						switch($commands[1]){
+							//sync database with entitys
+								case 'database':
+									Database::sync();
+								break;
+						}
+					break;
 			}
 		}
 	}

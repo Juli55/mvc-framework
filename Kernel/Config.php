@@ -19,7 +19,7 @@ class Config
 	 */
 	public static function dbConfig()
 	{
-		return $dbConfig 		= Decoder::yamlParseFile("../Config/DBConfig.yml");
+		return Decoder::yamlParseFile("../Config/DBConfig.yml");
 	}
 
 	/**
@@ -30,7 +30,7 @@ class Config
 	 */
 	public static function routing()
 	{
-		return $routing  		= Decoder::yamlParseFile("../Config/Routing.yml");	
+		return Decoder::yamlParseFile("../Config/Routing.yml");	
 	}
 	
 	/**
@@ -41,7 +41,7 @@ class Config
 	 */	
 	public static function securityConfig()
 	{
-		return $securityConfig = Decoder::yamlParseFile("../Config/securityConfig.yml");
+		return Decoder::yamlParseFile("../Config/securityConfig.yml");
 	}
 
 	/**
@@ -52,6 +52,6 @@ class Config
 	 */	
 	public static function srcInit()
 	{
-		return $srcFolder		= Decoder::yamlParseFile("../Config/SrcInit.yml");
+		return Decoder::yamlParseFile("../Config/SrcInit.yml");
 	}
 }

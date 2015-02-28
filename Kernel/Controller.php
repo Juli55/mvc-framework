@@ -1,4 +1,5 @@
 <?php
+
 namespace Kernel;
 
 use Kernel\View;
@@ -10,14 +11,28 @@ use Kernel\View;
 class Controller
 {
 	/**
-	 * @return View 
+	 *
+	 * The renderMethod calls the renderMethod from View
+	 *
+	 * @param string $templateEncode
+	 * @param array $parameters
+	 *
+	 * @return string 
 	 */
-	protected function render($template_encode, array $parameters = array())
+	protected function render($templateEncode, $parameters = array())
 	{
-		return View::render($template_encode, $parameters);
+		return View::render($templateEncode, $parameters);
 	}
 
-	protected function JsonResponse(array $parameters = array())
+	/**
+	 * 
+	 * The JsonResponse returns an Array in Json
+	 * 
+	 * @param array $parameters
+	 * 
+	 * @return string
+	 */
+	protected function JsonResponse($parameters)
 	{
 		return json_encode($parameters, JSON_FORCE_OBJECT);
 	}

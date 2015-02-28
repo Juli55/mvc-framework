@@ -10,48 +10,48 @@ use Kernel\TemplateEngine\TemplateEngine;
 class View extends TemplateEngine
 {
 	/**
-	 * @param string $template_encode
+	 *
+	 * The renderMethod renders the template to display it
+	 *
+	 * @param string $templateEncode
 	 * @param array $parameters
 	 *
-	 * @return Template $output
+	 * @return string
 	 */
-	public static function render($template_encode, array $parameters = array())
+	public static function render($templateEncode, $parameters = array())
 	{
 		//encode the decoded template-path 
-		$template_decode = explode(':',$template_encode);
-
-		$ldefault_path = '..'. DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR;
-		$rdefault_path = DIRECTORY_SEPARATOR . 'Resources' . DIRECTORY_SEPARATOR . 'views';
-
-		foreach($template_decode as $key => $value){
-			if(!empty($template_path)){
-				$template_path .= DIRECTORY_SEPARATOR . $value;
+			$templateDecode = explode(':',$templateEncode);
+		//define templatePath
+			$ldefaultPath = '..'. DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR;
+			$rdefaultPath = DIRECTORY_SEPARATOR . 'Resources' . DIRECTORY_SEPARATOR . 'views';
+			foreach($templateDecode as $key => $value){
+				if(!empty($templatePath)){
+					$templatePath .= DIRECTORY_SEPARATOR . $value;
+				}
+				else{
+					$templatePath = $ldefaultPath.$value.$rdefaultPath;
+				}	
 			}
-			else{
-				$template_path = $ldefault_path.$value.$rdefault_path;
-			}	
-		}
-
 		//check if the file exist if true then return the template 
-		$file = $template_path;
-		$exist = file_exists($file);
-		if($exist){
+			$file = $templatePath;
+			$exist = file_exists($file);
+			if($exist){
 
-			ob_start();
+				ob_start();
 
-			include $file;
-			$output = ob_get_contents();
-			ob_end_clean();
-			
-			//transformate the template variables in PHP variables
-			$TemplateEngine = new TemplateEngine;
-			$TemplateEngine->init($output, $parameters);
+				include $file;
+				$output = ob_get_contents();
+				ob_end_clean();
+				
+				//transformate the template variables in PHP variables
+				$TemplateEngine = new TemplateEngine;
+				$TemplateEngine->init($output, $parameters);
 
-			return $TemplateEngine->getOutput();
-		}
-		else{
-
-			return 'could not found Template';
-		}
+				return $TemplateEngine->getOutput();
+			}else{
+				//throw Exception
+					die('template doesn\'t exist');
+			}
 	}
 }

@@ -25,11 +25,13 @@ class test1Controller extends Controller
 
 		return $this->render("test:templates:default.html",
 							array(
-								'hey1' => 'hey',
-								'was geht' => array('hey' => array(
-																'nummer3' => 'hey', 
+								'hey1' => 'heye',
+								'wasgeht' => array('hey' => array(
+																'nummer3' => 'heys', 
 																'nummer4' => 'ja es klappt juhhuuu!!!'),
-													'hey2' => "klappt auch hammer :)"
+													'hey2' => array(
+																'nummer3' => 'heyse', 
+																'nummer4' => 'ja es klappt juhhuuu!!!'),
 													),
 								'hey3' => 'joho1',
 								)

@@ -18,21 +18,20 @@ class GlobalParser
 	}
 
 	/**
-	 * results the Strings between Strings
+	 * returns the string between strings
 	 * 
 	 * @param string $start, $end, $string
 	 *
-	 * @return String
+	 * @return string
 	 */
-	protected static function GetBetween($start = '', $end = '', $string)
+	protected static function getBetween($start = '', $end = '', $string)
 	{
 		$temp 	= strpos($string,$start)+strlen($start);
 		$result = substr($string,$temp,strlen($string));
 		$dd 	= strpos($result,$end);
-		if($dd == 0){
+		if($dd === 0){
 			$dd = strlen($result);
 		}
-
 		return substr($result,0,$dd);
 	}
 

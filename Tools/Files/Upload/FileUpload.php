@@ -1,59 +1,60 @@
 <?php
+
 namespace Tools\Files\Upload;
 
 class FileUpload
 {
 	/**
-	 * @var String
+	 * @var string
 	 */
 	private $folder;
 
 	/**
-	 * @var Array
+	 * @var array
 	 */
 	private $file;
 
 	/**
 	 * @var int
 	 */
-	private $max_size;
+	private $maxSize;
 
 	/**
-	 * @param String $folder,$max_size
-	 * @param Array $file
+	 *
+	 * @param string $folder,$maxSize
+	 * @param array $file
 	 *
 	 * @return void
 	 */
-	public function __construct($folder,$file,$max_size = 2048)
+	public function __construct($folder,$file,$maxSize = 2048)
 	{
-		$this->folder = $folder;
-		$this->file = $file;
-		$this->max_size = $max_size;
+		$this->folder 	= $folder;
+		$this->file 	= $file;
+		$this->maxSize 	= $maxSize;
 	}
 
 	/**
-	 * @return bool
+	 *
+	 * The uploadMethod uploads a File 
+	 *
+	 * @return boolean
 	 */
 	public function upload()
 	{
 		$folder   = $this->folder;
 		$file 	  = $this->file;
-		$max_size = $this->max_size;
-
-		if(!is_dir($folder)){
-			
-			mkdir($folder, 0700);
-		}
-		$folder = rtrim($folder, '/');
-		$upload_file = $folder.'/'.basename($file['name']);
-		if(move_uploaded_file($file['tmp_name'], $upload_file)){
-
-			return true;
-
-		}else{
-
-			return false;
-
-		}
+		$maxSize  = $this->maxSize;
+		//if the folder doesn't exist then create it
+			if(!is_dir($folder)){			
+				mkdir($folder, 0700);
+			}
+		//upload file and return boolean to check if it has done or not
+			$folder 	= rtrim($folder, '/');
+			$uploadFile = $folder.'/'.basename($file['name']);
+			if(move_uploaded_file($file['tmp_name'], $uploadFile)){
+				return true;
+			}else{
+				return false;
+			}
 	}
 }
