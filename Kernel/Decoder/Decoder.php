@@ -8,7 +8,6 @@ namespace Kernel\Decoder;
 
 class Decoder
 {
-
 	/**
 	 *
 	 * the function returns a parsed array of a yaml file

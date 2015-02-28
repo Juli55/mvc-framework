@@ -7,7 +7,6 @@ use Kernel\Decoder\Decoder;
 /**
  * @author Dennis Eisele <dennis.eisele@online.de>
  */
-
 class Config
 {
 
