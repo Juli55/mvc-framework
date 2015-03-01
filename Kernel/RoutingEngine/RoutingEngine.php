@@ -9,7 +9,6 @@ use Tools\Authentification\Security;
  * @author Julian Bertsch <julian.bertsch42@gmail.de>
  * @author Dennis Eisele  <dennis.eisele@online.de>
  */
-
 class RoutingEngine
 {
 	/**
@@ -28,7 +27,6 @@ class RoutingEngine
 	 */
 	public function callController($dir, $config)
 	{
-
 		//get the Controller and check if the user have the rights, if not it redirects to the Controller wich is set in the Configs
 			$controllerFile = '../src/'.$dir.'/Controller/'.$config['controller'].'.php';
 			$exist 			= file_exists($controllerFile);
@@ -39,12 +37,10 @@ class RoutingEngine
 				$controller = new $class();
 				//set security activity
 					if(!isset($config['security'])){
-
 						$security = true;
 					}else{										
 						$security = $config['security'];
 					}
-
 				if($security){
 					//$this->handleSecurity();	
 				}

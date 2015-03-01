@@ -44,7 +44,6 @@ class Database
 									$db::$db->query($sql) or die("It went something wrong by creating Database\n");
 							}
 					}
-
 			}
 	}
 

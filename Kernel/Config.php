@@ -9,7 +9,6 @@ use Kernel\Decoder\Decoder;
  */
 class Config
 {
-
 	/**
 	 *
 	 * the function returns the DBConfig.yml as an array
