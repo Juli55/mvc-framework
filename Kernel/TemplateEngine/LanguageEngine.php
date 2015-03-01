@@ -2,7 +2,7 @@
 
 namespace Kernel\LanguageEngine;
 
-use // einfügen
+use Kernel\Decoder\Decoder;
 
 /**
  * @author Dennis Eisele <dennis.eisele@online.de>
@@ -16,14 +16,14 @@ use // einfügen
 
  	/**
  	 *
- 	 * a function
+ 	 * a function wich initializes the language
  	 *
- 	 * @param
+ 	 * @param  
  	 *
  	 * @return
  	 */
- 	public function()
+ 	public static function init()
  	{
-
+ 		$test = Decoder::yamlParseFile('../../src/test/Resources/views/languages/test.php');	
  	}
  }
