@@ -3,9 +3,12 @@
 namespace Kernel\ConsoleFunctions;
 
 use Kernel\DataBase\Database as db;
-use Config\DBConfig;
-use Config\SrcInit;
+use Kernel\Config;
 
+/**
+ * @author Julian Bertsch <julian.bertsch42@gmail.de>
+ * @author Dennis Eisele  <dennis.eisele@online.de>
+ */
 class Database
 {
 	/**
@@ -18,9 +21,9 @@ class Database
 	{
 		//init Database
 			$db = new db();
-			DBConfig::init();
+			Config::dbConfig();
 		//check all listed Databases
-			foreach(DBConfig::getDatabases() as $key => $value){
+			foreach(Config::dbConfig() as $key => $value){
 				//if database already exist ask if the user want to replace it, else create the Database
 					$sqlCheck 	= "SHOW DATABASES LIKE '$value'";
 					$result 	= $db::$db->query($sqlCheck);
@@ -52,14 +55,11 @@ class Database
 	 */
 	public static function sync()
 	{
-		//init srcFolders
-			SrcInit::init();
-		//init Database
-			$db = new db();
-			DBConfig::init();
+		
+		$db = new db();
 		$affected = 0;
 		//read entitys from initialized srcFolders
-			foreach(SrcInit::getSrcFolder() as $srcFolder){
+			foreach(Config::srcInit() as $srcFolder){
 				//check if there an entityFolder exists in the srcFolder
 					if(file_exists('src/'.$srcFolder.'/Entity')){
 						//read all files
@@ -67,7 +67,7 @@ class Database
 							while(false !== $entityFileName = readdir($handle)){
 								if($entityFileName != "." && $entityFileName != ".."){
 									//check if Database exists
-									    $dbName = DBConfig::getDatabases()['primary'];
+									    $dbName = Config::dbConfig()['primary'];
 									    $sql_check = "SHOW DATABASES LIKE '$dbName'";
 										$result = $db::$db->query($sql_check);
 									if($result->num_rows > 0){
@@ -84,8 +84,6 @@ class Database
 									}else{
 										die("\n You have to create the Databases first\n");
 									}
-
-
 								}
 							}
 						closedir($handle); 

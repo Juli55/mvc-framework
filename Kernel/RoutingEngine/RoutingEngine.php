@@ -2,11 +2,13 @@
 
 namespace Kernel\RoutingEngine;
 
-use Config\Routing;
-use Config\SrcInit;
-use Config\securityConfig;
+use Kernel\Config;
 use Tools\Authentification\Security;
 
+/**
+ * @author Julian Bertsch <julian.bertsch42@gmail.de>
+ * @author Dennis Eisele  <dennis.eisele@online.de>
+ */
 class RoutingEngine
 {
 	/**
@@ -60,9 +62,9 @@ class RoutingEngine
 		$loggedIn = $securityObject->login();
 		if(!$loggedIn){
 			//redirect to defined
-				$securityConfig = securityConfig::getSecurityConfig();
+				$securityConfig = Config::securityConfig();
 				if($key !== $securityConfig['redirectTo']){
-					$redirectAddress = trim(Routing::getRouting()[$securityConfig['redirectTo']]['pattern'],'/');
+					$redirectAddress = trim(Config::routing()[$securityConfig['redirectTo']]['pattern'],'/');
 					header('Location:/'.$redirectAddress);
 				}else{
 					//throw exceptions
@@ -125,16 +127,12 @@ class RoutingEngine
 	 */
 	public function handleRouting($uri)
 	{
-		//init configs
-			Routing::init();
-			SrcInit::init();
-			securityConfig::init();
 		//check if uri fits in a routing pattern
-		foreach(Routing::getRouting() as $key => $value){
+		foreach(Config::routing() as $key => $value){
 			//check if the srcFolder from the Routing is initialized
-				if(array_key_exists($value['srcFolder'], SrcInit::getSrcFolder())){
+				if(array_key_exists($value['srcFolder'], Config::SrcInit())){
 					//check if the pattern equals the requested URI
-						$dir = ltrim(SrcInit::getSrcFolder()[$value['srcFolder']], '/');
+						$dir = ltrim(Config::SrcInit()[$value['srcFolder']], '/');
 						if($value['pattern'] === $uri){
 							return $this->callController($dir, $value);
 						}else{

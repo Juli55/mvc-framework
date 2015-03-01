@@ -2,7 +2,7 @@
 
 namespace Kernel\DataBase; 
 
-use Config\DBConfig;
+use Kernel\Config;
 
 /**
  * @author Julian Bertsch <julian.bertsch42@gmail.de>
@@ -28,13 +28,11 @@ class Database
 	 */
 	public function __construct()
 	{
-		//init DBConfig
-			DBConfig::init();
 		//set probertyVariables
-			$host 	  	= DBConfig::getDbConfig()['host'];
-			$username 	= DBConfig::getDbConfig()['username'];
-			$password 	= DBConfig::getDbConfig()['password'];
-			$databases  = DBConfig::getDatabases();
+			$host 	  	= Config::dbConfig()['host'];
+			$username 	= Config::dbConfig()['username'];
+			$password 	= Config::dbConfig()['password'];
+			$databases  = Config::dbConfig()['databases'];
 		//init the DataBase
 		self::init($host, $username, $password, $databases);
 	}
