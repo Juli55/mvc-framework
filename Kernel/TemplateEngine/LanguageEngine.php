@@ -10,20 +10,28 @@ use Kernel\Decoder\Decoder;
  class LanguageEngine
  {
  	/**
- 	 * @var
+ 	 * @var array
  	 */
-
+ 	private $parsedLanguage;
 
  	/**
  	 *
  	 * a function wich initializes the language
  	 *
- 	 * @param  
+ 	 * @param string $languagePack  
  	 *
- 	 * @return
+ 	 * @return void
  	 */
- 	public static function init()
+ 	public function init($languagePack)
  	{
- 		$test = Decoder::yamlParseFile('../../src/test/Resources/views/languages/test.php');	
+ 		$parsedLanguage = Decoder::yamlParseFile('../../src/test/Resources/views/languages/' . $languagePack . '.yml');	
+ 	}
+
+ 	/**
+ 	 * @return array
+ 	 */
+ 	public function getLanguage()
+ 	{
+ 		return $parsedLanguage;
  	}
  }
