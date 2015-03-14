@@ -24,7 +24,7 @@ use Kernel\Decoder\Decoder;
  	 */
  	public function initLanguage($languagePack)
  	{
- 		Decoder::yamlParseFile(ROOT_PATH . 'src/test/Resources/views/translation/' . $languagePack . LANGUAGE_DE . '.yml');	
+ 		$parsedLanguage = Decoder::yamlParseFile(ROOT_PATH . 'src/test/Resources/views/translation/' . $languagePack . LANGUAGE_DE . '.yml');	
  	}
 
  	/**
