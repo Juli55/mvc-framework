@@ -60,7 +60,7 @@ class Decoder
 						$akey   = trim(trim($prob[0]),"'");
 						$avalue = $prob[1];
 				//add probertys to the Array
-					$probertys[$akey] 	  = $avalue
+					$probertys[$akey] 	  = $avalue;
 					$probertyCollection[] = $probertys;
 			}
 		return $probertyCollection;
