@@ -26,6 +26,7 @@ class View extends TemplateEngine
 			$ldefaultPath = '..'. DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR;
 			$rdefaultPath = DIRECTORY_SEPARATOR . 'Resources' . DIRECTORY_SEPARATOR . 'views';
 			foreach($templateDecode as $key => $value){
+				$value = trim($value, '\'');
 				if(!empty($templatePath)){
 					$templatePath .= DIRECTORY_SEPARATOR . $value;
 				}
@@ -51,7 +52,7 @@ class View extends TemplateEngine
 				return $TemplateEngine->getOutput();
 			}else{
 				//throw Exception
-					die('template doesn\'t exist');
+					die('template doesn\'t exist'. $templatePath);
 			}
 	}
 }

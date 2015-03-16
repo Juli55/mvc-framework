@@ -1,3 +1,4 @@
+{% use 'test:block_post.html' %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,13 +9,15 @@
 <!-- Write Javascript code here -->
  
 </head>
- 
 <body>
+{{hey1}}
+{% block form %}
   <form method="post" action="">
-    <button value="all" type="submit">Get All Wines!</button>
+    <button value="all" type="submit">{{hey1}}</button>
     <button value="red" type="submit">Get Red Wines!</button>
     <button value="white" type="submit">Get White Wines!</button>
   </form>
+{% endblock form %}
   <div id="wines">
   <!-- Javascript will print data in here when we have finished the page -->
   </div>
