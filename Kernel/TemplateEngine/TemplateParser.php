@@ -37,7 +37,6 @@ class TemplateParser extends GlobalParser
 		$this->parameters 		 = $parameters;
 		$this->parsingTemplateFunctions();
 		$this->output = $this->parseTemplateParameters($this->output, $this->parameters);
-		var_dump($this->blocks);
 	}
 
 	/**
