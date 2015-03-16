@@ -20,7 +20,7 @@ class TemplateParser extends GlobalParser
 	/**
 	 * @var blocks
 	 */
-	private $blocks;
+	private $blocks = array();
 
 	/**
 	 *
@@ -62,9 +62,9 @@ class TemplateParser extends GlobalParser
 				}elseif($subStrings[0] == 'for'){
 		    		$output = $this->forLoop($value, $subStrings, $parameters, $output);
 				}elseif($subStrings[0] == 'block'){
-					$this->blocks = $this->defineBlock($output, $value, $subStrings, $this->blocks);
+					$this->blocks = $this->defineBlock($output, $value, $subStrings, $this->blocks, $parameters);
 				}elseif($subStrings[0] == 'use'){
-					$this->blocks = $this->useBlock($subStrings, $parameters, $this->blocks);
+					$this->blocks = $this->useTemplate($subStrings, $parameters);
 				}
 				//replace command with value
 					$pattern = '/{%'.$value.'%}/';
@@ -306,7 +306,7 @@ class TemplateParser extends GlobalParser
 	 *
 	 * @return array
 	 */
-	private function defineBlock($output, $subString, $subStrings, $blocks)
+	private function defineBlock($output, $subString, $subStrings, $blocks, $parameters)
 	{
 		//extract blockValue
 			//get the endString from the forLoop
@@ -321,7 +321,8 @@ class TemplateParser extends GlobalParser
 		//get the value of the finish for
 			$start 		  			= '{%'.$subString.'%}';
 			$blockContent 			= self::getBetween($start, $end, $output);
-			$blocks[$subStrings[1]] = $blockContent;
+			$renderBlockContent 	= View::render('', $parameters, $blockContent);
+			$blocks[$subStrings[1]] = $renderBlockContent;
 		return $blocks;
 	}
 
@@ -333,20 +334,10 @@ class TemplateParser extends GlobalParser
 	 *
 	 * @return array
 	 */
-	private function useBlock($subStrings, $parameters, $blocks)
+	private function useTemplate($subStrings, $parameters)
 	{
 		//render File
-			$renderedFile = View::render($subStrings[1], $parameters);
-		//add blocks to global array
-			$templateIssues = self::parseTemplateFunctions($renderedFile);
-			foreach($templateIssues[1] as $key => $value){
-				//replace the templateFunctionsSyntax in the values
-					$subStrings = explode(' ', trim($value));
-					if($subStrings[0] === 'block'){
-						$blocks = $this->defineBlock($output, $value, $subStrings, $blocks);
-					}
-			}
-		return $blocks;
+			View::render($subStrings[1], $parameters);
 	}
 
 	/**
