@@ -23,9 +23,6 @@ class testController extends Controller
 		
 		$em = new EntityManager;
 
-		$entity= $em->getEntity("test:user");
-		$entity->setfirst_namE(2);
-		$entity->setPassword(3);
 		$request = new Request();
 		$get = 'nothing';
 		if(isset($request->files['eins'])){
@@ -37,17 +34,10 @@ class testController extends Controller
 			}
 		}
 		
-		return $this->render("test:default.html",
+		return $this->JsonResponse(
 							array(
-								'hey' => $entity,
-								'wasgeht' => array('hey' => array(
-																'nummer3' => 'hey', 
-																'nummer4' => 'ja es klappt juhhuuu!!!'),
-													'hey2' => array(
-																'nummer3' => 'hey2', 
-																'nummer4' => 'ja es klappt juhhuuu!!!')
-													),
-								'hey3' => 'joho1',
+								'red' => 'joho1',
+								'white' => 'hey',
 								)
 							);
 	}
