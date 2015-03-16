@@ -45,17 +45,20 @@ class TemplateParser extends GlobalParser
 		$output 		= $this->output;
 		$parameters 	= $this->parameters;
 		$templateIssues = self::parseTemplateFunctions($output);
+		$blocks 		= array();
 		foreach($templateIssues[1] as $key => $value){
 			//replace the templateFunctionsSyntax in the values
 				$subStrings = explode(' ', trim($value));
 				if($subStrings[0] === 'set'){
 					$parameters = $this->setTemplateVariables($value, $parameters);
-				}elseif($subStrings[0] === 'import') {
+				}elseif($subStrings[0] === 'import'){
 					$output = $this->importController($value, $output);
-				}elseif($subStrings[0] == 'include') {
+				}elseif($subStrings[0] == 'include'){
 					$output = $this->includeTemplate($value);
-				}elseif($subStrings[0] == 'for') {
+				}elseif($subStrings[0] == 'for'){
 		    		$output = $this->forLoop($value, $subStrings, $parameters, $output);
+				}elseif($subStrings[0] == 'block'){
+					$blocks = $this->defineBlock($output, $value, $subStrings, $blocks)
 				}
 				//replace command with value
 					$pattern = '/{%'.$value.'%}/';
@@ -63,108 +66,6 @@ class TemplateParser extends GlobalParser
 		}
 		$this->parameters = $parameters;	
 		$this->output 	  = $output;
-	}
-
-	/**
-	 *
-	 * The parseTemplateParametersMethod parse issues from template
-	 * 
-	 * @param string $output
-	 * @param array $parameters
-	 * 
-	 * @return string
-	 */
-	protected function parseTemplateParameters($output, $parameters)
-	{
-		//read TemplateVariables
-			$template_variable = self::parseTemplateIssues($output);
-			$replace = '';
-			$pattern = array();
-		    foreach($template_variable[1] as $key => $value){
-		    	//if the Value is split by '.' it want to call an Array or Object, else it reads the Parameter by the first Key
-					if(strpos($value,'.')){
-						$output = $this->readObjectsAndArrays($value, $parameters, $output);
-					}else{
-						$output = $this->readParameter($value, $parameters, $output);
-					}
-			}
-		return $output;
-	}
-
-	/**
-	 * 
-	 * The readObjectsAndArraysMethod parse templateArrays or Objects and replace them in output with the value
-	 *
-	 * @param string $value, $output
-	 * @param array $parameters
-	 *
-	 * @return string
-	 */
-	private function readObjectsAndArrays($value, $parameters, $output)
-	{
-		//explode Value with '.', foreach it and check if it is in the parameters and if it is an Object or an Array and store the Data
-			$array = explode('.',$value);				
-			$arrayStorage = $parameters;
-			foreach($array as $key2 => $value2){
-				//if is object then call with the second Key the getMethod from the Object, else if it is an array then store the while the value is an array and then store the stringValue to replace						
-					if(is_object($arrayStorage)){						
-						$methodName = 'get'.ucfirst(trim($value2));
-						if(method_exists($arrayStorage,$methodName)){
-							$arrayStorage = $arrayStorage->$methodName();
-						}else{
-							//throw Exception
-								die("das Objekt enth&auml;lt diese Methode nicht");
-						}
-					}elseif(is_array($arrayStorage)){
-						if(array_key_exists(trim($value2), $arrayStorage)){
-							$arrayStorage =  $arrayStorage[trim($value2)];
-						}else{
-							//throw Exception
-								die("der Index existiert nicht");
-						}
-					}else{
-						//throw Exception
-							die("ein string kann keinen index besitzen");
-					}
-			}
-			$replace = $arrayStorage;
-		//replace the Commands with the Value
-			$pattern = '/{{'.$value.'}}/';
-			if(is_string($replace) || is_int($replace)){
-				$output = preg_replace($pattern,$replace,$output);
-			}
-			else{
-				$output = preg_replace($pattern,$value,$output);
-			}
-		return $output;
-	}
-
-	/**
-	 * 
-	 * The readParameterMethod reads the Value of the Parameter with the templateVariable as Key and replace it with the Value 
-	 * 
-	 * @param string $value, $output
-	 * @param array $parameters
-	 *
-	 * @return string
-	 */
-	private function readParameter($value, $parameters, $output)
-	{
-		//check if the arrayKey exists and replace the callSyntax with the value
-			if(isset($parameters[trim($value)])){			
-				$replace = $parameters[trim($value)];
-				$pattern = '/{{'.$value.'}}/';
-				if(is_string($replace)){
-					$output = preg_replace($pattern,$replace,$output);
-				}
-				elseif(is_object($replace)){
-					//throw Exception
-						die("object to string convertation");
-				}else{
-					$output = preg_replace($pattern,$value,$output);
-				}
-			}
-		return $output;
 	}
 
 	/**
@@ -263,6 +164,7 @@ class TemplateParser extends GlobalParser
 				$subString2 = explode(' ', trim($valueFor));
 				if($subString2[0] == 'endfor'){
 					$end = '{%'.$valueFor.'%}';
+					break;
 				}
 			}
 		//get the value of the finish for
@@ -281,10 +183,139 @@ class TemplateParser extends GlobalParser
 				}
 			}else{
 				//throw exception
-				die("der Index ist undefiniert");
+					die("der Index ist undefiniert");
 			}
 			$pattern = '('.$start.$forContent.$end.')i';
 		$output = preg_replace($pattern,$result,$output);
+		return $output;
+	}
+
+	/**
+	 *
+	 * The defineBlock function gets the value of an Block and add it to array from parameter then returns it 
+	 *
+	 * @param string $subString, $output
+	 * @param array $subStrings, $blocks
+	 *
+	 * @return array
+	 */
+	private function defineBlock($output, $subString, $subStrings, $blocks)
+	{
+		//extract blockValue
+			//get the endString from the forLoop
+				$endString = self::parseTemplateFunctions($output);
+				foreach($endString[1] as $keyBlock => $valueBlock){
+					$subString2 = explode(' ', trim($valueFor));
+					if($subString2[0] == 'endblock' && $subString2[1] == $subStrings[1]){
+						$end = '{%'.$valueBlock.'%}';
+						break;
+					}
+				}
+		//get the value of the finish for
+			$start 		  			= '{%'.$subString.'%}';
+			$blockContent 			= self::getBetween($start, $end, $output);
+			$blocks[$subStrings[1]] = $blockContent;
+		return $blockArray;
+	}
+
+	/**
+	 *
+	 * The parseTemplateParametersMethod parse issues from template
+	 * 
+	 * @param string $output
+	 * @param array $parameters
+	 * 
+	 * @return string
+	 */
+	protected function parseTemplateParameters($output, $parameters)
+	{
+		//read TemplateVariables
+			$template_variable = self::parseTemplateIssues($output);
+			$replace = '';
+			$pattern = array();
+		    foreach($template_variable[1] as $key => $value){
+		    	//if the Value is split by '.' it want to call an Array or Object, else it reads the Parameter by the first Key
+					if(strpos($value,'.')){
+						$output = $this->readObjectsAndArrays($value, $parameters, $output);
+					}else{
+						$output = $this->readParameter($value, $parameters, $output);
+					}
+			}
+		return $output;
+	}
+
+	/**
+	 * 
+	 * The readObjectsAndArraysMethod parse templateArrays or Objects and replace them in output with the value
+	 *
+	 * @param string $value, $output
+	 * @param array $parameters
+	 *
+	 * @return string
+	 */
+	private function readObjectsAndArrays($value, $parameters, $output)
+	{
+		//explode Value with '.', foreach it and check if it is in the parameters and if it is an Object or an Array and store the Data
+			$array = explode('.',$value);				
+			$arrayStorage = $parameters;
+			foreach($array as $key2 => $value2){
+				//if is object then call with the second Key the getMethod from the Object, else if it is an array then store the while the value is an array and then store the stringValue to replace						
+					if(is_object($arrayStorage)){						
+						$methodName = 'get'.ucfirst(trim($value2));
+						if(method_exists($arrayStorage,$methodName)){
+							$arrayStorage = $arrayStorage->$methodName();
+						}else{
+							//throw Exception
+								die("das Objekt enth&auml;lt diese Methode nicht");
+						}
+					}elseif(is_array($arrayStorage)){
+						if(array_key_exists(trim($value2), $arrayStorage)){
+							$arrayStorage =  $arrayStorage[trim($value2)];
+						}else{
+							//throw Exception
+								die("der Index existiert nicht");
+						}
+					}else{
+						//throw Exception
+							die("ein string kann keinen index besitzen");
+					}
+			}
+			$replace = $arrayStorage;
+		//replace the Commands with the Value
+			$pattern = '/{{'.$value.'}}/';
+			if(is_string($replace) || is_int($replace)){
+				$output = preg_replace($pattern,$replace,$output);
+			}
+			else{
+				$output = preg_replace($pattern,$value,$output);
+			}
+		return $output;
+	}
+
+	/**
+	 * 
+	 * The readParameterMethod reads the Value of the Parameter with the templateVariable as Key and replace it with the Value 
+	 * 
+	 * @param string $value, $output
+	 * @param array $parameters
+	 *
+	 * @return string
+	 */
+	private function readParameter($value, $parameters, $output)
+	{
+		//check if the arrayKey exists and replace the callSyntax with the value
+			if(isset($parameters[trim($value)])){			
+				$replace = $parameters[trim($value)];
+				$pattern = '/{{'.$value.'}}/';
+				if(is_string($replace)){
+					$output = preg_replace($pattern,$replace,$output);
+				}elseif(is_object($replace)){
+					//throw Exception
+						die("object to string convertation");
+				}else{
+					$output = preg_replace($pattern,$value,$output);
+				}
+			}
 		return $output;
 	}
 
