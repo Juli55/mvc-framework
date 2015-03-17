@@ -96,7 +96,12 @@ class TemplateParser extends GlobalParser
 					if(strpos($value,'.')){
 						$output = $this->readObjectsAndArrays($value, $parameters, $output);
 					}else{
-						$output = $this->readParameter($value, $parameters, $output);
+						$subStrings = explode(' ', trim($value));
+						if($subStrings[0] === 'block'){
+							$output = $this->callBlock($value, $subStrings, self::$blocks, $output);
+						}else{
+							$output = $this->readParameter($value, $parameters, $output);
+						}
 					}
 			}
 		return $output;
@@ -147,6 +152,33 @@ class TemplateParser extends GlobalParser
 			else{
 				$output = preg_replace($pattern,$value,$output);
 			}
+		return $output;
+	}
+
+	/**
+	 * 
+	 * this method calls the Block and replace the Content wih callSyntax
+	 * 
+	 * @param string $value, $output
+	 * @param array $parameters
+	 *
+	 * @return string
+	 */
+	private function callBlock($value, $subStrings, $blocks, $output)
+	{
+		$pattern = '/{{'.$value.'}}/';
+		if(isset($subStrings[1])){
+			if(isset($blocks[$subStrings[1]])){
+				$replace = $blocks[$subStrings[1]];
+				$output = preg_replace($pattern,$replace,$output);
+			}else{
+				//throw Exceptions
+					die('the called block is undefined');
+			}
+		}else{
+			//throw Exceptions
+				die('the block which should call is undefined');
+		}
 		return $output;
 	}
 
