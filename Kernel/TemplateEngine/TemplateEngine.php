@@ -23,10 +23,10 @@ class TemplateEngine
 	 *
 	 * @return void
 	 */
-	public function init($output, $parameters)
+	public function init($output, $parameters, $blocks)
 	{
-		$TemplateParser = new TemplateParser($output,$parameters);
-		$this->output = $TemplateParser->getOutput();
+		$TemplateParser = new TemplateParser($output, $parameters, $blocks);
+		$this->output 	= $TemplateParser->getOutput();
 	}
 
 	/**

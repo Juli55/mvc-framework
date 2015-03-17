@@ -10,7 +10,7 @@ class TemplateParser extends GlobalParser
 	/**
 	 * @var array
 	 */
-	private $parameters;
+	public static $parameters = array();
 
 	/**
 	 * @var string
@@ -20,7 +20,7 @@ class TemplateParser extends GlobalParser
 	/**
 	 * @var blocks
 	 */
-	private $blocks;
+	public static $blocks = array();
 
 	/**
 	 *
@@ -31,12 +31,13 @@ class TemplateParser extends GlobalParser
 	 *
 	 * @return void 
 	 */
-	public function __construct($output,$parameters)
+	public function __construct($output,$parameters = array(), $blocks = array())
 	{
 		$this->output 			 = $output;
-		$this->parameters 		 = $parameters;
+		self::$parameters 		 = array_merge($parameters, self::$parameters);
+		self::$blocks 		 	 = array_merge($blocks, self::$blocks);
 		$this->parsingTemplateFunctions();
-		$this->output = $this->parseTemplateParameters($this->output, $this->parameters);
+		$this->output = $this->parseTemplateParameters($this->output, self::$parameters);
 	}
 
 	/**
@@ -48,7 +49,7 @@ class TemplateParser extends GlobalParser
 	protected function parsingTemplateFunctions()
 	{
 		$output 	  	= $this->output;
-		$parameters 	= $this->parameters;
+		$parameters 	= self::$parameters;
 		$templateIssues = self::parseTemplateFunctions($output);
 		foreach($templateIssues[1] as $key => $value){
 			//replace the templateFunctionsSyntax in the values
@@ -62,15 +63,15 @@ class TemplateParser extends GlobalParser
 				}elseif($subStrings[0] == 'for'){
 		    		$output = $this->forLoop($value, $subStrings, $parameters, $output);
 				}elseif($subStrings[0] == 'block'){
-					$this->blocks = $this->defineBlock($output, $value, $subStrings, $this->blocks);
+					self::$blocks = $this->defineBlock($output, $value, $subStrings, self::$blocks);
 				}elseif($subStrings[0] == 'use'){
-					$this->blocks = $this->useBlock($subStrings, $parameters, $this->blocks);
+					$this->useTemplate($subStrings, $parameters, self::$blocks);
 				}
 				//replace command with value
 					$pattern = '/{%'.$value.'%}/';
 					$output  = preg_replace($pattern,'',$output);
 		}
-		$this->parameters = $parameters;
+		self::$parameters = $parameters;
 		$this->output 	  = $output;
 	}
 
@@ -90,6 +91,7 @@ class TemplateParser extends GlobalParser
 			$replace = '';
 			$pattern = array();
 		    foreach($template_variable[1] as $key => $value){
+		    	$subStrings = explode(' ', trim($value));
 		    	//if the Value is split by '.' it want to call an Array or Object, else it reads the Parameter by the first Key
 					if(strpos($value,'.')){
 						$output = $this->readObjectsAndArrays($value, $parameters, $output);
@@ -246,8 +248,9 @@ class TemplateParser extends GlobalParser
 	 */
 	private function includeTemplate($value, $parameters, $output)
 	{
-		//call the renderMethod from View			
-			$replace =  View::render($subString[1], $parameters);
+		//call the renderMethod from View
+			$View = new View();			
+			$replace =  $View->render($subString[1], $parameters, $blocks);
 		//replace the templateCall with the Value
 			$pattern = '/{%'.$value.'%}/';
 			$output =  preg_replace($pattern,$replace,$output);
@@ -331,22 +334,15 @@ class TemplateParser extends GlobalParser
 	 *
 	 * @param array $subStrings, $parameters, $blocks
 	 *
-	 * @return array
+	 * @return void
 	 */
-	private function useBlock($subStrings, $parameters, $blocks)
+	private function useTemplate($subStrings, $parameters, $blocks)
 	{
 		//render File
-			$renderedFile = View::render($subStrings[1], $parameters);
+			$View = new View();
+			$renderedFile = $View->render($subStrings[1], $parameters, $blocks);
 		//add blocks to global array
 			$templateIssues = self::parseTemplateFunctions($renderedFile);
-			foreach($templateIssues[1] as $key => $value){
-				//replace the templateFunctionsSyntax in the values
-					$subStrings = explode(' ', trim($value));
-					if($subStrings[0] === 'block'){
-						$blocks = $this->defineBlock($output, $value, $subStrings, $blocks);
-					}
-			}
-		return $blocks;
 	}
 
 	/**

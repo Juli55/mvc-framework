@@ -10,14 +10,15 @@
  
 </head>
 <body>
-{{hey1}}
 {% block form %}
   <form method="post" action="">
     <button value="all" type="submit">{{hey1}}</button>
     <button value="red" type="submit">Get Red Wines!</button>
     <button value="white" type="submit">Get White Wines!</button>
   </form>
+  {{hey1}}
 {% endblock form %}
+{{block form}}
   <div id="wines">
   <!-- Javascript will print data in here when we have finished the page -->
   </div>

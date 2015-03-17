@@ -10,6 +10,16 @@ use Kernel\TemplateEngine\TemplateEngine;
 class View extends TemplateEngine
 {
 	/**
+	 * @var array
+	 */
+	public static $parameters;
+
+	/**
+	 * @var blocks
+	 */
+	public static $blocks;
+
+	/**
 	 *
 	 * The renderMethod renders the template to display it
 	 *
@@ -18,7 +28,7 @@ class View extends TemplateEngine
 	 *
 	 * @return string
 	 */
-	public static function render($templateEncode, $parameters = array())
+	public function render($templateEncode, $parameters = array(), $blocks = array())
 	{
 		//encode the decoded template-path 
 			$templateDecode = explode(':',$templateEncode);
@@ -47,8 +57,7 @@ class View extends TemplateEngine
 				
 				//transformate the template variables in PHP variables
 				$TemplateEngine = new TemplateEngine;
-				$TemplateEngine->init($output, $parameters);
-
+				$TemplateEngine->init($output, $parameters, $blocks);
 				return $TemplateEngine->getOutput();
 			}else{
 				//throw Exception
