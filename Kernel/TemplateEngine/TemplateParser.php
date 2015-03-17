@@ -31,7 +31,7 @@ class TemplateParser extends GlobalParser
 	 *
 	 * @return void 
 	 */
-	public function __construct($output,$parameters = array(), $blocks = array())
+	public function __construct($output, $parameters = array(), $blocks = array())
 	{
 		$this->output 			 = $output;
 		self::$parameters 		 = array_merge($parameters, self::$parameters);
@@ -324,7 +324,9 @@ class TemplateParser extends GlobalParser
 		//get the value of the finish for
 			$start 		  			= '{%'.$subString.'%}';
 			$blockContent 			= self::getBetween($start, $end, $output);
-			$blocks[$subStrings[1]] = $blockContent;
+			$View = new View();
+			$renderedBlockContent = $View->render('', self::$parameters, $blocks, $blockContent);
+			$blocks[$subStrings[1]] = $renderedBlockContent;
 		return $blocks;
 	}
 

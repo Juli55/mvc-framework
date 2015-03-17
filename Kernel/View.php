@@ -28,40 +28,47 @@ class View extends TemplateEngine
 	 *
 	 * @return string
 	 */
-	public function render($templateEncode, $parameters = array(), $blocks = array())
+	public function render($templateEncode, $parameters = array(), $blocks = array(), $content = '')
 	{
-		//encode the decoded template-path 
-			$templateDecode = explode(':',$templateEncode);
-		//define templatePath
-			$ldefaultPath = '..'. DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR;
-			$rdefaultPath = DIRECTORY_SEPARATOR . 'Resources' . DIRECTORY_SEPARATOR . 'views';
-			foreach($templateDecode as $key => $value){
-				$value = trim($value, '\'');
-				if(!empty($templatePath)){
-					$templatePath .= DIRECTORY_SEPARATOR . $value;
+		if(!empty($templateEncode)){
+			//encode the decoded template-path 
+				$templateDecode = explode(':',$templateEncode);
+			//define templatePath
+				$ldefaultPath = '..'. DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR;
+				$rdefaultPath = DIRECTORY_SEPARATOR . 'Resources' . DIRECTORY_SEPARATOR . 'views';
+				foreach($templateDecode as $key => $value){
+					$value = trim($value, '\'');
+					if(!empty($templatePath)){
+						$templatePath .= DIRECTORY_SEPARATOR . $value;
+					}
+					else{
+						$templatePath = $ldefaultPath.$value.$rdefaultPath;
+					}	
 				}
-				else{
-					$templatePath = $ldefaultPath.$value.$rdefaultPath;
-				}	
-			}
-		//check if the file exist if true then return the template 
-			$file = $templatePath;
-			$exist = file_exists($file);
-			if($exist){
+			//check if the file exist if true then return the template 
+				$file = $templatePath;
+				$exist = file_exists($file);
+				if($exist){
 
-				ob_start();
+					ob_start();
 
-				include $file;
-				$output = ob_get_contents();
-				ob_end_clean();
-				
-				//transformate the template variables in PHP variables
-				$TemplateEngine = new TemplateEngine;
-				$TemplateEngine->init($output, $parameters, $blocks);
-				return $TemplateEngine->getOutput();
+					include $file;
+					$output = ob_get_contents();
+					ob_end_clean();
+					
+					//transformate the template variables in PHP variables
+						$TemplateEngine = new TemplateEngine;
+						$TemplateEngine->init($output, $parameters, $blocks);
+						return $TemplateEngine->getOutput();
+				}else{
+					//throw Exception
+						die('template doesn\'t exist');
+				}
 			}else{
-				//throw Exception
-					die('template doesn\'t exist'. $templatePath);
+				//transformate the template variables in PHP variables
+					$TemplateEngine = new TemplateEngine;
+					$TemplateEngine->init($content, $parameters, $blocks);
+					return $TemplateEngine->getOutput();
 			}
 	}
 }
