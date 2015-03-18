@@ -1,20 +1,23 @@
+{% use 'test:block_post.html' %}
 <!DOCTYPE html>
 <html>
 <head>
 <title>jQuery Ajax Example with JSON Response</title>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js" type="text/javascript"></script>
-<script src="/js/ajax.js"></script>
  
 <!-- Write Javascript code here -->
  
 </head>
- 
 <body>
+{% block form %}
   <form method="post" action="">
-    <button value="all" type="submit">Get All Wines!</button>
+    <button value="all" type="submit">{{hey1}}</button>
     <button value="red" type="submit">Get Red Wines!</button>
     <button value="white" type="submit">Get White Wines!</button>
   </form>
+  {{hey1}}
+{% endblock form %}
+{{block post}}
   <div id="wines">
   <!-- Javascript will print data in here when we have finished the page -->
   </div>
@@ -27,7 +30,8 @@
 		      dataType: 'json',
 		    })
 		    .done(function(data) {
-		    	alert(data.white);
+		    	var form = "hey";
+		    	$('#wines').append("{{block post}}");
 		    });
 		return false;
 		});	
