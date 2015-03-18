@@ -169,8 +169,12 @@ class TemplateParser extends GlobalParser
 		$pattern = '/{{'.$value.'}}/';
 		if(isset($subStrings[1])){
 			if(isset($blocks[$subStrings[1]])){
-				$replace = $blocks[$subStrings[1]];
-				$output = preg_replace($pattern,$replace,$output);
+				$blockContent = $blocks[$subStrings[1]];
+				$replace = str_replace("'","\\\'",$blockContent);
+				$replace = str_replace("\"","\\\"",$replace);
+				$replace = preg_replace("#[\r|\n]#", '', $replace);
+				$replace = trim($replace);
+				$output  = preg_replace($pattern,$replace,$output);
 			}else{
 				//throw Exceptions
 					die('the called block is undefined');
