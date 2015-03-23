@@ -91,11 +91,14 @@ class Database
 							while(false !== $entityFileName = readdir($handle)){
 								if($entityFileName != "." && $entityFileName != ".."){
 									//call entity Object
-										$entityName =  rtrim($entityFileName,'.php');
-							        	$entityObjectNS =  '\\src\\'.$srcFolder.'\\Entity\\'.$entityName;
-							        	$entityObject = new $entityObjectNS;
+										$entityName 		= rtrim($entityFileName,'.php');
+							        	$entityObjectNS 	= '\\src\\'.$srcFolder.'\\Entity\\'.$entityName;
+							        	$entityObject 		= new $entityObjectNS;
+							        	$entityObjectClean  = self::getEntityObjectArray($entityObject);
+							        //check the validity
+											self::checkEntityValidity($entityObjectClean, $entityObject);
 							        //get DatabaseFields Data
-											$entityFieldsData[$entityName] = self::getEntityFieldsData($entityObject, $entityObjectNS);
+											$entityFieldsData[$entityName] = self::getEntityFieldsData($entityObjectClean, $entityObjectNS);
 									if(self::tableExist($db, $entityName)){
 										//get EntityFields Data
 											$dbFieldsData[$entityName] = self::getDbFieldsData($db, $entityName, $mysqlDataTypeHash);
@@ -109,13 +112,74 @@ class Database
 						closedir($handle); 
 					}
 			}
+			$newFields 	   = 0;
+			$probertys 	   = 0;
+			$deleteFields  = 0;
+			$newTable	   = count($new);
+			foreach($changes as $entity){
+				foreach($entity as $type => $fields){
+					switch($type){
+						case 'new':
+							$newFields = $newFields + count($fields);
+						break;
+						case 'proberty':
+							$probertys = $probertys + count($fields);
+						break;
+						case 'delete':
+							$deleteFields = $deleteFields + count($fields);
+						break;
+					}
+				}
+			}
+			$affected = $newFields + $probertys + $deleteFields + $newTable;
 			self::takeChanges($changes, $new, $db);
 			//echo the endMessage
 				if($affected !== 0){
-					echo "The Database was updated successfull with $affected changes!\n";
+					echo "The Database was updated successfull with $affected affected!\n";
+					echo "$newFields new Columns!\n";
+					echo "$probertys changed probertys in Columns!\n";
+					echo "$deleteFields Columns delete!\n";
+					echo "$newTable new Tables!\n";
 				}else{
 					echo "The Database is already up to date!\n";
 				}
+	}
+
+	/**
+	 *
+	 * The getEntityObjectArrayMethod calls the EntityObject and conver it in an Array
+	 *
+	 * @param object $entityObject
+	 *
+	 * @return array
+	 */
+	private static function getEntityObjectArray($entityObject)
+	{
+		//convert in Array
+			$entityObjectArray = array();
+			foreach((array)$entityObject as $key => $value){
+				$key = preg_match('/^\x00(?:.*?)\x00(.+)/', $key, $matches) ? $matches[1] : $key;
+				$entityObjectArray[$key] = $value;
+			}
+		return $entityObjectArray;
+	}
+
+	/**
+	 *
+	 * The checkEntityValidity checks if the Entity is valid
+	 *
+	 * @param array $entityObjectArray, $entityObject
+	 *
+	 * @return void
+	 */
+	private static function checkEntityValidity($entityObjectArray, $entityObject)
+	{
+		//check if every objectProberty has an setter and getterMethod
+			foreach($entityObjectArray as $key => $value){
+				if(!method_exists($entityObject,'set'.ucfirst($key)) || !method_exists($entityObject,'get'.ucfirst($key))){
+					die("\nYou have an mistake in your Entity: $key, because you don't have all setter and getter methods!\n");
+				}
+			}
 	}
 
 	/**
@@ -166,14 +230,8 @@ class Database
 	 *
 	 * @return void
 	 */
-	public static function getEntityFieldsData($entityObject, $entityNamespace)
+	public static function getEntityFieldsData($entityObjectClean, $entityNamespace)
 	{
-		//generate the Clean EntityObject
-			$entityObjectClean = array();
-			foreach ((array)$entityObject as $key => $value){
-				$key = preg_match('/^\x00(?:.*?)\x00(.+)/', $key, $matches) ? $matches[1] : $key;
-				$entityObjectClean[$key] = $value;
-			}
 		$reflectionClass = new \ReflectionClass($entityNamespace);
 		//foreach the EntityObject to get all Fields
 			foreach ($entityObjectClean as $key => $value) {						
@@ -273,12 +331,14 @@ class Database
 							$queryArray[] = "ALTER TABLE $dbUser.$entityName ADD $fieldName $type($length)";
 					}
 				}
-				foreach($entityChangeData['proberty'] as $fieldName => $field){
-					//init probertys
-						$type = $field['type'];
-						$length = $field['length'];		
-					//add modify probertys
-						$queryArray[] = "ALTER TABLE $dbUser.$entityName MODIFY $fieldName $type($length)";
+				if(isset($entityChangeData['proberty'])){
+					foreach($entityChangeData['proberty'] as $fieldName => $field){
+						//init probertys
+							$type = $field['type'];
+							$length = $field['length'];		
+						//add modify probertys
+							$queryArray[] = "ALTER TABLE $dbUser.$entityName MODIFY $fieldName $type($length)";
+					}
 				}
 				//update Database
 					foreach ($queryArray as $query){
