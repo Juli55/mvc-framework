@@ -59,6 +59,8 @@ class Database
 			$db = new db();
 			$affected = 0;
 		//init variables
+			$entityFieldsData 	= array();
+			$dbFieldsData 		= array();
 			$changes  			= array();
 			$new 				= array();
 			$mysqlDataTypeHash  = array(
@@ -75,7 +77,7 @@ class Database
 			    12=>'datetime',
 			    13=>'year',
 			    16=>'bit',
-			    //252 is currently mapped to all text and blob types (MySQL 5.0.51a)
+			    252=>'varchar',
 			    253=>'varchar',
 			    254=>'char',
 			    246=>'decimal'
@@ -87,22 +89,27 @@ class Database
 						//read all files
 							$handle = opendir('src/'.$srcFolder.'/Entity'); 
 							while(false !== $entityFileName = readdir($handle)){
-								if($entityName != "." && $entityName != ".."){
+								if($entityFileName != "." && $entityFileName != ".."){
+									//call entity Object
+										$entityName =  rtrim($entityFileName,'.php');
+							        	$entityObjectNS =  '\\src\\'.$srcFolder.'\\Entity\\'.$entityName;
+							        	$entityObject = new $entityObjectNS;
 									if(self::tableExist($db, $entityName)){
 										//get DatabaseFields Data
-											$entityFieldsData = self::getEntityFieldsData($entityObject);
+											$entityFieldsData[$entityName] = self::getEntityFieldsData($entityObject, $entityObjectNS);
 										//get EntityFields Data
-											$dbFieldsData = self::getEntityFieldsData($dbName, $entityName);
+											$dbFieldsData[$entityName] = self::getDbFieldsData($db, $entityName, $mysqlDataTypeHash);
 										//add changes
-											$changes[$entityName] = self::getChanges($entityFieldsData);
+											$changes[$entityName] = self::getChanges($entityFieldsData[$entityName], $dbFieldsData[$entityName]);
 									}else{
-										$new[] = $entityFieldsData;
+										$new[] = $entityFieldsData[$entityName];
 									}
 								}
 							}
 						closedir($handle); 
 					}
 			}
+			self::takeChanges($changes, $new, $db);
 			//echo the endMessage
 				if($affected !== 0){
 					echo "The Database was updated successfull with $affected changes!\n";
@@ -117,11 +124,12 @@ class Database
 	 *
 	 * @return array
 	 */
-	private static function getDbFieldsData($db, $table)
+	private static function tableExist($db, $table)
 	{
 		//check the exist
-			$result = $db::$db->query("SHOW TABLES LIKE $db::$dbUser.$table");
-	  		$exist 	= $result->num_rows > 0;
+			$dbName = $db::$dbUser;
+			$result = $db::$db->query("SELECT COUNT(*) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '$dbName' AND TABLE_NAME = '$table'")or die ($db::$db->error);
+	  		$exist 	= $result->num_rows;
 		return $exist;
 	}
 
@@ -131,11 +139,12 @@ class Database
 	 *
 	 * @return array
 	 */
-	private static function getDbFieldsData($dbName, $entityName)
+	private static function getDbFieldsData($db, $entityName, $mysqlDataTypeHash)
 	{
 		//get the dbTable
+			$dbName = $db::$dbUser;
 			$sqlColumns ="SELECT * FROM $dbName.$entityName ";
-			$result = $db::$db->query($sql_columns) or die($db::$db->error);
+			$result = $db::$db->query($sqlColumns) or die($db::$db->error);
 		//get the fieldprobertys and fill it in the dbFieldsArray
 			while ($column = $result->fetch_field()) {
 				//init probertys array
@@ -155,7 +164,7 @@ class Database
 	 *
 	 * @return void
 	 */
-	public static function getEntityFieldsData($entityObject)
+	public static function getEntityFieldsData($entityObject, $entityNamespace)
 	{
 		//generate the Clean EntityObject
 			$entityObjectClean = array();
@@ -163,6 +172,7 @@ class Database
 				$key = preg_match('/^\x00(?:.*?)\x00(.+)/', $key, $matches) ? $matches[1] : $key;
 				$entityObjectClean[$key] = $value;
 			}
+		$reflectionClass = new \ReflectionClass($entityNamespace);
 		//foreach the EntityObject to get all Fields
 			foreach ($entityObjectClean as $key => $value) {						
 				//generate an array of the Annotationprobertys
@@ -181,9 +191,9 @@ class Database
 							$akey   = trim(trim($prob[0]),"'");
 							$avalue = $prob[1];
 						//add probertys to the Array
-							$entityField[$akey] = $probertys;
+							$probertys[$akey] = trim($avalue);
 					}
-					$entityFields[$key] = $entityField;
+					$entityFields[$key] = $probertys;
 			}
 		return $entityFields;
 	}
@@ -199,30 +209,34 @@ class Database
 		//init changesArray
 			$changes = array();
 		//compare EntityFields with exist DatabaseFields
-			foreach($entity as $key => $value){
-				if(isset($dbTable[$key])){
+			foreach($entity as $fieldName => $value){
+				if(isset($dbTable[$fieldName])){
 					//add different probertys
-						foreach($value => $probertyKey){
+						foreach($value as $probertyKey => $probertyValue){
 							//check if different
-								if($value[$probertyKey] !== $dbTable[$key][$probertyKey]){
-									$changes['proberty'][$key][$probertyKey] = $value[$probertyKey];
+								if(isset($dbTable[$fieldName][$probertyKey])){
+									if($probertyValue !== $dbTable[$fieldName][$probertyKey]){
+										$changes['proberty'][$fieldName][$probertyKey] = $probertyValue;
+									}
 								}
 						}
 					//delete entry from Array
-						unset($dbTable[$key]);
+						unset($dbTable[$fieldName]);
 				}else{
 					//take probertys from new fields
-						$changes['new'][$key]['type'] = $value['type'];
-						$changes['new'][$key]['length'] = $value['length'];
+						$changes['new'][$fieldName]['type'] = $value['type'];
+						$changes['new'][$fieldName]['length'] = $value['length'];
 						if(isset($value['auto_increment'])){
-							$changes['new'][$key]['auto_increment'] = true;
+							$changes['new'][$fieldName]['auto_increment'] = true;
 						}
 				}
-			//add rest entrys to delete
-				foreach($dbTable => $field){
-					$changes['delete'][] = $field;
-				}
 			}
+			//add rest entrys to delete
+				if(isset($dbTable)){
+					foreach($dbTable as $fieldName => $fieldProbertys){
+						$changes['delete'][] = $fieldName;
+					}
+				}
 		return $changes;
 	}
 
@@ -232,19 +246,81 @@ class Database
 	 *
 	 * @return void
 	 */
-	public static function takeChanges()
+	public static function takeChanges($changes, $new, $db)
 	{
-
+		//init dbUser
+			$dbUser = $db::$dbUser;
+		//sync existing Tables with Entity
+			foreach($changes as $entityName => $entityChangeData){
+				//init queryArray
+					$queryArray = array();
+				if(isset($entityChangeData['delete'])){
+					foreach($entityChangeData['delete'] as $fieldName){
+						//add delete
+							$queryArray[] = "ALTER TABLE $dbUser.$entityName DROP COLUMN $fieldName";
+					}
+				}
+				if(isset($entityChangeData['new'])){
+					foreach($entityChangeData['new'] as $fieldName => $field){
+						//init probertys
+							if(isset($field['type'])){
+								$type = $field['type'];
+							}else{
+								$type = 'varchar';
+							}
+							if(isset($field['length'])){
+								$length = $field['length'];
+							}else{
+								$length = 255;
+							}	
+						//add new fields
+							$queryArray[] = "ALTER TABLE $dbUser.$entityName ADD $fieldName $type($length)";
+					}
+				}
+				foreach($entityChangeData['proberty'] as $fieldName => $field){
+					//init probertys
+						if(isset($field['type'])){
+							$type = $field['type'];
+						}else{
+							$type = 'varchar';
+						}
+						if(isset($field['length'])){
+							$length = $field['length'];
+						}else{
+							$length = 255;
+						}		
+					//add modify probertys
+						$queryArray[] = "ALTER TABLE $dbUser.$entityName MODIFY $type($length)";
+				}
+				//update Database
+					foreach ($queryArray as $query){
+						$db::$db->query($query);
+					}
+			}
+		//create Table
+			if(!empty($new)){
+				foreach($new as $tableName => $columns){
+					$sql = "CREATE TABLE IF NOT EXISTS $db::$dbUser.`$entityName` (\n";
+					foreach ($columns as $fieldName => $fieldValue) {
+						if(strtolower($fieldName) == 'id'){
+							$sql .= "`id` int(11) NOT NULL AUTO_INCREMENT,\n";
+							$sql .= "PRIMARY KEY (`id`) )";
+						}else{
+							if(isset($field['type'])){
+								$type = $field['type'];
+							}else{
+								$type = 'varchar';
+							}
+							if(isset($field['length'])){
+								$length = $field['length'];
+							}else{
+								$length = 255;
+							}
+							$sql .= "`$fieldName` varchar(100) NOT NULL,\n";
+						}
+					}
+				}
+				$db::$db->query($sql) or die($db::$db->error);
+			}
 	}
-
-	//check if Database exists
-	    $dbName = Config::dbConfig()['primary'];
-	    $sql_check = "SHOW DATABASES LIKE '$dbName'";
-		$result = $db::$db->query($sql_check);
-	if($result->num_rows > 0){
-		
-	}else{
-		die("\n You have to create the Databases first\n");
-	}
-	
 }
