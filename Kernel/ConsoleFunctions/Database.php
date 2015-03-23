@@ -183,10 +183,13 @@ class Database
 	}
 
 	/**
+	 * 
+	 * this Function checks if an dataBaseTable exists
 	 *
 	 * @param object $db
+	 * @param array $table
 	 *
-	 * @return array
+	 * @return boolean
 	 */
 	private static function tableExist($db, $table)
 	{
@@ -200,7 +203,11 @@ class Database
 
 	/**
 	 *
-	 * @param string $dbName, $entityName
+	 * this Function returns the FieldsData/columnsData of an Table as an Array
+	 *
+	 * @param object $db
+	 * @param string $entityName
+	 * @param array $mysqlDataTypeHash
 	 *
 	 * @return array
 	 */
@@ -226,9 +233,12 @@ class Database
 
 	/**
 	 *
-	 * 
+	 * this Function returns the FieldsData from an Entity as an Array
 	 *
-	 * @return void
+	 * @param string $entityNamespace
+	 * @param array $entityObjectClean
+	 *
+	 * @return array
 	 */
 	public static function getEntityFieldsData($entityObjectClean, $entityNamespace)
 	{
@@ -261,9 +271,11 @@ class Database
 
 	/**
 	 *
-	 * 
+	 * this Function returns the differents between database and entity
 	 *
-	 * @return void
+	 * @param array $entity, $dbTable
+	 *
+	 * @return array
 	 */
 	public static function getChanges($entity, $dbTable)
 	{
@@ -304,9 +316,12 @@ class Database
 
 	/**
 	 *
-	 * 
+	 * this Function takes the Changes, so the Database is sync with Entitys
 	 *
-	 * @return void
+	 * @param array $changes, $new
+	 * @param object $db
+	 *
+	 * @return array
 	 */
 	public static function takeChanges($changes, $new, $db)
 	{

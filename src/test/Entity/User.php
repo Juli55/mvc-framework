@@ -1,6 +1,6 @@
 <?php 
 
-namespace test\Entity;
+namespace src\test\Entity;
 
 class User
 {
@@ -16,15 +16,15 @@ class User
 	 * @var string
 	 * @prob('name' = first_name)
 	 * @prob('type' = varchar)
-	 * @prob('length' = 255)
+	 * @prob('length' = 155)
 	 */
 	private $first_name;
 
 	/**
 	 * @var string
 	 * @prob('name' = last_name)
-	 * @prob('type' = varchar)
-	 * @prob('length' = 255)
+	 * @prob('type' = int)
+	 * @prob('length' = 254)
 	 */
 	private $last_name;
 
