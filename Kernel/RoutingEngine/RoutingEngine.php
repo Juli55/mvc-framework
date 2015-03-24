@@ -153,7 +153,9 @@ class RoutingEngine
 												$this->handlePatternVariables($value, $uri);
 											//at the last continuous call the Controller
 												if($i === $patternPartsCount-1){
-													return $this->callController($dir, $value);	
+													if($patternParts[0] === $uriParts[0]){
+														return $this->callController($dir, $value);	
+													}
 												}
 										}
 
@@ -161,6 +163,10 @@ class RoutingEngine
 						}
 				}
 		}
-
+		if('/'.$uri === $_SERVER['PHP_SELF'] || $uri === ''){
+			return "root";
+		}else{
+			return "Page not found!";
+		}
 	}
 }
