@@ -51,14 +51,10 @@ final class App
 	 */
 	private static function routing()
 	{
-		//if the URI calls not the index.php then start session and echo the Routing, else it echo that the user is in the root
-			if(self::$uri !== $_SERVER['PHP_SELF'] && self::$uri !== '/'){	
-				session_start();
-				$routingEngine = new RoutingEngine;
-				echo $routingEngine->handleRouting(self::$uri);
-			}else{
-				echo 'root';
-			}
+		//start session and echo the Routing, else it echo that the user is in the root
+			session_start();
+			$routingEngine = new RoutingEngine;
+			echo $routingEngine->handleRouting(self::$uri);
 	}
 		
 }
