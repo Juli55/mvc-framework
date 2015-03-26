@@ -36,8 +36,14 @@ class testController extends Controller
 		
 		return $this->JsonResponse(
 							array(
-								'red' => 'joho1',
-								'white' => 'hey',
+								'email' => array(
+												'errorMsg' => 'das',
+												'valid'    => false
+												),
+								'passwort' => array(
+												'errorMsg' => 'falsch',
+												'valid'    => true
+												),
 								)
 							);
 	}
