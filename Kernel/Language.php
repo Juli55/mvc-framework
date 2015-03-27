@@ -31,7 +31,7 @@ class Language
 	 *
 	 * @param string $language
 	 *
-	 * @return void
+	 * @return string
 	 */
 	private function setLanguage($language)
 	{
