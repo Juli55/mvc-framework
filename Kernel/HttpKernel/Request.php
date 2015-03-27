@@ -82,8 +82,8 @@ class Request
 			}
 
 			$this->cookie = $_COOKIE;
-			if(!empty($post)){
-				$this->cookie = $post;
+			if(!empty($cookie)){
+				$this->cookie = $cookie;
 			}
 
 			$this->files = $_FILES;
@@ -149,31 +149,57 @@ class Request
 	 */
 	private static function setGlobalGet($key,$value)
 	{
-		$_get[$key] = $value;
+		$_GET[$key] = $value;
 	}
 
 	/**
 	 * Set the intern $cookie variable and call the method setGlobalcookie to set the globalVariable
 	 * 
 	 * @param string $key, $value
+	 * @param int $time
 	 *
 	 * @return void
 	 */
-	public function setCookie($key,$value){
-		$this->cookie[$key] = $value;
-		self::setGlobalcookie($key,$value);
+	public function setCookie($key, $value, $time){
+		$this->cookie[$key] = array($value, $time);
+		self::setGlobalcookie($key, $value, $time);
 	}
 
 	/**
 	 * Set the the globalVariable
 	 * 
 	 * @param string $key, $value
+	 * @param int $time
 	 *
 	 * @return void
 	 */
-	private static function setGlobalCookie($key,$value)
+	private static function setGlobalCookie($key, $value, $time)
 	{
-		$_cookie[$key] = $value;
+		setcookie($key, $value, time()+$time);
+	}
+
+	/**
+	 * destroy the intern $cookie variable and call the method destroyGlobalCookie to destry the globalVariable
+	 * 
+	 * @param string $key
+	 *
+	 * @return void
+	 */
+	public function destroyCookie($key){
+		unset($this->cookie[$key]);
+		self::setGlobalcookie($key);
+	}
+
+	/**
+	 * destroy the the globalVariable
+	 * 
+	 * @param string $key
+	 *
+	 * @return void
+	 */
+	private static function destroyGlobalCookie($key)
+	{
+		setcookie($key, "", time()-1);
 	}
 
 	/**
@@ -199,7 +225,7 @@ class Request
 	private static function setGlobalFiles($key,$value)
 	{
 
-		$_files[$key] = $value;
+		$_FILES[$key] = $value;
 	}
 
 	/**
@@ -224,7 +250,7 @@ class Request
 	 */
 	private static function setGlobalServer($key,$value)
 	{
-		$_server[$key] = $value;
+		$_SERVER[$key] = $value;
 	}
 
 	/**
@@ -249,6 +275,6 @@ class Request
 	 */
 	private static function setGlobalSession($key,$value)
 	{
-		$_session[$key] = $value;
+		$_SESSION[$key] = $value;
 	}
 }

@@ -20,7 +20,8 @@ class test1Controller extends Controller
 	 */
 	public function test1()
 	{
-
+		$request = new Request();
+		$request->setCookie('hey', 'eins', 300);
 		
 
 		return $this->render("test:templates:default.html",
