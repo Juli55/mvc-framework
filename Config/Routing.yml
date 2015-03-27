@@ -10,3 +10,5 @@ test1:
     action: test1
     srcFolder: test
     security: false
+404:
+    template: 404.html

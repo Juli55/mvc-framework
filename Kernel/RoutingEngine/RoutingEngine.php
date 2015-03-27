@@ -3,6 +3,7 @@
 namespace Kernel\RoutingEngine;
 
 use Kernel\Config;
+use Kernel\View;
 use Tools\Authentification\Security;
 
 /**
@@ -127,46 +128,66 @@ class RoutingEngine
 	 */
 	public function handleRouting($uri)
 	{
+		$routing = Config::routing();
+		$specialRouting = array('404');
 		//check if uri fits in a routing pattern
-		foreach(Config::routing() as $key => $value){
-			//check if the srcFolder from the Routing is initialized
-				if(array_key_exists($value['srcFolder'], Config::SrcInit())){
-					//check if the pattern equals the requested URI
-						$dir = ltrim(Config::SrcInit()[$value['srcFolder']], '/');
-						if($value['pattern'] === $uri){
-							return $this->callController($dir, $value);
-						}else{
-							//remove the first and last '/' in pattern and uri
-								$pattern = trim($value['pattern'], '/');
-								$uri	 = trim($uri, '/');
-							//explode pattern and uri by '/'
-								$patternParts  = explode('/', $pattern);
-								$uriParts	   = explode('/', $uri);
-							//count the array to check if they have the same size
-								$patternPartsCount = count($patternParts);
-								$uriPartsCount 	   = count($uriParts);
-							//check if the patternParts equals the uriParts
-								if($patternPartsCount === $uriPartsCount){
-									//handle the patternParts
-										for($i = 0; $i < $patternPartsCount; $i++){
-											//identify patternVariables an store in Pattern Array
-												$this->handlePatternVariables($value, $uri);
-											//at the last continuous call the Controller
-												if($i === $patternPartsCount-1){
-													if($patternParts[0] === $uriParts[0]){
-														return $this->callController($dir, $value);	
-													}
+			foreach($routing as $key => $value){
+				if(isset($specialRouting[$key])){
+					//check if the srcFolder from the Routing is initialized
+						if(array_key_exists($value['srcFolder'], Config::SrcInit())){
+							//check if the pattern equals the requested URI
+								$dir = ltrim(Config::SrcInit()[$value['srcFolder']], '/');
+								if($value['pattern'] === $uri){
+									return $this->callController($dir, $value);
+								}else{
+									//remove the first and last '/' in pattern and uri
+										$pattern = trim($value['pattern'], '/');
+										$uri	 = trim($uri, '/');
+									//explode pattern and uri by '/'
+										$patternParts  = explode('/', $pattern);
+										$uriParts	   = explode('/', $uri);
+									//count the array to check if they have the same size
+										$patternPartsCount = count($patternParts);
+										$uriPartsCount 	   = count($uriParts);
+									//check if the patternParts equals the uriParts
+										if($patternPartsCount === $uriPartsCount){
+											//handle the patternParts
+												for($i = 0; $i < $patternPartsCount; $i++){
+													//identify patternVariables an store in Pattern Array
+														$this->handlePatternVariables($value, $uri);
+													//at the last continuous call the Controller
+														if($i === $patternPartsCount-1){
+															if($patternParts[0] === $uriParts[0]){
+																return $this->callController($dir, $value);	
+															}
+														}
 												}
-										}
 
+										}
 								}
 						}
 				}
-		}
-		if('/'.$uri === $_SERVER['PHP_SELF'] || $uri === ''){
-			return "root";
-		}else{
-			return "Page not found!";
-		}
+			}
+			if('/'.$uri === $_SERVER['PHP_SELF'] || $uri === ''){
+				return "root";
+			}else{
+				if(isset($routing['404'])){
+					if(isset($routing['404']['template'])){
+						$file = $routing['404']['template'];
+						$exist = file_exists($file);
+						if($exist){
+							ob_start();
+							include $file;
+							$output = ob_get_contents();
+							ob_end_clean();
+							return $output;
+						}else{
+							//throw Exception
+								return $file.' not found';
+						}
+					}
+				}
+				return "Page not found!";
+			}
 	}
 }
