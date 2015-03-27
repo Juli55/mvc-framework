@@ -74,4 +74,25 @@ class Security{
 			}
 		return false;
 	}
+
+	/**
+	 *
+	 * The logoutMethod logs out by killing Cookie and destroy session
+	 * 
+	 * @param dynamic $cookie
+	 * 
+	 * @return void
+	 */
+	public function logout($cookie)
+	{
+		$request = new Request;
+		session_destroy();
+		if(is_array($cookie)){
+			foreach ($cookie as $cookieName) {
+				$request->destroyCookie($cookieName);
+			}
+		}else{
+			$request->destroyCookie($cookie);
+		}
+	}
 }
