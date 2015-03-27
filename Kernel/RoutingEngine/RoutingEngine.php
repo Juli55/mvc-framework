@@ -132,7 +132,7 @@ class RoutingEngine
 		$specialRouting = array('404');
 		//check if uri fits in a routing pattern
 			foreach($routing as $key => $value){
-				if(isset($specialRouting[$key])){
+				if(!in_array($key, $specialRouting)){
 					//check if the srcFolder from the Routing is initialized
 						if(array_key_exists($value['srcFolder'], Config::SrcInit())){
 							//check if the pattern equals the requested URI
@@ -185,6 +185,9 @@ class RoutingEngine
 							//throw Exception
 								return $file.' not found';
 						}
+					}else{
+						$dir = ltrim($routing['404']['srcFolder'], '/');
+						return $this->callController($dir, $routing['404']);
 					}
 				}
 				return "Page not found!";
