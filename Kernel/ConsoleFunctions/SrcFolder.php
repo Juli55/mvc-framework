@@ -2,6 +2,7 @@
 
 namespace Kernel\ConsoleFunctions;
 
+use Kernel\Config;
 use Tools\Folder\Folder;
 
 class SrcFolder
@@ -53,11 +54,16 @@ class SrcFolder
 			fwrite($controller, '');
 			fwrite($controller, trim($controllerValue));
 			fclose($controller);
-		// generate template
+		//generate template
 			$templateValue = "<div>hello</div>";
 			$template = fopen($dir.'/Resources/views/default.html', "w") or die("Unable to open file!\n");
 			fwrite($template, '');
 			fwrite($template, trim($templateValue));
 			fclose($template);
+		//amend srcInit
+			if(!array_key_exists($line, Config::srcInit())){
+				$content = $line.': '.$line;
+				file_put_contents('Config/srcInit.yml', "\n".$content, FILE_APPEND);
+			}
 	}
 }
