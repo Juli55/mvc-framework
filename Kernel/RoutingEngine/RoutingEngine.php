@@ -136,34 +136,37 @@ class RoutingEngine
 					//check if the srcFolder from the Routing is initialized
 						if(array_key_exists($value['srcFolder'], Config::SrcInit())){
 							//check if the pattern equals the requested URI
-								$dir = ltrim(Config::SrcInit()[$value['srcFolder']], '/');
-								if($value['pattern'] === $uri){
-									return $this->callController($dir, $value);
-								}else{
-									//remove the first and last '/' in pattern and uri
-										$pattern = trim($value['pattern'], '/');
-										$uri	 = trim($uri, '/');
-									//explode pattern and uri by '/'
-										$patternParts  = explode('/', $pattern);
-										$uriParts	   = explode('/', $uri);
-									//count the array to check if they have the same size
-										$patternPartsCount = count($patternParts);
-										$uriPartsCount 	   = count($uriParts);
-									//check if the patternParts equals the uriParts
-										if($patternPartsCount === $uriPartsCount){
-											//handle the patternParts
-												for($i = 0; $i < $patternPartsCount; $i++){
-													//identify patternVariables an store in Pattern Array
-														$this->handlePatternVariables($value, $uri);
-													//at the last continuous call the Controller
-														if($i === $patternPartsCount-1){
-															if($patternParts[0] === $uriParts[0]){
-																return $this->callController($dir, $value);	
+								$srcFolder = Config::SrcInit()[$value['srcFolder']];
+								$dir = ltrim($srcFolder, '/');
+								if(is_dir('../src/'.$srcFolder)){
+									if($value['pattern'] === $uri){
+										return $this->callController($dir, $value);
+									}else{
+										//remove the first and last '/' in pattern and uri
+											$pattern = trim($value['pattern'], '/');
+											$uri	 = trim($uri, '/');
+										//explode pattern and uri by '/'
+											$patternParts  = explode('/', $pattern);
+											$uriParts	   = explode('/', $uri);
+										//count the array to check if they have the same size
+											$patternPartsCount = count($patternParts);
+											$uriPartsCount 	   = count($uriParts);
+										//check if the patternParts equals the uriParts
+											if($patternPartsCount === $uriPartsCount){
+												//handle the patternParts
+													for($i = 0; $i < $patternPartsCount; $i++){
+														//identify patternVariables an store in Pattern Array
+															$this->handlePatternVariables($value, $uri);
+														//at the last continuous call the Controller
+															if($i === $patternPartsCount-1){
+																if($patternParts[0] === $uriParts[0]){
+																	return $this->callController($dir, $value);	
+																}
 															}
-														}
-												}
+													}
 
-										}
+											}
+									}
 								}
 						}
 				}
@@ -186,8 +189,12 @@ class RoutingEngine
 								return $file.' not found';
 						}
 					}else{
-						$dir = ltrim($routing['404']['srcFolder'], '/');
-						return $this->callController($dir, $routing['404']);
+						$srcFolder = Config::SrcInit()[$routing['404']['srcFolder']];
+						$dir = ltrim($srcFolder, '/');
+						if(is_dir('../src/'.$srcFolder)){
+							$dir = ltrim($srcFolder, '/');
+							return $this->callController($dir, $routing['404']);
+						}
 					}
 				}
 				return "Page not found!";
