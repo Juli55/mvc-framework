@@ -43,7 +43,7 @@ class RoutingEngine
 						$security = $config['security'];
 					}
 				if($security){
-					//$this->handleSecurity();	
+					$this->handleSecurity();	
 				}
 				return call_user_func_array(array($controller, $config['action']), $this->parameters);
 			}else{
