@@ -18,7 +18,10 @@ class Decoder
 	 */
 	public static function yamlParseFile($filename)
 	{
-		return yaml_parse_file($filename);
+		$folderName = basename(dirname(__FILE__));
+		$scriptName = basename(__FILE__);
+		$rootPath = str_replace($folderName.'\\'.$scriptName,'\\',__FILE__); 
+		return yaml_parse_file($rootPath.$filename);
 	}
 	
 	/**
