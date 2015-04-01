@@ -7,6 +7,7 @@ use Kernel\HttpKernel\Request;
 use Tools\Files\Upload\FileUpload;
 
 use Kernel\EntityManager\EntityManager;
+use src\test\Form\testValidation;
 
 
 /**
@@ -33,18 +34,8 @@ class testController extends Controller
 				echo  "Uploaden fehlgeschlagen";
 			}
 		}
-		
-		return $this->JsonResponse(
-							array(
-								'email' => array(
-												'errorMsg' => 'das',
-												'valid'    => false
-												),
-								'passwort' => array(
-												'errorMsg' => 'falsch',
-												'valid'    => true
-												),
-								)
-							);
+		$testValidation = new testValidation();
+		$validation = $testValidation->testValidate();
+		return $this->JsonResponse($validation);
 	}
 }
