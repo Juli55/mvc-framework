@@ -47,11 +47,9 @@ class Language
 	 *
 	 * this Function returns the Language
 	 *
-	 * @param string $language
-	 *
 	 * @return string
 	 */
-	private function getLanguage()
+	public function getLanguage()
 	{
 		return $this->language;
 	}
