@@ -7,6 +7,7 @@ use Kernel\HttpKernel\Request;
 use Tools\Files\Upload\FileUpload;
 
 use Kernel\EntityManager\EntityManager;
+use src\test\Form\testValidation;
 
 
 /**
@@ -25,26 +26,17 @@ class testController extends Controller
 
 		$request = new Request();
 		$get = 'nothing';
-		if(isset($request->files['eins'])){
-			$upload = new FileUpload('img',$request->files['eins']);
-			if($upload->upload()){
-				echo  "Uploaden ist geglückt!";
-			}else{
-				echo  "Uploaden fehlgeschlagen";
+		//fileUpload
+			if(isset($request->files['eins'])){
+				$upload = new FileUpload('img',$request->files['eins']);
+				if($upload->upload()){
+					echo  "Uploaden ist geglückt!";
+				}else{
+					echo  "Uploaden fehlgeschlagen";
+				}
 			}
-		}
-		
-		return $this->JsonResponse(
-							array(
-								'email' => array(
-												'errorMsg' => 'das',
-												'valid'    => false
-												),
-								'passwort' => array(
-												'errorMsg' => 'falsch',
-												'valid'    => true
-												),
-								)
-							);
+		$testValidation = new testValidation();
+		$validation = $testValidation->testValidate($request->post);
+		return $this->JsonResponse($validation);
 	}
 }
