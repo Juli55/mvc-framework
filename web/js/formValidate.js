@@ -2,6 +2,7 @@ function formValidate(){
 	//get the Data from Ajax and then change the DOM if changes in the validations
 		this.getData = function(input, route, setValidation, validationArray){
     		$.ajax({
+    		  method: "POST",
 		      url: route,
 		      data: input.serialize(),
 		      dataType: 'json',
@@ -50,11 +51,10 @@ function formValidate(){
 								internValidationArray[name] = {};
 				    			internValidationArray[name].valid = value.valid;
 				    			internValidationArray[name].errorMsg = value.errorMsg;
-				    			change.valid = this.validateArray[name];
+				    			change.valid = internValidationArray[name];
 							}
 						});
 				}
-				console.log(internValidationArray);
 				return change;
 		};
 }

@@ -63,12 +63,14 @@
 		});	
 	});
 	var validate = function(change, form){
-
-		console.log(change);
 			$.each(change, function(name, value){
-				$('p').html(value.valid);
-			    console.log(name);
+				if(change.email.valid){
+					$('p').html(change.email.valid);
+				}else{
+					$('p').html('false');
+				}
 			});
+			
 	}
  </script>
 </body>
