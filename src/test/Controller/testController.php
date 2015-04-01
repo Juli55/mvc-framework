@@ -26,16 +26,17 @@ class testController extends Controller
 
 		$request = new Request();
 		$get = 'nothing';
-		if(isset($request->files['eins'])){
-			$upload = new FileUpload('img',$request->files['eins']);
-			if($upload->upload()){
-				echo  "Uploaden ist geglückt!";
-			}else{
-				echo  "Uploaden fehlgeschlagen";
+		//fileUpload
+			if(isset($request->files['eins'])){
+				$upload = new FileUpload('img',$request->files['eins']);
+				if($upload->upload()){
+					echo  "Uploaden ist geglückt!";
+				}else{
+					echo  "Uploaden fehlgeschlagen";
+				}
 			}
-		}
 		$testValidation = new testValidation();
-		$validation = $testValidation->testValidate();
+		$validation = $testValidation->testValidate($request->post);
 		return $this->JsonResponse($validation);
 	}
 }

@@ -2,26 +2,36 @@
 
 namespace src\test\Form;
 
+use src\test\Validator\emailValidator;
+
 /**
  * @author Julian Bertsch <julian.bertsch42@gmail.de>
  */
 class testValidation
 {
 	/**
-	 * @return View 
+	 * @return array
 	 */
-	public function testValidate()
+	public function testValidate($values)
 	{
-		
-		$validation = array();
-		$validation['email'] = array(
-									'errorMsg' => 'das',
-									'valid'    => false
-									);
-		$validation['password'] = array(
+		//init validationArray
+			$validationArray = array();
+		//init Validators
+			$emailValidator = new emailValidator;
+		//assign Validators
+			$validators = array(
+								'email' => $emailValidator
+								);
+		//validate
+			foreach($values as $key => $value){
+				if(array_key_exists($key, $validators)){
+					$validationArray[$key] = $validators[$key]->validate($value);
+				}
+			}
+		$validationArray['password'] = array(
 										'errorMsg' => 'falsch',
 										'valid'    => true
 										);
-		return $validation;
+		return $validationArray;
 	}
 }
