@@ -8,7 +8,6 @@ namespace src\test\Validator;
 class emailValidator
 {
 	/**
-	 *
 	 * @param $value
 	 *
 	 * @return array 

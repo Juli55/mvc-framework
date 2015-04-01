@@ -10,6 +10,8 @@ use src\test\Validator\emailValidator;
 class testValidation
 {
 	/**
+	 * @param $value
+	 * 
 	 * @return array
 	 */
 	public function testValidate($values)
