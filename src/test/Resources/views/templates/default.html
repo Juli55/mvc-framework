@@ -23,13 +23,20 @@
 {% endblock form %}
 {% form %}
 {% block form2 %}
-	<form method="post" id="" name="testForm" action="">
+	<form method="post" id="testForm" name="testForm" action="">
     	<input type="text" name="email" />
     	<p class='error ui-widget-content'></p>
+    	<img src="img/design.PNG" />
     	<input type="text" name="hey" />
     	<input type="submit" name="form" value="submit" />
   	</form>
 {% endblock form2 %}
+{% block uploadform %}
+  	<form method="post" enctype="multipart/form-data">
+		<input type='file' name='eins' />
+		<input type='submit' value='abschießen' />
+	</form>
+{% endblock uploadform %}
 {{block post}}
   <div id="wines" class="ui-widget-content">
   	was
@@ -57,10 +64,10 @@
 		return false;
 		});
   		var form = {};
-		$(document).on('submit', 'form', function(){
+		$(document).on('submit', 'form#testForm', function(){
 			formValidate.getData($(this), '/test/hey', validate, form);
 			return false;
-		});	
+		});
 	});
 	var validate = function(change, form){
 			$.each(change, function(name, value){

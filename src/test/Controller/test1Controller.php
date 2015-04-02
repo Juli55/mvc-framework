@@ -23,7 +23,17 @@ class test1Controller extends Controller
 		$request = new Request();
 		$request->setCookie('hey', 'eins', 300);
 		
-
+		$request = new Request();
+		$get = 'nothing';
+		//fileUpload
+			if(isset($request->files['eins'])){
+				$upload = new FileUpload('img',$request->files['eins']);
+				if($upload->upload()){
+					echo  "Uploaden ist geglückt!";
+				}else{
+					echo  "Uploaden fehlgeschlagen";
+				}
+			}
 		return $this->render("test:templates:default.html",
 							array(
 								'hey1' => 'heye',
