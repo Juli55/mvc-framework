@@ -47,8 +47,8 @@ class FileUpload
 				//fieldTypes
 					if(!empty($fieldTypes)){
 						foreach($useFieldTypes as $useFieldType){
-							if(array_key_exists($fieldTypes, $useFieldType)){
-								$whiteList[] = $fieldTypes[$useFieldType];
+							if(array_key_exists($useFieldType, $fieldTypes)){
+								$whiteList[$useFieldType] = $fieldTypes[$useFieldType];
 							}
 						}
 					}
@@ -57,8 +57,8 @@ class FileUpload
 						foreach($fileExtensions as $fileExtension){
 							foreach($fieldTypes as $key => $value){
 								if(array_key_exists($fileExtension, $value)){
-									if(array_key_exists($key, $whiteList)){
-										$whiteList[] = $value[$fileExtension];
+									if(!array_key_exists($key, $whiteList)){
+										$whiteList[$fileExtension] = $value[$fileExtension];
 									}
 								}
 							}
@@ -67,10 +67,10 @@ class FileUpload
 				//mimeTypes
 					if(!empty($mimeTypes)){
 						foreach($mimeTypes as $mimeType){
-							foreach($fieldTypes as $value){
+							foreach($fieldTypes as $key => $value){
 								if(in_array($mimeType, $value)){
-									if(array_key_exists($key, $whiteList)){
-										$whiteList[] = array_search($mimeType, $value); 
+									if(!array_key_exists($key, $whiteList)){
+										$whiteList[array_search($mimeType, $value)] = $mimeType; 
 									}
 								}
 							}
@@ -96,7 +96,7 @@ class FileUpload
 			$mimeTypeServer  = '';
 			$mimeTypeBrowser = '';
 		foreach($whiteList as $key => $value){
-			//
+			
 		}
 		//if the folder doesn't exist then create it
 			if(!is_dir($folder)){			

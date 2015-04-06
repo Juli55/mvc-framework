@@ -26,7 +26,7 @@ class test1Controller extends Controller
 		$get = 'nothing';
 		//fileUpload
 			if(isset($request->files['file'])){
-				$upload = new FileUpload('img',$request->files['file']);
+				$upload = new FileUpload('img',$request->files['file'], $fileExtensions = array('ra'), $mimeTypes = array('audio/x-pn-realaudio-plugin'), $useFieldTypes = array('image'));
 				if($upload->upload()){
 					echo  "Uploaden ist geglückt!";
 				}else{
