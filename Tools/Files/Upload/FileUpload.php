@@ -88,16 +88,41 @@ class FileUpload
 	 */
 	public function upload()
 	{
-		$folder    = $this->folder;
-		$file 	   = $this->file;
-		$maxSize   = $this->maxSize;
-		$whiteList = $this->whiteList;
+		$folder    			 = $this->folder;
+		$file 	   			 = $this->file;
+		$maxSize   			 = $this->maxSize;
+		$whiteList 			 = $this->whiteList;
+		$uploadFileExtension = $file['name'];
+		$fileExtensionValid	 = false;
+		$mimeTypeValid		 = false;
+		$fileSize			 = false;
+		$finfo 				 = new \finfo(FILEINFO_MIME);
 		//read mimeTypes
-			$mimeTypeServer  = '';
-			$mimeTypeBrowser = '';
+			$mimeTypeServer  = $files['type'];
+			$mimeTypeClient  = $finfo->file($files['tmp_name']);
 		foreach($whiteList as $key => $value){
-			
+			if(is_array($value)){
+				foreach($value as $fileExtension => $mimeType){
+					$fileExtension = '.'.$fileExtension;
+					//check fileExtension
+						if(preg_match("/$fileExtension\$/i", $uploadFileExtension)){
+							$fileExtensionValid = true;
+						}
+					//check mimeType
+				}
+			}else{
+				$fileExtension = $key;
+				$mimeType 	   = $value;
+				$fileExtension = '.'.$fileExtension;
+				//check fileExtension
+					if(preg_match("/$fileExtension\$/i", $uploadFileExtension)){
+						$fileExtensionValid = true;
+					}
+				//check mimeType
+
+			}
 		}
+		echo $fileExtensionValid;
 		//if the folder doesn't exist then create it
 			if(!is_dir($folder)){			
 				mkdir($folder, 0700);
