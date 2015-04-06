@@ -20,14 +20,13 @@ class test1Controller extends Controller
 	 */
 	public function test1()
 	{
+
 		$request = new Request();
 		$request->setCookie('hey', 'eins', 300);
-		
-		$request = new Request();
 		$get = 'nothing';
 		//fileUpload
-			if(isset($request->files['eins'])){
-				$upload = new FileUpload('img',$request->files['eins']);
+			if(isset($request->files['file'])){
+				$upload = new FileUpload('img',$request->files['file']);
 				if($upload->upload()){
 					echo  "Uploaden ist geglückt!";
 				}else{

@@ -5,25 +5,6 @@ namespace Tools\Files\Upload;
 class FileType
 {
 	/**
-	 * @var array
-	 */
-	private $folder;
-
-	/**
-	 *
-	 * @param string $folder,$maxSize
-	 * @param array $file
-	 *
-	 * @return void
-	 */
-	public function __construct($fileExtensions = array(), $)
-	{
-		$this->folder 	= $folder;
-		$this->file 	= $file;
-		$this->maxSize 	= $maxSize;
-	}
-
-	/**
 	 *
 	 * The uploadMethod uploads a File 
 	 *
@@ -119,7 +100,7 @@ class FileType
 						"wav" => "audio/x-wav"
 						);
 		//chemical
-			$chemical´= array(
+			$chemical = array(
 							"pdb" => "chemical/x-pdb",
 							"xyz" => "chemical/x-xyz"
 							);
