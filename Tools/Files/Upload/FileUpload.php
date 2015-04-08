@@ -93,7 +93,8 @@ class FileUpload
 		$uploadFileSize      = $file['size'] /1000;
 		$maxSize   			 = $this->maxSize;
 		$whiteList 			 = $this->whiteList;
-		$uploadFileExtension = $file['name'];
+		$uploadFileName 	 = $file['name'];
+		$uploadFileExtension = strchr($uploadFileName, '.');
 		$fileExtensionValid	 = false;
 		$mimeTypeValid		 = false;
 		$fileSizeValid		 = false;
@@ -112,7 +113,7 @@ class FileUpload
 					foreach($value as $fileExtension => $mimeType){
 						$fileExtension = '.'.$fileExtension;
 						//check fileExtension
-							if(preg_match("/$fileExtension\$/i", $uploadFileExtension)){
+							if(preg_match("/$fileExtension\$/i", $uploadFileName)){
 								$fileExtensionValid = true;
 							}
 						//check mimeType
@@ -125,7 +126,7 @@ class FileUpload
 					$mimeType 	   = $value;
 					$fileExtension = '.'.$fileExtension;
 					//check fileExtension
-						if(preg_match("/$fileExtension\$/i", $uploadFileExtension)){
+						if(preg_match("/$fileExtension\$/i", $uploadFileName)){
 							$fileExtensionValid = true;
 						}
 					//check mimeType
@@ -142,7 +143,8 @@ class FileUpload
 				}
 			//upload file and return boolean to check if it has done or not
 				$folder 	= rtrim($folder, '/');
-				$uploadFile = $folder.'/'.basename($file['name']);
+				$fileName  	= md5(uniqid(rand())).$uploadFileExtension;
+				$uploadFile = $folder.'/'.$fileName;
 				if(move_uploaded_file($file['tmp_name'], $uploadFile)){
 					return true;
 				}else{
