@@ -96,10 +96,10 @@ class FileUpload
 		$fileExtensionValid	 = false;
 		$mimeTypeValid		 = false;
 		$fileSize			 = false;
-		$finfo 				 = new \finfo(FILEINFO_MIME);
+		$finfo 				 = new \finfo(FILEINFO_MIME_TYPE);
 		//read mimeTypes
-			$mimeTypeServer  = $files['type'];
-			$mimeTypeClient  = $finfo->file($files['tmp_name']);
+			$mimeTypeServer  = $finfo->file($file['tmp_name']);
+			$mimeTypeClient  = $file['type'];
 		foreach($whiteList as $key => $value){
 			if(is_array($value)){
 				foreach($value as $fileExtension => $mimeType){
@@ -109,6 +109,9 @@ class FileUpload
 							$fileExtensionValid = true;
 						}
 					//check mimeType
+						if($mimeType === $mimeTypeClient && $mimeType === $mimeTypeServer){
+							$mimeTypeValid = true;
+						}
 				}
 			}else{
 				$fileExtension = $key;
@@ -119,10 +122,11 @@ class FileUpload
 						$fileExtensionValid = true;
 					}
 				//check mimeType
-
+					if($value === $mimeTypeClient && $value === $mimeTypeServer){
+						$mimeTypeValid = true;
+					}
 			}
 		}
-		echo $fileExtensionValid;
 		//if the folder doesn't exist then create it
 			if(!is_dir($folder)){			
 				mkdir($folder, 0700);
