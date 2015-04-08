@@ -90,55 +90,66 @@ class FileUpload
 	{
 		$folder    			 = $this->folder;
 		$file 	   			 = $this->file;
+		$uploadFileSize      = $file['size'] /1000;
 		$maxSize   			 = $this->maxSize;
 		$whiteList 			 = $this->whiteList;
 		$uploadFileExtension = $file['name'];
 		$fileExtensionValid	 = false;
 		$mimeTypeValid		 = false;
-		$fileSize			 = false;
+		$fileSizeValid		 = false;
 		$finfo 				 = new \finfo(FILEINFO_MIME_TYPE);
 		//read mimeTypes
 			$mimeTypeServer  = $finfo->file($file['tmp_name']);
 			$mimeTypeClient  = $file['type'];
-		foreach($whiteList as $key => $value){
-			if(is_array($value)){
-				foreach($value as $fileExtension => $mimeType){
+
+		//validate FileSize
+			if($uploadFileSize <= $maxSize){
+				$fileSizeValid = true;
+			}
+		if($fileSizeValid){
+			foreach($whiteList as $key => $value){
+				if(is_array($value)){
+					foreach($value as $fileExtension => $mimeType){
+						$fileExtension = '.'.$fileExtension;
+						//check fileExtension
+							if(preg_match("/$fileExtension\$/i", $uploadFileExtension)){
+								$fileExtensionValid = true;
+							}
+						//check mimeType
+							if($mimeType === $mimeTypeClient && $mimeType === $mimeTypeServer){
+								$mimeTypeValid = true;
+							}
+					}
+				}else{
+					$fileExtension = $key;
+					$mimeType 	   = $value;
 					$fileExtension = '.'.$fileExtension;
 					//check fileExtension
 						if(preg_match("/$fileExtension\$/i", $uploadFileExtension)){
 							$fileExtensionValid = true;
 						}
 					//check mimeType
-						if($mimeType === $mimeTypeClient && $mimeType === $mimeTypeServer){
+						if($value === $mimeTypeClient && $value === $mimeTypeServer){
 							$mimeTypeValid = true;
 						}
 				}
-			}else{
-				$fileExtension = $key;
-				$mimeType 	   = $value;
-				$fileExtension = '.'.$fileExtension;
-				//check fileExtension
-					if(preg_match("/$fileExtension\$/i", $uploadFileExtension)){
-						$fileExtensionValid = true;
-					}
-				//check mimeType
-					if($value === $mimeTypeClient && $value === $mimeTypeServer){
-						$mimeTypeValid = true;
-					}
 			}
 		}
-		//if the folder doesn't exist then create it
-			if(!is_dir($folder)){			
-				mkdir($folder, 0700);
-			}
-		//upload file and return boolean to check if it has done or not
-			$folder 	= rtrim($folder, '/');
-			$uploadFile = $folder.'/'.basename($file['name']);
-			if(move_uploaded_file($file['tmp_name'], $uploadFile)){
-				return true;
-			}else{
-				echo $file['error'];
-				return false;
-			}
+		if($fileExtensionValid && $mimeTypeValid && $fileSizeValid){
+			//if the folder doesn't exist then create it
+				if(!is_dir($folder)){			
+					mkdir($folder, 0700);
+				}
+			//upload file and return boolean to check if it has done or not
+				$folder 	= rtrim($folder, '/');
+				$uploadFile = $folder.'/'.basename($file['name']);
+				if(move_uploaded_file($file['tmp_name'], $uploadFile)){
+					return true;
+				}else{
+					echo $file['error'];
+					return false;
+				}
+		}
+		return false;
 	}
 }
