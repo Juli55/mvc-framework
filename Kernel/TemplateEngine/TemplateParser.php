@@ -157,6 +157,19 @@ class TemplateParser extends GlobalParser
 
 	/**
 	 * 
+	 * The readLanguagesMethod parse template language and replace them in output with the value
+	 *
+	 * @param string $value, $output
+	 *
+	 * @return string
+	 */
+	private function readLanguages($value, $output)
+	{
+
+	}
+
+	/**
+	 * 
 	 * this method calls the Block and replace the Content wih callSyntax
 	 * 
 	 * @param string $value, $output
