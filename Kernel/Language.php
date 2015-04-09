@@ -15,14 +15,20 @@ class Language
 	private $language;
 
 	/**
+	 * @var array
+	 */
+	private $languageArray;
+
+	/**
 	 *
-	 * The Constructor calls the setLanguage
+	 * The Constructor calls the setLanguage and the initLanguage
 	 *
 	 * @return void
 	 */
 	public function __construct($language = '')
 	{
-		$this->language = $this->setLanguage($language);
+		$this->language 	 = $this->setLanguage($language);
+		$this->languageArray = $this->initLanguage();
 	}
 
 	/**
@@ -43,6 +49,11 @@ class Language
 		}
 	}
 
+	private function initLanguage()
+ 	{
+ 		return Decoder::yamlParseFile(ROOT_PATH . 'src/test/Resources/views/translation/' . $this->language . LANGUAGE_DE . '.yml');	
+ 	}
+
 	/**
 	 *
 	 * this Function returns the Language
@@ -52,5 +63,16 @@ class Language
 	public function getLanguage()
 	{
 		return $this->language;
+	}
+
+	/**
+	 *
+	 * this Function returns the parsed Language from the yml
+	 *
+	 * @return array
+	 */
+	public function getLanguageArray()
+	{
+		return $this->languageArray;
 	}
 }
