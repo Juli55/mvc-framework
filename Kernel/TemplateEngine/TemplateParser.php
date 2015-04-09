@@ -92,6 +92,11 @@ class TemplateParser extends GlobalParser
 			$pattern = array();
 		    foreach($template_variable[1] as $key => $value){
 		    	$subStrings = explode(' ', trim($value));
+		    	if(strpos($value,'|trans'))
+		    	{
+		    		$output = $this->readLanguages($value,$output);
+		    	}
+		    	else{
 		    	//if the Value is split by '.' it want to call an Array or Object, else it reads the Parameter by the first Key
 					if(strpos($value,'.')){
 						$output = $this->readObjectsAndArrays($value, $parameters, $output);
@@ -103,6 +108,7 @@ class TemplateParser extends GlobalParser
 							$output = $this->readParameter($value, $parameters, $output);
 						}
 					}
+				}
 			}
 		return $output;
 	}
@@ -160,7 +166,6 @@ class TemplateParser extends GlobalParser
 	 * The readLanguagesMethod parse template language and replace them in output with the value
 	 *
 	 * @param string $value, $output
-	 *
 	 * @return string
 	 */
 	private function readLanguages($value, $output)
