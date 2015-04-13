@@ -24,7 +24,7 @@ class test1Controller extends Controller
 		$request->setCookie('hey', 'eins', 300);
 		
 
-		return $this->render("test:templates:default.html",
+		return $this->render("test:templates:test:test.php.twig",
 							array(
 								'hey1' => 'heye',
 								'wasgeht' => array('hey' => array(
