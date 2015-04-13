@@ -6,6 +6,7 @@ use Kernel\HttpKernel\Request;
 
 /**
  * @author Julian Bertsch <julian.bertsch42@gmail.de>
+ * @author Dennis Eisele <dennis.eisele@online.de>
  */
 class Language
 {
@@ -51,7 +52,7 @@ class Language
 
 	private function initLanguage()
  	{
- 		return Decoder::yamlParseFile(ROOT_PATH . 'src/test/Resources/views/translation/' . $this->language . LANGUAGE_DE . '.yml');	
+ 		return Decoder::yamlParseFile('../src/test/Resources/views/translation/message.' . $this->language . '.yml');	
  	}
 
 	/**

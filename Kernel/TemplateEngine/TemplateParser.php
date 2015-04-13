@@ -4,7 +4,12 @@ namespace Kernel\TemplateEngine;
 
 use Kernel\RoutingEngine\RoutingEngine;
 use Kernel\View;
+use Kernel\Language;
 
+/**
+ * @author Julian Bertsch <julian.bertsch42@gmail.de>
+ * @author Dennis Eisele <dennis.eisele@online.de>
+ */
 class TemplateParser extends GlobalParser
 {
 	/**
@@ -170,7 +175,11 @@ class TemplateParser extends GlobalParser
 	 */
 	private function readLanguages($value, $output)
 	{
-
+		$Language = new Language;
+		$arrayStorage = $Language->getLanguageArray();
+		foreach ($arrayStorage as $key => $value) {
+			
+		}
 	}
 
 	/**
