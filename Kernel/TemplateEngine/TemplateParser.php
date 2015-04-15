@@ -177,9 +177,9 @@ class TemplateParser extends GlobalParser
 	{
 		$Language = new Language;
 		$arrayStorage = $Language->getLanguageArray();
-		foreach ($arrayStorage as $key => $value) {
-			
-		}
+		$replace = $arrayStorage;
+		$pattern = '/{{'.$value.'|trans'.'}}/';
+		$output = preg_replace($pattern,$replace,$output);
 	}
 
 	/**

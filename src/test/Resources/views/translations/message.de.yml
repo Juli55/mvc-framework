@@ -1,1 +1,2 @@
-test: Testen
+test:
+	test1: Testen
