@@ -3,6 +3,7 @@
 namespace Kernel;
 
 use Kernel\HttpKernel\Request;
+use Kernel\Decoder\Decoder;
 
 /**
  * @author Julian Bertsch <julian.bertsch42@gmail.de>
@@ -52,7 +53,7 @@ class Language
 
 	private function initLanguage()
  	{
- 		return Decoder::yamlParseFile('../src/test/Resources/views/translation/message.' . $this->language . '.yml');	
+ 		return Decoder::yamlParseFile('src/test/Resources/views/translations/message.' . LANGUAGE_DE . '.yml');	
  	}
 
 	/**

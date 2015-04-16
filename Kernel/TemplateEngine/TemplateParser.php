@@ -175,11 +175,16 @@ class TemplateParser extends GlobalParser
 	 */
 	private function readLanguages($value, $output)
 	{
+		$value = rtrim($value,'|trans');
+		$array = explode('.',$value);
 		$Language = new Language;
 		$arrayStorage = $Language->getLanguageArray();
+		foreach ($array as $key2 => $value2) {
+			$arrayStorage = $arrayStorage[trim($value2)]; 	
+		}
 		$replace = $arrayStorage;
 		$pattern = '/{{'.$value.'|trans'.'}}/';
-		$output = preg_replace($pattern,$replace,$output);
+		return $output = preg_replace($pattern,$replace,$output);
 	}
 
 	/**
