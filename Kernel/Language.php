@@ -32,7 +32,7 @@ class Language
 	 *
 	 * @return void
 	 */
-	public function __construct($language = '',$srcFolder = '')
+	public function __construct($language = '', $srcFolder = '')
 	{
 		$this->language 	 = $this->setLanguage($language);
 		$this->languageArray = $this->initLanguage($srcFolder);
@@ -56,6 +56,14 @@ class Language
 		}
 	}
 
+	/**
+	 *
+	 * The initLanguage Function returns the Translations as an array
+	 *
+	 * @param string $srcFolder
+	 *
+	 * @return array
+	 */
 	private function initLanguage($srcFolder)
  	{
  		return Decoder::yamlParseFile('src/'.$srcFolder.'/Resources/views/translations/message.' . LANGUAGE . '.yml');	

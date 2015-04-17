@@ -179,7 +179,7 @@ class TemplateParser extends GlobalParser
 		$value = self::getBetween("'","'",$value);
 		$array = explode('.',$value);
 		$arrayStorage = $Language->getLanguageArray();
-		foreach ($array as $key2 => $value2) {
+		foreach ($array as $key2 => $value2){
 			if(array_key_exists(trim($value2), $arrayStorage)){
 				$arrayStorage = $arrayStorage[trim($value2)];
 			}else{
