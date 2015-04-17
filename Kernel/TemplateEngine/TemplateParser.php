@@ -97,7 +97,7 @@ class TemplateParser extends GlobalParser
 			$pattern = array();
 		    foreach($template_variable[1] as $key => $value){
 		    	$subStrings = explode(' ', trim($value));
-		    	if(strpos($value,'|trans'))
+		    	if(strpos($value,'trans'))
 		    	{
 		    		$output = $this->readLanguages($value,$output);
 		    	}
@@ -168,23 +168,29 @@ class TemplateParser extends GlobalParser
 
 	/**
 	 * 
-	 * The readLanguagesMethod parse template language and replace them in output with the value
+	 * The readLanguagesMethod parses the language in template and replace them in output with the value
 	 *
 	 * @param string $value, $output
 	 * @return string
 	 */
 	private function readLanguages($value, $output)
 	{
-		$value = rtrim($value,'|trans');
-		$array = explode('.',$value);
 		$Language = new Language;
+		$value = self::getBetween("'","'",$value);
+		$array = explode('.',$value);
 		$arrayStorage = $Language->getLanguageArray();
 		foreach ($array as $key2 => $value2) {
-			$arrayStorage = $arrayStorage[trim($value2)]; 	
+			if(array_key_exists(trim($value2), $arrayStorage)){
+				$arrayStorage = $arrayStorage[trim($value2)];
+			}else{
+				die("der Index existiert nicht");
+				//throw Exception
+			} 	
 		}
 		$replace = $arrayStorage;
-		$pattern = '/{{'.$value.'|trans'.'}}/';
-		return $output = preg_replace($pattern,$replace,$output);
+		$pattern = '/{{'."'".$value."'".'\|trans'.'}}/';
+		$output = preg_replace($pattern,$replace,$output);
+		return $output;
 	}
 
 	/**

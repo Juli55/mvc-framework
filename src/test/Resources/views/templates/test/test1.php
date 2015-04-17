@@ -1,15 +1,12 @@
 <html>
 	<head>
 		<meta http-equiv="content-type" content="text/html; charset=utf-8">
-		<title>MVC</title>
+		<title>{{'title.main'|trans}}</title>
 		<script src="js/js.js"></script>
 	</head>
 	<body>
-		{{test.test1|trans}}		
-		
-		<form method="post" enctype="multipart/form-data">
-			<input type='file' name='eins' />
-			<input type='submit' value='abschießen' />
-		</form>
+		<h1>{{'test.test1'|trans}}</h1>
+		<h1>{{'text.wonderful'|trans}}</h1>
+		<h1>{{'text.sehrgut'|trans}}</h1>		
 	</body>
 </html>
