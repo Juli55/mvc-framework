@@ -175,7 +175,7 @@ class TemplateParser extends GlobalParser
 	 */
 	private function readLanguages($value, $output)
 	{
-		$Language = new Language;
+		$Language = new Language('',View::$srcFolder);
 		$value = self::getBetween("'","'",$value);
 		$array = explode('.',$value);
 		$arrayStorage = $Language->getLanguageArray();
@@ -188,7 +188,7 @@ class TemplateParser extends GlobalParser
 			} 	
 		}
 		$replace = $arrayStorage;
-		$pattern = '/{{'."'".$value."'".'\|trans'.'}}/';
+		$pattern = '/{{'."'".$value."'".' \|trans'.'}}/';
 		$output = preg_replace($pattern,$replace,$output);
 		return $output;
 	}
