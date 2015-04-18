@@ -20,6 +20,11 @@ class View extends TemplateEngine
 	public static $blocks;
 
 	/**
+	 * @var string
+	 */
+	public static $srcFolder;
+
+	/**
 	 *
 	 * The renderMethod renders the template to display it
 	 *
@@ -32,7 +37,8 @@ class View extends TemplateEngine
 	{
 		if(!empty($templateEncode)){
 			//encode the decoded template-path 
-				$templateDecode = explode(':',$templateEncode);
+				$templateDecode  = explode(':',$templateEncode);
+				self::$srcFolder = $templateDecode[0];
 			//define templatePath
 				$ldefaultPath = '..'. DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR;
 				$rdefaultPath = DIRECTORY_SEPARATOR . 'Resources' . DIRECTORY_SEPARATOR . 'views';

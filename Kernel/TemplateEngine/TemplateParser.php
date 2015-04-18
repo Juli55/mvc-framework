@@ -4,7 +4,12 @@ namespace Kernel\TemplateEngine;
 
 use Kernel\RoutingEngine\RoutingEngine;
 use Kernel\View;
+use Kernel\Language;
 
+/**
+ * @author Julian Bertsch <julian.bertsch42@gmail.de>
+ * @author Dennis Eisele <dennis.eisele@online.de>
+ */
 class TemplateParser extends GlobalParser
 {
 	/**
@@ -92,7 +97,11 @@ class TemplateParser extends GlobalParser
 			$pattern = array();
 		    foreach($template_variable[1] as $key => $value){
 		    	$subStrings = explode(' ', trim($value));
-		    	//if the Value is split by '.' it want to call an Array or Object, else it reads the Parameter by the first Key
+		    	if(strpos($value,'trans')){
+		    		$output = $this->readLanguages($value,$output);
+		    	}
+		    	else{
+		    		//if the Value is split by '.' it want to call an Array or Object, else it reads the Parameter by the first Key
 					if(strpos($value,'.')){
 						$output = $this->readObjectsAndArrays($value, $parameters, $output);
 					}else{
@@ -103,6 +112,7 @@ class TemplateParser extends GlobalParser
 							$output = $this->readParameter($value, $parameters, $output);
 						}
 					}
+				}
 			}
 		return $output;
 	}
@@ -152,6 +162,35 @@ class TemplateParser extends GlobalParser
 			else{
 				$output = preg_replace($pattern,$value,$output);
 			}
+		return $output;
+	}
+
+	/**
+	 * 
+	 * The readLanguagesMethod parses the language in template and replace them in output with the value
+	 *
+	 * @param string $value, $output
+	 * @return string
+	 */
+	private function readLanguages($value, $output)
+	{
+		$Language     = new Language('',View::$srcFolder);
+		$cache 	      = $value;
+		$cache    	  = str_replace('|','\|',$cache);
+		$value    	  = self::getBetween("'","'",$value);
+		$array 	 	  = explode('.',$value);
+		$arrayStorage = $Language->getLanguageArray();
+		foreach ($array as $key2 => $value2){
+			if(array_key_exists(trim($value2), $arrayStorage)){
+				$arrayStorage = $arrayStorage[trim($value2)];
+			}else{
+				die("der Index existiert nicht");
+				//throw Exception
+			} 	
+		}
+		$replace = $arrayStorage;
+		$pattern = '/{{'.$cache.'}}/';
+		$output  = preg_replace($pattern,$replace,$output);
 		return $output;
 	}
 
