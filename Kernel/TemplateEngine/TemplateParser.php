@@ -97,12 +97,11 @@ class TemplateParser extends GlobalParser
 			$pattern = array();
 		    foreach($template_variable[1] as $key => $value){
 		    	$subStrings = explode(' ', trim($value));
-		    	if(strpos($value,'trans'))
-		    	{
+		    	if(strpos($value,'trans')){
 		    		$output = $this->readLanguages($value,$output);
 		    	}
 		    	else{
-		    	//if the Value is split by '.' it want to call an Array or Object, else it reads the Parameter by the first Key
+		    		//if the Value is split by '.' it want to call an Array or Object, else it reads the Parameter by the first Key
 					if(strpos($value,'.')){
 						$output = $this->readObjectsAndArrays($value, $parameters, $output);
 					}else{
@@ -175,11 +174,11 @@ class TemplateParser extends GlobalParser
 	 */
 	private function readLanguages($value, $output)
 	{
-		$Language = new Language('',View::$srcFolder);
-		$cache 	= $value;
-		$cache  = str_replace('|','\|',$cache);
-		$value  = self::getBetween("'","'",$value);
-		$array 	= explode('.',$value);
+		$Language     = new Language('',View::$srcFolder);
+		$cache 	      = $value;
+		$cache    	  = str_replace('|','\|',$cache);
+		$value    	  = self::getBetween("'","'",$value);
+		$array 	 	  = explode('.',$value);
 		$arrayStorage = $Language->getLanguageArray();
 		foreach ($array as $key2 => $value2){
 			if(array_key_exists(trim($value2), $arrayStorage)){
@@ -191,7 +190,7 @@ class TemplateParser extends GlobalParser
 		}
 		$replace = $arrayStorage;
 		$pattern = '/{{'.$cache.'}}/';
-		$output  = preg_replace($pattern,$replace,$output);;
+		$output  = preg_replace($pattern,$replace,$output);
 		return $output;
 	}
 

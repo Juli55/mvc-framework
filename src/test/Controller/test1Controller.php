@@ -33,7 +33,7 @@ class test1Controller extends Controller
 					echo  "Uploaden fehlgeschlagen";
 				}
 			}
-		return $this->render("test:templates:test:test1.php",
+		return $this->render("test:templates:default.html",
 							array(
 								'hey1' => 'heye',
 								'wasgeht' => array('hey' => array(
