@@ -8,12 +8,12 @@ sudo apt-get upgrade -y
 PASSWORD='123'
 
 #check if phpfolder already exist and if php is installed
-phpfolder=true
+phpfolder=false
 phpinstalled=false
-files=(/etc/php5/apache2/*)
+files=/etc/php5/apache2/*
 if [ ${#files[@]} -gt 0 ]
 	then 
-		phpfolder=false; 
+		phpfolder=true; 
 fi
 if dpkg-query -W php5
 	then
@@ -21,25 +21,25 @@ if dpkg-query -W php5
 fi
 
 #caching php-folder
-if [ phpfolder ] && [ phpinstalled ]
+if $phpfolder && ! $phpinstalled
   then
 	sudo mkdir ~/php-cache
-	sudo cp -a /etc/php5/* ~/php-cache
+	sudo cp -r /etc/php5/* ~/php-cache
 	sudo rm -r /etc/php5/*
 fi
 
-#install php with mcrypt
-if ! phpinstalled
+#install php with extensions
+if ! $phpinstalled
   then
 	sudo apt-get install -y php5
 	sudo apt-get install -y php5-mcrypt
+	sudo apt-get install -y php5-xdebug
 fi
 
 #after php is installed set the local files for php
-if [ phpfolder ] && [ phpinstalled ]
+if $phpfolder && ! $phpinstalled
   then
-	sudo cp -a ~/php-cache/apache2/php.ini /etc/php5/apache2
-	sudo rm -r ~/php-cache/
+	sudo cp -r ~/php-cache/apache2/php.ini /etc/php5/apache2/php.ini
 fi
 
 #install mysql
@@ -65,10 +65,18 @@ if ! grep -q '/var/www/web' "/etc/apache2/sites-available/000-default.conf"
 		sudo sed -i 's|'var/www/html'|'var/www/application/web'|g' /etc/apache2/sites-available/000-default.conf
 fi
 
-#enabling mcrypt if it isn't
-if ! grep -q 'extension=mcrypt.so' "/etc/php5/apache2/php.ini" 
-	then 
-		echo "extension=mcrypt.so" >> /etc/php5/apache2/php.ini
+#enabling extensions
+if ! $phpfolder
+	then
+		#mcrypt
+		echo "extension=mcrypt.so" >> /etc/php5/apache2/php.ini;
+		
+		#xdebug
+		echo ";xdebug
+		zend_extension=\"/usr/lib/php5/20100525/xdebug.so\"
+		xdebug.remote_enable=1
+		xdebug.remote_handler=dbgp xdebug.remote_mode=req
+		xdebug.remote_host=127.0.0.1 xdebug.remote_port=9000" >> /etc/php5/apache2/php.ini;
 fi
 
 #restart apache2
