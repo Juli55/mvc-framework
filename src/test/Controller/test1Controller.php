@@ -20,10 +20,19 @@ class test1Controller extends Controller
 	 */
 	public function test1()
 	{
+
 		$request = new Request();
 		$request->setCookie('hey', 'eins', 300);
-		
-
+		$get = 'nothing';
+		//fileUpload
+			if(isset($request->files['file'])){
+				$upload = new FileUpload('img',$request->files['file'], $fileExtensions = array('ra'), $mimeTypes = array('audio/x-pn-realaudio-plugin'), $useFieldTypes = array('image'));
+				if($upload->upload()){
+					echo  "Uploaden ist geglückt!";
+				}else{
+					echo  "Uploaden fehlgeschlagen";
+				}
+			}
 		return $this->render("test:templates:test:test1.php",
 							array(
 								'hey1' => 'heye',
