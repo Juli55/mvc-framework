@@ -5,8 +5,9 @@
 		<script src="js/js.js"></script>
 	</head>
 	<body>
-		<h1>{{'test.test1' |trans}}</h1>
-		<h1>{{'text.wonderful' |trans}}</h1>
-		<h1>{{'text.sehrgut' |trans}}</h1>		
+		<h1>{{'test.test1'|trans}}</h1>
+		<h1>{{'text.wonderful'|trans}}</h1>
+		<h1>{{    hey1   }}</h1>
+		<h1>{{'text.sehrgut.super'|trans}}</h1>		
 	</body>
 </html>
