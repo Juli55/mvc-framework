@@ -59,10 +59,25 @@ sudo apt-get -y install phpmyadmin
 #enabling mod_rewrite
 sudo a2enmod rewrite
 
-#change root_dir
+#setup hosts file
+VHOST=$(cat <<EOF
+<VirtualHost *:80>
+        ServerAdmin webmaster@localhost
+        DocumentRoot /var/www/application/web
+        <Directory "/var/www/application/web">
+                AllowOverride All
+                Require all granted
+        </Directory>
+        ErrorLog ${APACHE_LOG_DIR}/error.log
+        CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>
+# vim: syntax=apache ts=4 sw=4 sts=4 sr noet
+EOF
+)
 if ! grep -q '/var/www/web' "/etc/apache2/sites-available/000-default.conf" 
-	then 
-		sudo sed -i 's|'var/www/html'|'var/www/application/web'|g' /etc/apache2/sites-available/000-default.conf
+	then
+		#!/bin/sh
+		echo "${VHOST}" > /etc/apache2/sites-available/000-default.conf
 fi
 
 #enabling extensions
