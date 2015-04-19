@@ -10,7 +10,7 @@ test1:
     action: test1
     srcFolder: test
     security: false
-test1:
+test2:
     pattern: /test2
     controller: test2Controller
     action: test2
