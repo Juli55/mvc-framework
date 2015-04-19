@@ -2,6 +2,8 @@
 
 namespace Kernel\Decoder;
 
+use Kernel\Decoder\Yaml\Yaml; 
+
 /**
  * @author Dennis Eisele  <dennis.eisele@online.de>
  * @author Julian Bertsch <Julian.bertsch42@gmail.com>
@@ -21,8 +23,8 @@ class Decoder
 		//setting rootPath
 			$folderName = basename(dirname(__FILE__));
 			$scriptName = basename(__FILE__);
-			$rootPath 	= str_replace($folderName.'\\'.$scriptName,'\\',__FILE__);  
-		return yaml_parse_file($rootPath.$filename);
+			$rootPath 	= str_replace($folderName.'\\'.$scriptName,'\\',__FILE__); 
+		return Yaml::parse($filename);
 	}
 	
 	/**
