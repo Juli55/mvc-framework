@@ -21,9 +21,13 @@ class Decoder
 	public static function yamlParseFile($filename)
 	{
 		//setting rootPath
-			$folderName = basename(dirname(__FILE__));
-			$scriptName = basename(__FILE__);
-			$rootPath 	= str_replace($folderName.'\\'.$scriptName,'\\',__FILE__); 
+		$upperFolders = 2;
+		$folderName	  = __FILE__;
+		for($i = 0;$i <= $upperFolders,$i++){
+			$folderName .= basename(dirname($folderName);	 
+		}
+		$scriptName = basename(__FILE__);
+		$rootPath 	= str_replace($folderName,'\\',__FILE__);			
 		return Yaml::parse($filename);
 	}
 	
