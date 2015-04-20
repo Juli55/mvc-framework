@@ -18,17 +18,11 @@ class Decoder
 	 *
 	 * @return array
 	 */
-	public static function yamlParseFile($filename)
+	public static function yamlParseFile($fileName)
 	{
 		//setting rootPath
-		$upperFolders = 2;
-		$folderName	  = __FILE__;
-		for($i = 0;$i <= $upperFolders,$i++){
-			$folderName .= basename(dirname($folderName);	 
-		}
-		$scriptName = basename(__FILE__);
-		$rootPath 	= str_replace($folderName,'\\',__FILE__);			
-		return Yaml::parse($filename);
+		$rootPath = __DIR__;
+		return Yaml::parse($rootPath.'/../'.$fileName);
 	}
 	
 	/**
