@@ -1,1 +1,3 @@
 vagrant/.vagrant/
+vagrant/php/*
+! vagrant/php/apache2.ini
