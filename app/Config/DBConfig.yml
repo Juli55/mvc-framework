@@ -1,5 +1,0 @@
-host: localhost
-username: root
-password: 123
-databases:	
-    primary: test
