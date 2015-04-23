@@ -4,62 +4,80 @@ use Kernel\ConsoleFunctions\Database;
 use Kernel\ConsoleFunctions\Entity;
 use Kernel\ConsoleFunctions\SrcFolder;
 
-function __autoload($class_name)
+function __autoload($className)
 {
-    include $class_name . '.php';
+	$filePath = str_replace('\\', '/', $className);
+    include $filePath . '.php';
 }
 
-if($argc != 2 || in_array($argv[1], array('--help')) || in_array($argv[1], array('--h'))){
-	//Terminalhelper to describe how wich function is to use
-		//introduction
-			$help = "\nThe TerminalApplication is to aussume standardTask following commands can be used:\n\n";
-		//commands
-			$help .= "generate\n";	
-			$help .= "	generate:entity			generates an EntityFile with the Fields for Database in an selected srcFolder\n";
-			$help .= "	generate:srcFolder		generates an srcFolder where you can develope your Application\n";
-			$help .= "create\n";
-			$help .= "	create:database 		creates the in config registered databases\n";
-			$help .= "sync\n";
-			$help .= "	sync:database 			syncs the entitys from used srcFolders with the Database\n";
-		echo $help;
-}else{
-	if(isset($argv[1])){
-		//explode commandstring by ':' and call the requested Function
-		$commands =  explode(':',$argv[1]);
-		if(!empty($commands)){
-			switch($commands[0]){
-				//genearate commands
-					case 'generate':
-						switch($commands[1]){
-							//generate an entity in an srcFolder
-								case 'entity':
-									Entity::generate();
-								break;
-							//generate an srcFoldert to develope an Application
-								case 'srcFolder':
-									SrcFolder::generate();	
-								break;
-						}
-					break;
-				//create commands
-					case 'create':
-						switch($commands[1]){
+class Console
+{
+	public function __construct($argv, $argc)
+	{
+		if($argc != 2 || in_array($argv[1], array('--help')) || in_array($argv[1], array('--h'))){
+			echo $this->help();
+		}else{
+			$this->handleCommands($argv);
+		}
+	}
 
-							case 'database':
-								Database::create();
-							break;
-						}
-					break;
-				//sync commands
-					case 'sync':
-						switch($commands[1]){
-							//sync database with entitys
+	private function help()
+	{
+		//Terminalhelper to describe how wich function is to use
+			//introduction
+				$help = "\nThe TerminalApplication is to aussume standardTask following commands can be used:\n\n";
+			//commands
+				$help .= "generate\n";	
+				$help .= "	generate:entity			generates an EntityFile with the Fields for Database in an selected srcFolder\n";
+				$help .= "	generate:srcFolder		generates an srcFolder where you can develope your Application\n";
+				$help .= "create\n";
+				$help .= "	create:database 		creates the in config registered databases\n";
+				$help .= "sync\n";
+				$help .= "	sync:database 			syncs the entitys from used srcFolders with the Database\n";
+		return $help;
+	}
+
+	private function handleCommands($argv)
+	{
+		if(isset($argv[1])){
+			//explode commandstring by ':' and call the requested Function
+			$commands =  explode(':',$argv[1]);
+			if(!empty($commands)){
+				switch($commands[0]){
+					//genearate commands
+						case 'generate':
+							switch($commands[1]){
+								//generate an entity in an srcFolder
+									case 'entity':
+										Entity::generate();
+									break;
+								//generate an srcFoldert to develope an Application
+									case 'srcFolder':
+										SrcFolder::generate();	
+									break;
+							}
+						break;
+					//create commands
+						case 'create':
+							switch($commands[1]){
+
 								case 'database':
-									Database::sync();
+									Database::create();
 								break;
-						}
-					break;
+							}
+						break;
+					//sync commands
+						case 'sync':
+							switch($commands[1]){
+								//sync database with entitys
+									case 'database':
+										Database::sync();
+									break;
+							}
+						break;
+				}
 			}
 		}
 	}
 }
+new Console($argv, $argc);
