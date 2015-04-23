@@ -36,6 +36,10 @@ if ! $phpinstalled
 	sudo apt-get install -y php5-xdebug
 fi
 
+#create tmp-folder for php
+sudo mkdir /tmp-php
+sudo chown www-data /tmp-php
+
 #after php is installed set the local files for php
 if $phpfolder && ! $phpinstalled
   then
