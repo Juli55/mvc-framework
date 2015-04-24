@@ -17,7 +17,7 @@ class Config
 	 */
 	public static function dbConfig()
 	{
-		return Decoder::yamlParseFile("../Config/DBConfig.yml");
+		return Decoder::yamlParseFile("Config/DBConfig.yml");
 	}
 
 	/**
@@ -28,7 +28,7 @@ class Config
 	 */
 	public static function routing()
 	{
-		return Decoder::yamlParseFile("../Config/Routing.yml");	
+		return Decoder::yamlParseFile("Config/Routing.yml");	
 	}
 	
 	/**
@@ -39,7 +39,7 @@ class Config
 	 */	
 	public static function securityConfig()
 	{
-		return Decoder::yamlParseFile("../Config/securityConfig.yml");
+		return Decoder::yamlParseFile("Config/securityConfig.yml");
 	}
 
 	/**
@@ -50,6 +50,6 @@ class Config
 	 */	
 	public static function srcInit()
 	{
-		return Decoder::yamlParseFile("../Config/SrcInit.yml");
+		return Decoder::yamlParseFile("Config/SrcInit.yml");
 	}
 }

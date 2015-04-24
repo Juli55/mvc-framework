@@ -14,17 +14,31 @@ class Decoder
 	 *
 	 * the function returns a parsed array of a yaml file
 	 *
-	 * @param String $filename
+	 * @param String $fileName
 	 *
 	 * @return array
 	 */
-	public static function yamlParseFile($filename)
+	public static function yamlParseFile($fileName)
 	{
 		//setting rootPath
-			$folderName = basename(dirname(__FILE__));
-			$scriptName = basename(__FILE__);
-			$rootPath 	= str_replace($folderName.'\\'.$scriptName,'\\',__FILE__); 
-		return Yaml::parse($filename);
+			$upperFolders = 2;
+			$scriptName   = basename(__FILE__);
+			$rootPath 	  = str_replace($scriptName,'',__FILE__);
+			for($i = 0;$i < $upperFolders;$i++){
+				$folderName = basename($rootPath);
+				$rootPath   = str_replace($folderName.DIRECTORY_SEPARATOR,'',$rootPath);	 
+			}
+		//checking rootpath
+			if(file_exists($rootPath.$fileName)){
+			//returning parsed yaml file
+				return Yaml::parse($rootPath.$fileName);
+			}elseif(file_exists(__DIR__.'/../'.$fileName)){
+			//returning parsed yaml file
+				return Yaml::parse(__DIR__.'/../'.$fileName);
+			}else{
+			//throw Exception
+				die("File doesn't exist or Rootpath is wrong");
+		}
 	}
 	
 	/**
