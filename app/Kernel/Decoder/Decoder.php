@@ -30,14 +30,14 @@ class Decoder
 			}
 		//checking rootpath
 			if(file_exists($rootPath.$fileName)){
-			//returning parsed yaml file
-				return Yaml::parse($rootPath.$fileName);
+				//returning parsed yaml file
+					return Yaml::parse($rootPath.$fileName);
 			}elseif(file_exists(__DIR__.'/../'.$fileName)){
-			//returning parsed yaml file
-				return Yaml::parse(__DIR__.'/../'.$fileName);
+				//returning parsed yaml file
+					return Yaml::parse(__DIR__.'/../'.$fileName);
 			}else{
-			//throw Exception
-				die("File doesn't exist or Rootpath is wrong");
+				//throw Exception
+					die("File doesn't exist or Rootpath is wrong");
 		}
 	}
 	
