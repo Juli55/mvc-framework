@@ -21,13 +21,13 @@ class Decoder
 	public static function yamlParseFile($fileName)
 	{
 		//setting rootPath
-		$upperFolders = 1;
-		$folderName	  = __FILE__;
+		$upperFolders = 2;
 		$scriptName   = basename(__FILE__);
 		$rootPath 	  = str_replace($scriptName,'',__FILE__);
-		for($i = 0;$i <= $upperFolders;$i++){
+		$rootPath 	  = str_replace('\\','/',$rootPath);
+		for($i = 0;$i < $upperFolders;$i++){
 			$folderName = basename($rootPath);
-			$rootPath   = str_replace($folderName.'\\','',$rootPath);	 
+			$rootPath   = str_replace($folderName.'/','',$rootPath);	 
 		}
 		//checking rootpath
 		if(file_exists($rootPath.$fileName)){
@@ -37,8 +37,8 @@ class Decoder
 			//returning parsed yaml file
 			return Yaml::parse(__DIR__.'/../'.$fileName);
 		}else{
-			die("File doesn't exist or Rootpath is wrong");
-			//Exception
+			//throw Exception
+				die("File doesn't exist or Rootpath is wrong");
 		}
 	}
 	
