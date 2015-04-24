@@ -24,10 +24,9 @@ class Decoder
 		$upperFolders = 2;
 		$scriptName   = basename(__FILE__);
 		$rootPath 	  = str_replace($scriptName,'',__FILE__);
-		$rootPath 	  = str_replace('\\','/',$rootPath);
 		for($i = 0;$i < $upperFolders;$i++){
 			$folderName = basename($rootPath);
-			$rootPath   = str_replace($folderName.'/','',$rootPath);	 
+			$rootPath   = str_replace($folderName.DIRECTORY_SEPARATOR,'',$rootPath);	 
 		}
 		//checking rootpath
 		if(file_exists($rootPath.$fileName)){
