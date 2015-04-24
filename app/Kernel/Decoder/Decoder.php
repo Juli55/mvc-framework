@@ -21,21 +21,21 @@ class Decoder
 	public static function yamlParseFile($fileName)
 	{
 		//setting rootPath
-		$upperFolders = 2;
-		$scriptName   = basename(__FILE__);
-		$rootPath 	  = str_replace($scriptName,'',__FILE__);
-		for($i = 0;$i < $upperFolders;$i++){
-			$folderName = basename($rootPath);
-			$rootPath   = str_replace($folderName.DIRECTORY_SEPARATOR,'',$rootPath);	 
-		}
+			$upperFolders = 2;
+			$scriptName   = basename(__FILE__);
+			$rootPath 	  = str_replace($scriptName,'',__FILE__);
+			for($i = 0;$i < $upperFolders;$i++){
+				$folderName = basename($rootPath);
+				$rootPath   = str_replace($folderName.DIRECTORY_SEPARATOR,'',$rootPath);	 
+			}
 		//checking rootpath
-		if(file_exists($rootPath.$fileName)){
+			if(file_exists($rootPath.$fileName)){
 			//returning parsed yaml file
-			return Yaml::parse($rootPath.$fileName);
-		}elseif(file_exists(__DIR__.'/../'.$fileName)){
+				return Yaml::parse($rootPath.$fileName);
+			}elseif(file_exists(__DIR__.'/../'.$fileName)){
 			//returning parsed yaml file
-			return Yaml::parse(__DIR__.'/../'.$fileName);
-		}else{
+				return Yaml::parse(__DIR__.'/../'.$fileName);
+			}else{
 			//throw Exception
 				die("File doesn't exist or Rootpath is wrong");
 		}
