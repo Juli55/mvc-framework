@@ -66,7 +66,13 @@ class Language
 	 */
 	private function initLanguage($srcFolder)
  	{
- 		return Decoder::yamlParseFile('src/'.$srcFolder.'/Resources/views/translations/message.'.$this->language.'.yml');	
+ 		$defaultLanguage = Decoder::yamlParseFile('Config/Language.yml')['default'];
+ 		if(file_exists('../src/'.$srcFolder.'/Resources/views/translations/message.'.$this->language.'.yml')){
+ 			return Decoder::yamlParseFile('src/'.$srcFolder.'/Resources/views/translations/message.'.$this->language.'.yml');
+ 		}else{
+ 			return Decoder::yamlParseFile('src/'.$srcFolder.'/Resources/views/translations/message.'.$defaultLanguage.'.yml');
+ 		}
+ 			
  	}
 
 	/**
