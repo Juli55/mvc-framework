@@ -22,7 +22,6 @@ final class App
 	 */
 	public function __construct()
 	{
-		define("LANGUAGE",'de');
 		//set the uri
 			if(isset($_SERVER['PATH_INFO'])){
 

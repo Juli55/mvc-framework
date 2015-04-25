@@ -50,7 +50,7 @@ class Language
 	{
 		if(empty($language)){
 			$request = new Request();
-			return $request->server['HTTP_ACCEPT_LANGUAGE'];
+			return substr($request->server['HTTP_ACCEPT_LANGUAGE'],0,2);
 		}else{
 			return $language;	
 		}
@@ -66,7 +66,7 @@ class Language
 	 */
 	private function initLanguage($srcFolder)
  	{
- 		return Decoder::yamlParseFile('src/'.$srcFolder.'/Resources/views/translations/message.' . LANGUAGE . '.yml');	
+ 		return Decoder::yamlParseFile('src/'.$srcFolder.'/Resources/views/translations/message.'.$this->language.'.yml');	
  	}
 
 	/**
