@@ -15,6 +15,13 @@ class longPollController extends Controller
 	 */
 	public function longpoll()
 	{
-		return $this->render("test:longPolling.html");
+		$em  = new EntityManager;
+		//$em->getEntity('test:User')->
+		$request = new Request();
+		return $this->JsonResponse(
+							array(
+								'test' => 'heye'
+								)
+							);
 	}
 }
