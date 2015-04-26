@@ -34,6 +34,7 @@ if ! $phpinstalled
 	sudo apt-get install -y php5
 	sudo apt-get install -y php5-mcrypt
 	sudo apt-get install -y php5-xdebug
+	sudo apt-get install -y php5-json
 fi
 
 #create tmp-folder for php
