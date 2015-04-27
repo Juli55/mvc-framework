@@ -66,12 +66,19 @@ class Language
 	 */
 	private function initLanguage($srcFolder)
  	{
- 		$defaultLanguage = Decoder::yamlParseFile('Config/Language.yml')['default'];
- 		if(file_exists('../src/'.$srcFolder.'/Resources/views/translations/message.'.$this->language.'.yml')){
- 			return Decoder::yamlParseFile('src/'.$srcFolder.'/Resources/views/translations/message.'.$this->language.'.yml');
- 		}else{
- 			return Decoder::yamlParseFile('src/'.$srcFolder.'/Resources/views/translations/message.'.$defaultLanguage.'.yml');
- 		}
+ 		//read default language
+ 			$defaultLanguage = Decoder::yamlParseFile('Config/Language.yml')['default'];
+ 		//check if language file 
+ 			if(file_exists('../src/'.$srcFolder.'/Resources/views/translations/message.'.$this->language.'.yml')){
+ 				//return content of the language file
+ 					return Decoder::yamlParseFile('src/'.$srcFolder.'/Resources/views/translations/message.'.$this->language.'.yml');
+ 			}elseif(file_exists('../src/'.$srcFolder.'/Resources/views/translations/message.'.$defaultLanguage.'.yml')){
+ 				//return content of the default language file
+ 					return Decoder::yamlParseFile('src/'.$srcFolder.'/Resources/views/translations/message.'.$defaultLanguage.'.yml');
+ 			}else{
+ 			//throw Exception
+ 				die("The default Language file doesn't exist");
+ 			}
  			
  	}
 
@@ -96,4 +103,5 @@ class Language
 	{
 		return $this->languageArray;
 	}
+ 		}
 }
