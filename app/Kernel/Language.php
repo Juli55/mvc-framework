@@ -58,7 +58,7 @@ class Language
 
 	/**
 	 *
-	 * The initLanguage Function returns the Translations as an array
+	 * The initLanguage function returns the translations as an array
 	 *
 	 * @param string $srcFolder
 	 *
@@ -66,7 +66,20 @@ class Language
 	 */
 	private function initLanguage($srcFolder)
  	{
- 		return Decoder::yamlParseFile('src/'.$srcFolder.'/Resources/views/translations/message.'.$this->language.'.yml');	
+ 		//read default language
+ 			$defaultLanguage = Decoder::yamlParseFile('Config/Language.yml')['default'];
+ 		//check if language file 
+ 			if(file_exists('../src/'.$srcFolder.'/Resources/views/translations/message.'.$this->language.'.yml')){
+ 				//getting content of language file 
+ 					$languageArray = Decoder::yamlParseFile('src/'.$srcFolder.'/Resources/views/translations/message.'.$this->language.'.yml');
+ 			}elseif(file_exists('../src/'.$srcFolder.'/Resources/views/translations/message.'.$defaultLanguage.'.yml')){
+ 				//getting content of default language file
+ 					$languageArray = Decoder::yamlParseFile('src/'.$srcFolder.'/Resources/views/translations/message.'.$defaultLanguage.'.yml');
+ 			}else{
+ 				//throw Exception
+ 					die("The default language file doesn't exist");
+ 			}
+ 		return $languageArray;
  	}
 
 	/**
