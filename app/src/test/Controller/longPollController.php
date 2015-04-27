@@ -16,11 +16,15 @@ class longPollController extends Controller
 	public function longpoll()
 	{
 		$em  = new EntityManager;
-		//$em->getEntity('test:User')->
+		$em->getEntity('test:User');
+		do{
+			$dbData = $em->find('first_name', 'julian1');
+			usleep(5);
+		}while(!$dbData);
 		$request = new Request();
 		return $this->JsonResponse(
 							array(
-								'test' => 'heye'
+								'name' => $dbData->getFirst_name()
 								)
 							);
 	}

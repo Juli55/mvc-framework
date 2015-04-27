@@ -9,20 +9,26 @@
 			<input type='file' name='eins' />
 			<input type='submit' value='abschießen' />
 		</form>
-		<script>
+	<script>
 		$(document).ready(function(){
-  			$(document).on('submit', '#fillElement', function(){
-	    		$.ajax({
-			      url: '/test/hey',
-			      data: 'button=' + $(this).val(),
-			      dataType: 'json',
-			    })
-			    .done(function(data){
-			    	
-			    });
-			return false;
+			poll();
 		});
-	}
+		var poll = function(){
+			var stop = false;
+			$.ajax({
+				url: '/longpoll',
+				dataType: 'json',
+			})
+			.done(function(data){
+				stop = true;
+				alert(data.name);
+			})
+			.always(function(){
+				if(!stop){
+					poll();
+				}
+			 });
+		};
 	</script>
 	</body>
 </html>
