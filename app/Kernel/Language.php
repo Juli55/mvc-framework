@@ -79,8 +79,7 @@ class Language
  				//throw Exception
  					die("The default Language file doesn't exist");
  			}
- 		//returning languageArray
- 			return $languageArray;
+ 		return $languageArray;
  	}
 
 	/**
