@@ -58,7 +58,7 @@ class Language
 
 	/**
 	 *
-	 * The initLanguage Function returns the Translations as an array
+	 * The initLanguage Function returns the translations as an array
 	 *
 	 * @param string $srcFolder
 	 *
@@ -76,8 +76,8 @@ class Language
  				//getting content of default language file
  					$languageArray = Decoder::yamlParseFile('src/'.$srcFolder.'/Resources/views/translations/message.'.$defaultLanguage.'.yml');
  			}else{
- 			//throw Exception
- 				die("The default Language file doesn't exist");
+ 				//throw Exception
+ 					die("The default Language file doesn't exist");
  			}
  		//returning languageArray
  			return $languageArray;
