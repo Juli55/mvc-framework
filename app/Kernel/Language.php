@@ -79,7 +79,6 @@ class Language
  			//throw Exception
  				die("The default Language file doesn't exist");
  			}
- 			
  	}
 
 	/**
@@ -103,5 +102,4 @@ class Language
 	{
 		return $this->languageArray;
 	}
- 		}
 }
