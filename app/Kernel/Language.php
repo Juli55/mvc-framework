@@ -70,15 +70,17 @@ class Language
  			$defaultLanguage = Decoder::yamlParseFile('Config/Language.yml')['default'];
  		//check if language file 
  			if(file_exists('../src/'.$srcFolder.'/Resources/views/translations/message.'.$this->language.'.yml')){
- 				//return content of the language file
- 					return Decoder::yamlParseFile('src/'.$srcFolder.'/Resources/views/translations/message.'.$this->language.'.yml');
+ 				//getting content of language file 
+ 					$languageArray = Decoder::yamlParseFile('src/'.$srcFolder.'/Resources/views/translations/message.'.$this->language.'.yml');
  			}elseif(file_exists('../src/'.$srcFolder.'/Resources/views/translations/message.'.$defaultLanguage.'.yml')){
- 				//return content of the default language file
- 					return Decoder::yamlParseFile('src/'.$srcFolder.'/Resources/views/translations/message.'.$defaultLanguage.'.yml');
+ 				//getting content of default language file
+ 					$languageArray = Decoder::yamlParseFile('src/'.$srcFolder.'/Resources/views/translations/message.'.$defaultLanguage.'.yml');
  			}else{
  			//throw Exception
  				die("The default Language file doesn't exist");
  			}
+ 		//returning languageArray
+ 			return $languageArray
  	}
 
 	/**
