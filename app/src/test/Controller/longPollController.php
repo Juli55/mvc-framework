@@ -19,7 +19,7 @@ class longPollController extends Controller
 		$em->getEntity('test:User');
 		do{
 			$dbData = $em->find('first_name', 'julian1');
-			usleep(5);
+			usleep(1000);
 		}while(!$dbData);
 		$request = new Request();
 		return $this->JsonResponse(
