@@ -17,10 +17,15 @@ class longPollController extends Controller
 	{
 		$em  = new EntityManager;
 		$em->getEntity('test:User');
+		$sec = 5;
 		do{
+			sleep(1);
 			$dbData = $em->find('first_name', 'julian1');
-			usleep(1000);
-		}while(!$dbData);
+			$sec--;
+			if($dbData){
+				break;
+			}
+		}while($sec);
 		$request = new Request();
 		return $this->JsonResponse(
 							array(
