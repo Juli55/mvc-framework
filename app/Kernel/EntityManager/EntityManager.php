@@ -91,7 +91,7 @@ class EntityManager
 			$entityDir = explode(':',$entityShortcut);
 			$entityObjectNS =  '\\src\\'.$entityDir[0].'\\Entity\\'.$entityDir[1];
 			$entityObject = new $entityObjectNS;
-			$this->entityObject_name =  $entityDir[1];
+			$this->entityObjectName =  $entityDir[1];
 			$this->entityObject = $entityObject;
 		return $entityObject;
 	}
@@ -109,7 +109,9 @@ class EntityManager
 	{
 		//get the dbEntry
 			$query = "SELECT * FROM $this->dbUser.$this->entityObjectName WHERE $finder = '$target'";
-			$request = $this->db->query($query) or die($this->db->error);
+			$request = $this->db->query($query) or 
+				//throw exception
+					die($this->db->error);
 		//if an entry exist, then fill the entityObject with this Values and return this Object
 			if($request->num_rows){
 				

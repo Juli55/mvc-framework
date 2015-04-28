@@ -23,7 +23,7 @@ class Database
 			$db = new db();
 			Config::dbConfig();
 		//check all listed Databases
-			foreach(Config::dbConfig() as $key => $value){
+			foreach(Config::dbConfig()['databases'] as $key => $value){
 				//if database already exist ask if the user want to replace it, else create the Database
 					$sqlCheck 	= "SHOW DATABASES LIKE '$value'";
 					$result 	= $db::$db->query($sqlCheck);
@@ -41,7 +41,7 @@ class Database
 									$db::$db->query($sql) or die("It went something wrong by droping Database maybe you don't have rights \n");
 								//create database
 									$sql = "CREATE DATABASE $value";
-									$db::$db->query($sql) or die("It went something wrong by creating Database\n");
+									$db::$db->query($sql) or die($db->error);
 							}
 					}
 			}
