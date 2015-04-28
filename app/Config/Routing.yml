@@ -16,6 +16,18 @@ test2:
     action: test2
     srcFolder: test
     security: false
+longpoll:
+    pattern: /longpoll
+    controller: longPollController
+    action: longpoll
+    srcFolder: test
+    security: false
+testLongpoll:
+    pattern: /testlongpoll
+    controller: testLongPollController
+    action: testlongpoll
+    srcFolder: test
+    security: false
 404:
     controller: test1Controller
     action: test1

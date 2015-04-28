@@ -20,7 +20,8 @@ class test1Controller extends Controller
 	 */
 	public function test1()
 	{
-
+		$em  = new EntityManager;
+		//$em->getEntity('test:User')->
 		$request = new Request();
 		$request->setCookie('hey', 'eins', 300);
 		$get = 'nothing';
