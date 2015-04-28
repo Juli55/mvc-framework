@@ -13,7 +13,7 @@
 	<script>
 	var polling = new polling();
 		$(document).ready(function(){
-			polling.poll('/longpoll', alerts);
+			polling.poll('/longpoll', alerts, true);
 		});
 		var alerts = function(data){
 			alert(data.name);
