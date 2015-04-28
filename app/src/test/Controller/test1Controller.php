@@ -34,17 +34,6 @@ class test1Controller extends Controller
 					echo  "Uploaden fehlgeschlagen";
 				}
 			}
-		if(session_id())
-		{
-		    session_close();
-		}
-		
-		$message = null;
-		while(!$message)
-		{
-		    sleep(5);
-		    $message = liesNeueNachichtAusDatenbank();
-		}
 		return $this->render("test:templates:default.html",
 							array(
 								'hey1' => 'heye',
