@@ -28,6 +28,18 @@ testLongpoll:
     action: testlongpoll
     srcFolder: test
     security: false
+dragdropfileuploadBackend:
+    pattern: /fileupload
+    controller: DragDropFileUploadController
+    action: upload
+    srcFolder: test
+    security: false
+dragdropfileuploadFrontEnd:
+    pattern: /fileupload/dragdrop
+    controller: DragDropFileUploadFrontEndController
+    action: view
+    srcFolder: test
+    security: false
 404:
     controller: test1Controller
     action: test1
