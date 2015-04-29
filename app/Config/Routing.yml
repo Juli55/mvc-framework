@@ -40,6 +40,12 @@ dragdropfileuploadFrontEnd:
     action: view
     srcFolder: test
     security: false
+scrollBottom:
+    pattern: /scrollBottom
+    controller: scrollBottomController
+    action: view
+    srcFolder: test
+    security: false
 404:
     controller: test1Controller
     action: test1
