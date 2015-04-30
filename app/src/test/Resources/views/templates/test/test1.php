@@ -8,6 +8,7 @@
 		<h1>{{'test.test1'|trans}}</h1>
 		<h1>{{'text.wonderful'|trans}}</h1>
 		<h1>{{    hey1   }}</h1>
-		<h1>{{'text.sehrgut.super'|trans}}</h1>		
+		<h1>{{'text.sehrgut.super'|trans}}</h1>	
+		<h1>{{     hey3    }}</h1>		
 	</body>
 </html>

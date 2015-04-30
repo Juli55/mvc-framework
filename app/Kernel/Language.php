@@ -82,6 +82,41 @@ class Language
  		return $languageArray;
  	}
 
+ 	/**
+	 *
+	 * The translateFunction returns the the translation of a string
+	 *
+	 * @param string $subject
+	 *
+	 * @return string
+	 */
+	public function translate($subject)
+	{
+		//get translation
+			$array = explode('.',$subject);
+			$arrayStorage = $this->getLanguageArray();
+			foreach ($array as $key => $value){
+				if(array_key_exists(trim($value), $arrayStorage)){
+					$arrayStorage =  $arrayStorage[trim($value)];
+				}else{
+					//throw Exception
+						die("The Index doesn't exist");
+				}
+			}
+			$translation = $arrayStorage;
+		//checking translation
+			if(!is_array($translation)){
+				return $translation;
+			}elseif(is_array($translation)){
+				//throw Exception
+					die("The translation can't be an array");
+			}else{
+				//throw Exception
+					die("Something went wrong while translating");
+			}
+		
+	}
+
 	/**
 	 *
 	 * this Function returns the Language
