@@ -101,7 +101,17 @@ class Language
 				}
 			}
 			$translation = $arrayStorage;
-		return $translation;
+		//checking translation
+			if(!is_array($translation)){
+				return $translation;
+			}elseif(is_array($translation)){
+				//throw Exception
+					die("The translation can't be an array");
+			}else{
+				//throw Exception
+					die("Something went wrong while translating");
+			}
+		
 	}
 
 	/**
