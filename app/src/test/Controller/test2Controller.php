@@ -21,7 +21,7 @@ class test2Controller extends Controller
 		$request = new Request();
 		$request->setCookie('hey', 'eins', 300);
 		$Language = new Language('',"test");
-		$output = $Language->translate("test.test1");
+		$output   = $Language->translate("test.test1");
 		
 		return $this->render("test:templates:test:test1.php",
 							array(
