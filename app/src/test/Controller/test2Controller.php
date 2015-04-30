@@ -4,6 +4,7 @@ namespace test\Controller;
 use Kernel\Controller;
 use Kernel\HttpKernel\Request;
 use Kernel\EntityManager\EntityManager;
+use Kernel\Language;
 
 /**
  * @author Julian Bertsch <julian.bertsch42@gmail.de>
@@ -19,6 +20,8 @@ class test2Controller extends Controller
 
 		$request = new Request();
 		$request->setCookie('hey', 'eins', 300);
+		$Language = new Language('',"test");
+		$output = $Language->translateFunction("test.test1");
 		
 		return $this->render("test:templates:test:test1.php",
 							array(
@@ -30,7 +33,7 @@ class test2Controller extends Controller
 																'nummer3' => 'heyse', 
 																'nummer4' => 'ja es klappt juhhuuu!!!'),
 													),
-								'hey3' => 'joho1',
+								'hey3' => $output,
 								)
 							);
 	}

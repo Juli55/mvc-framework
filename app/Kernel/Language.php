@@ -82,6 +82,27 @@ class Language
  		return $languageArray;
  	}
 
+ 	/**
+	 *
+	 * The setLanguage Function returns the browserLanguage or custom
+	 *
+	 * @param string $string
+	 *
+	 * @return string
+	 */
+	public function translateFunction($string)
+	{
+			$array = explode('.',$string);
+			$arrayStorage = $this->getLanguageArray();
+			foreach ($array as $key => $value){
+				if(array_key_exists(trim($value), $arrayStorage)){
+					$arrayStorage =  $arrayStorage[trim($value)];
+				}
+			}
+			$output = $arrayStorage;
+		return $output;
+	}
+
 	/**
 	 *
 	 * this Function returns the Language
