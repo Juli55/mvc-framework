@@ -98,6 +98,9 @@ class Language
 			foreach ($array as $key => $value){
 				if(array_key_exists(trim($value), $arrayStorage)){
 					$arrayStorage =  $arrayStorage[trim($value)];
+				}else{
+					//throw Exception
+						die("The Index doesn't exist");
 				}
 			}
 			$translation = $arrayStorage;
