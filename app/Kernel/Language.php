@@ -90,7 +90,7 @@ class Language
 	 *
 	 * @return string
 	 */
-	public function translateFunction($subject)
+	public function translate($subject)
 	{
 		//get translation
 			$array = explode('.',$subject);
