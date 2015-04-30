@@ -84,23 +84,24 @@ class Language
 
  	/**
 	 *
-	 * The setLanguage Function returns the browserLanguage or custom
+	 * The translateFunction returns the the translation of a string
 	 *
-	 * @param string $string
+	 * @param string $subject
 	 *
 	 * @return string
 	 */
-	public function translateFunction($string)
+	public function translateFunction($subject)
 	{
-			$array = explode('.',$string);
+		//get translation
+			$array = explode('.',$subject);
 			$arrayStorage = $this->getLanguageArray();
 			foreach ($array as $key => $value){
 				if(array_key_exists(trim($value), $arrayStorage)){
 					$arrayStorage =  $arrayStorage[trim($value)];
 				}
 			}
-			$output = $arrayStorage;
-		return $output;
+			$translation = $arrayStorage;
+		return $translation;
 	}
 
 	/**
