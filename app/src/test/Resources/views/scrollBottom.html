@@ -13,11 +13,15 @@
         <div>Page Bottom</div>
         <script type="text/javascript" language="javascript">
             var scrollBottom = new scrollBottom();
+            var i = 0;
             $(document).ready(function(){
                 scrollBottom.detect(scrolledToBottom);
             });
-            var scrolledToBottom = function(){
-                alert('scrolled');
+            var scrolledToBottom = function(){     
+                 document.title = i;
+                 i++;
+                 var height = $('div.content').height();
+                 $('div.content').height(height+100);
             };
         </script>
     </body>
