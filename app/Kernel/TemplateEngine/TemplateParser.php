@@ -174,23 +174,13 @@ class TemplateParser extends GlobalParser
 	 */
 	private function readLanguages($value, $output)
 	{
-		$Language     = new Language('',View::$srcFolder);
-		$cache 	      = $value;
-		$cache    	  = str_replace('|','\|',$cache);
-		$value    	  = self::getBetween("'","'",$value);
-		$array 	 	  = explode('.',$value);
-		$arrayStorage = $Language->getLanguageArray();
-		foreach ($array as $key2 => $value2){
-			if(array_key_exists(trim($value2), $arrayStorage)){
-				$arrayStorage = $arrayStorage[trim($value2)];
-			}else{
-				die("der Index existiert nicht");
-				//throw Exception
-			} 	
-		}
-		$replace = $arrayStorage;
-		$pattern = '/{{'.$cache.'}}/';
-		$output  = preg_replace($pattern,$replace,$output);
+		$Language = new Language('',View::$srcFolder);
+		$cache 	  = $value;
+		$cache    = str_replace('|','\|',$cache);
+		$value    = self::getBetween("'","'",$value);
+		$replace  = $Language->translate($value); 
+		$pattern  = '/{{'.$cache.'}}/';
+		$output   = preg_replace($pattern,$replace,$output);
 		return $output;
 	}
 
