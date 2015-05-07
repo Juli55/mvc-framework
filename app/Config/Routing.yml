@@ -53,3 +53,9 @@ scrollBottom:
     security: false
 404:
     template: 404.html
+usability:
+    pattern: /usability
+    controller: usabilityController
+    action: usability
+    srcFolder: usability
+    security: false
