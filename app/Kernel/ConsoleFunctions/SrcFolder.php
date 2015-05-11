@@ -63,7 +63,7 @@ class SrcFolder
 		//amend srcInit
 			if(!array_key_exists($line, Config::srcInit())){
 				$content = $line.': '.$line;
-				file_put_contents('Config/srcInit.yml', "\n".$content, FILE_APPEND);
+				file_put_contents('Config/SrcInit.yml', "\n".$content, FILE_APPEND);
 			}
 	}
 }
