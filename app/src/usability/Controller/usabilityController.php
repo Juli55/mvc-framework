@@ -8,6 +8,6 @@ class usabilityController extends Controller
 {
 	public function usability()
 	{
-		return $this->render("usability:default.html");
+		return $this->render("usability:setVariable.html");
 	}
 }
