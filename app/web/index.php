@@ -4,7 +4,7 @@ use Kernel\RoutingEngine\RoutingEngine;
 
 function __autoload($className)
 {
-    include '..\\'.$className . '.php';
+    include '..'.DIRECTORY_SEPARATOR.str_replace("\\", DIRECTORY_SEPARATOR, $className).'.php';
 }
 
 final class App
