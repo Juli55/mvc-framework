@@ -23,11 +23,12 @@ class Decoder
 		//setting rootPath
 			$upperFolders = 2;
 			$scriptName   = basename(__FILE__);
-			$rootPath 	  = str_replace($scriptName,'',__FILE__);
+			$rootPath 	  = str_replace(DIRECTORY_SEPARATOR.$scriptName,'',__FILE__);
 			for($i = 0;$i < $upperFolders;$i++){
-				$folderName = basename($rootPath);
-				$rootPath   = str_replace($folderName.DIRECTORY_SEPARATOR,'',$rootPath);	 
+				$postition = strrpos($rootPath,DIRECTORY_SEPARATOR);
+				$rootPath  = substr($rootPath,0,$postition);
 			}
+			$rootPath = $rootPath.DIRECTORY_SEPARATOR;
 		//checking rootpath
 			if(file_exists($rootPath.$fileName)){
 				//returning parsed yaml file
