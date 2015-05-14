@@ -54,8 +54,8 @@ scrollBottom:
 404:
     template: 404.html
 usability:
-    pattern: /usability
-    controller: usabilityController
-    action: usability
+    pattern: /setVariable
+    controller: setVariableController
+    action: view
     srcFolder: usability
     security: false
