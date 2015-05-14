@@ -259,13 +259,14 @@ class TemplateParser extends GlobalParser
 			$variableKey 	= trim($KeyValue[0]);
 			$variableValue 	= trim($KeyValue[1]);
 		//classify the valueType
-			if(ctype_digit($subString)){
-				$parameters[$variableKey] = $variableValue;
+			if(ctype_digit($variableValue)){
+				//if the value is numeric
+					$parameters[$variableKey] = $variableValue;
 			}elseif((preg_match("/\\".'"'."(.*?)\\".'"'."/",$variableValue))||preg_match("/\\".'\''."(.*?)\\".'\''."/",$variableValue)){
 				//if the variable has double quotes, then it is a string variable and the double quotes will trimmed
-					$variable = trim($variableValue, '\'');
-					$variable = trim($variableValue, '"');
-					$parameters[$variableKey] = $variable;
+					$variableValue = trim($variableValue, '\'');
+					$variableValue = trim($variableValue, '"');
+					$parameters[$variableKey] = $variableValue;
 			}elseif(array_key_exists($variableValue,$parameters)){
 				//if a key already exist rewrite the Value
 					$parameters[$variableKey] = $parameters[$variableValue];
