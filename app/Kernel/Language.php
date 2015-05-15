@@ -84,6 +84,28 @@ class Language
 
  	/**
 	 *
+	 * The checkLanguage function checks if a Language is available or not
+	 *
+	 * @param string $srcFolder
+	 *
+	 * @return boolean
+	 */
+ 	private function checkLanguage($srcFolder)
+ 	{
+ 		$languages = Decoder::yamlParseFile('Config/Language.yml')['Languages'];
+ 		if(!empty($languages[$this->language])){
+ 			return true;
+ 		}elseif(file_exists('../src/'.$srcFolder.'/Resources/views/translations/message.'.$this->language.'.yml')&&!empty(Decoder::yamlParseFile('src/'.$srcFolder.'/Resources/views/translations/message.'.$this->language.'.yml'))){
+ 			file_put_contents('Config/Language.yml',$this->language,FILE_APPEND);
+ 			return true;
+ 		}
+ 		else{
+ 			return false;
+ 		}
+ 	}
+
+ 	/**
+	 *
 	 * The translateFunction returns the the translation of a string
 	 *
 	 * @param string $subject
