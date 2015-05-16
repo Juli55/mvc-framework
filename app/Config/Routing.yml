@@ -71,3 +71,9 @@ include:
     action: view
     srcFolder: usability
     security: false
+for:
+    pattern: /for
+    controller: forController
+    action: view
+    srcFolder: usability
+    security: false
