@@ -83,3 +83,9 @@ block:
     action: view
     srcFolder: usability
     security: false
+use:
+    pattern: /use
+    controller: useController
+    action: view
+    srcFolder: usability
+    security: false
