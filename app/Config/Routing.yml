@@ -89,3 +89,9 @@ use:
     action: view
     srcFolder: usability
     security: false
+translation:
+    pattern: /translation
+    controller: translationController
+    action: view
+    srcFolder: usability
+    security: false
