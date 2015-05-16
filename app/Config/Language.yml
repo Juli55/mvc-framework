@@ -1,4 +1,4 @@
 default: en
 Languages:
- de: Deutsch
- en: English
+ - de
+ - en

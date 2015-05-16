@@ -92,12 +92,14 @@ class Language
 	 */
  	private function languageExists($language,$srcFolder)
  	{
- 		$languages = Decoder::yamlParseFile('Config/Language.yml')['Languages'];
- 		if(array_key_exists($language,$languages)){
- 			return true;
- 		}else{
- 			return false;
- 		}
+ 		//get all languages
+ 			$languages = Decoder::yamlParseFile('Config/Language.yml')['Languages'];
+ 		//check if language is available	
+ 			if(in_array($language,$languages)){
+ 				return true;
+ 			}else{
+ 				return false;
+ 			}
  	}
 
  	/**
