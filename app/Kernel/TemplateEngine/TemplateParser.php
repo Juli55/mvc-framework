@@ -294,9 +294,12 @@ class TemplateParser extends GlobalParser
 	 */
 	private function importController($subString, $output)
 	{
+		//explode the complete value to get second parameter
+			$subStrings = explode(' ', trim($subString));
 		//call  the handleRoutingMethod from RoutingEngine to get the Value
 			$routingEngine = new RoutingEngine;
-			$replace = $routingEngine->handleRouting($subString[1]);
+			echo $subStrings[1];
+			$replace = $routingEngine->handleRouting($subStrings[1]);
 		//replace the templateCall with the Value
 			$pattern = '/{%'.$subString.'%}/';
 			$output =  preg_replace($pattern,$replace,$output);
