@@ -69,10 +69,10 @@ class Language
  		//read default language
  			$defaultLanguage = Decoder::yamlParseFile('Config/Language.yml')['default'];
  		//check if language file 
- 			if(file_exists('../src/'.$srcFolder.'/Resources/translations/message.'.$this->language.'.yml')){
+ 			if(self::languageExists($this->language,$srcFolder)){
  				//getting content of language file 
  					$languageArray = Decoder::yamlParseFile('src/'.$srcFolder.'/Resources/translations/message.'.$this->language.'.yml');
- 			}elseif(file_exists('../src/'.$srcFolder.'/Resources/translations/message.'.$defaultLanguage.'.yml')){
+ 			}elseif(self::languageExists($defaultLanguage,$srcFolder)){
  				//getting content of default language file
  					$languageArray = Decoder::yamlParseFile('src/'.$srcFolder.'/Resources/translations/message.'.$defaultLanguage.'.yml');
  			}else{
@@ -84,22 +84,18 @@ class Language
 
  	/**
 	 *
-	 * The checkLanguage function checks if a Language is available or not
+	 * The languageExists function checks if a Language is available or not
 	 *
-	 * @param string $srcFolder
+	 * @param string $language,$srcFolder
 	 *
 	 * @return boolean
 	 */
- 	private function checkLanguage($srcFolder)
+ 	private function languageExists($language,$srcFolder)
  	{
  		$languages = Decoder::yamlParseFile('Config/Language.yml')['Languages'];
- 		if(!empty($languages[$this->language])){
+ 		if(array_key_exists($language,$languages)){
  			return true;
- 		}elseif(file_exists('../src/'.$srcFolder.'/Resources/views/translations/message.'.$this->language.'.yml')&&!empty(Decoder::yamlParseFile('src/'.$srcFolder.'/Resources/views/translations/message.'.$this->language.'.yml'))){
- 			file_put_contents('Config/Language.yml',$this->language,FILE_APPEND);
- 			return true;
- 		}
- 		else{
+ 		}else{
  			return false;
  		}
  	}
