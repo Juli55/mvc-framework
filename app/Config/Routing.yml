@@ -65,3 +65,9 @@ import:
     action: view
     srcFolder: usability
     security: false
+include:
+    pattern: /include
+    controller: includeController
+    action: view
+    srcFolder: usability
+    security: false
