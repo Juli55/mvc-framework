@@ -77,3 +77,9 @@ for:
     action: view
     srcFolder: usability
     security: false
+block:
+    pattern: /block
+    controller: blockController
+    action: view
+    srcFolder: usability
+    security: false
