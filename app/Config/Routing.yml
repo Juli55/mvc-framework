@@ -53,3 +53,27 @@ scrollBottom:
     security: false
 404:
     template: 404.html
+setVariable:
+    pattern: /setVariable
+    controller: setVariableController
+    action: view
+    srcFolder: usability
+    security: false
+import:
+    pattern: /import
+    controller: importController
+    action: view
+    srcFolder: usability
+    security: false
+include:
+    pattern: /include
+    controller: includeController
+    action: view
+    srcFolder: usability
+    security: false
+for:
+    pattern: /for
+    controller: forController
+    action: view
+    srcFolder: usability
+    security: false

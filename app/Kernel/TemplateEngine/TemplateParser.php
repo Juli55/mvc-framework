@@ -64,7 +64,7 @@ class TemplateParser extends GlobalParser
 				}elseif($subStrings[0] === 'import'){
 					$output = $this->importController($value, $output);
 				}elseif($subStrings[0] == 'include'){
-					$output = $this->includeTemplate($value);
+					$output = $this->includeTemplate($value, $parameters, $output);
 				}elseif($subStrings[0] == 'for'){
 		    		$output = $this->forLoop($value, $subStrings, $parameters, $output);
 				}elseif($subStrings[0] == 'block'){
@@ -294,9 +294,11 @@ class TemplateParser extends GlobalParser
 	 */
 	private function importController($subString, $output)
 	{
+		//explode the complete value to get second parameter
+			$subStrings = explode(' ', trim($subString));
 		//call  the handleRoutingMethod from RoutingEngine to get the Value
 			$routingEngine = new RoutingEngine;
-			$replace = $routingEngine->handleRouting($subString[1]);
+			$replace = $routingEngine->handleRouting($subStrings[1]);
 		//replace the templateCall with the Value
 			$pattern = '/{%'.$subString.'%}/';
 			$output =  preg_replace($pattern,$replace,$output);
@@ -314,9 +316,11 @@ class TemplateParser extends GlobalParser
 	 */
 	private function includeTemplate($value, $parameters, $output)
 	{
+		//explode the complete value to get second parameter
+			$subStrings = explode(' ', trim($value));
 		//call the renderMethod from View
 			$View = new View();			
-			$replace =  $View->render($subString[1], $parameters, $blocks);
+			$replace =  $View->render($subStrings[1], $parameters, self::$blocks);
 		//replace the templateCall with the Value
 			$pattern = '/{%'.$value.'%}/';
 			$output =  preg_replace($pattern,$replace,$output);
