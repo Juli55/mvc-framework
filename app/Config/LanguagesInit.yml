@@ -1,0 +1,4 @@
+default: en
+languages:
+    - de
+    - en
