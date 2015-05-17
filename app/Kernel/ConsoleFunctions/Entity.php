@@ -146,7 +146,7 @@ class Entity
 	private function setFileValue($srcDir, $entityName, $columns)
 	{
 		//set the file value
-			$fileValue = "<?php \n\nnamespace $srcDir\\Entity;\n\nclass $entityName\n{\n";
+			$fileValue = "<?php \n\nnamespace src\\$srcDir\\Entity;\n\nclass $entityName\n{\n";
 			foreach($columns as $value){
 				//set information
 					$name   = $value['fieldName'];
