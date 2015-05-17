@@ -66,18 +66,24 @@ class Language
 	 */
 	private function initLanguage($srcFolder)
  	{
- 		//read default language
- 			$defaultLanguage = Decoder::yamlParseFile('Config/Language.yml')['default'];
- 		//check if language file 
+ 		//checks if default exists in the LanguagesInit
+ 			if(array_key_exists("default",Decoder::yamlParseFile('Config/LanguagesInit.yml'))){
+ 				//read default language
+ 					$defaultLanguage = Decoder::yamlParseFile('Config/LanguagesInit.yml')['default'];
+ 			}else{
+ 				//throw Exception
+ 					die("Key 'default' doesn't exist");
+ 			}
+ 		//checks if language file 
  			if(self::languageExists($this->language,$srcFolder)){
  				//getting content of language file 
  					$languageArray = Decoder::yamlParseFile('src/'.$srcFolder.'/Resources/translations/message.'.$this->language.'.yml');
- 			}elseif(self::languageExists($defaultLanguage,$srcFolder)){
+ 			}elseif(!empty($defaultLanguage) && self::languageExists($defaultLanguage,$srcFolder)){
  				//getting content of default language file
  					$languageArray = Decoder::yamlParseFile('src/'.$srcFolder.'/Resources/translations/message.'.$defaultLanguage.'.yml');
  			}else{
  				//throw Exception
- 					die("The default language file doesn't exist");
+ 					die("The default language file doesn't exist or the default language isn't set");
  			}
  		return $languageArray;
  	}
@@ -92,19 +98,19 @@ class Language
 	 */
  	private function languageExists($language)
  	{
- 		//get all languages
- 			$languages = Decoder::yamlParseFile('Config/LanguagesInit.yml')['languages'];
- 		//check if language is available
- 			if(!empty($languages)){
+ 		if(array_key_exists("languages",Decoder::yamlParseFile('Config/LanguagesInit.yml'))){
+ 			//get all languages
+ 				$languages = Decoder::yamlParseFile('Config/LanguagesInit.yml')['languages'];
+ 			//check if language is available
  				if(in_array($language,$languages)){
  					return true;
  				}else{
  					return false;
  				}
- 			}else{
- 				//throw Exception
- 					die("No languages available!");
- 			}
+ 		}else{
+ 			//throw Exception 
+ 				die("Key 'languages' doesn't exist");
+ 		}
  	}
 
  	/**
