@@ -46,13 +46,6 @@ scrollBottom:
     action: view
     srcFolder: test
     security: false
-404:
-    controller: test1Controller
-    action: test1
-    srcFolder: test
-    security: false
-404:
-    template: 404.html
 setVariable:
     pattern: /setVariable
     controller: setVariableController
@@ -92,6 +85,13 @@ use:
 translation:
     pattern: /translation
     controller: translationController
+    action: view
+    srcFolder: usability
+    security: false
+404:
+    template: 404.html
+404:
+    controller: notFoundController
     action: view
     srcFolder: usability
     security: false
