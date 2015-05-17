@@ -86,11 +86,11 @@ class Language
 	 *
 	 * The languageExists function checks if a Language is available or not
 	 *
-	 * @param string $language,$srcFolder
+	 * @param string $language
 	 *
 	 * @return boolean
 	 */
- 	private function languageExists($language,$srcFolder)
+ 	private function languageExists($language)
  	{
  		//get all languages
  			$languages = Decoder::yamlParseFile('Config/Language.yml')['Languages'];
