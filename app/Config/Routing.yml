@@ -95,3 +95,9 @@ translation:
     action: view
     srcFolder: usability
     security: false
+patternVariable:
+    pattern: /patternVariable/{variable}
+    controller:  patternVariableController
+    action: view
+    srcFolder: usability
+    security: false
