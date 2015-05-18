@@ -101,3 +101,9 @@ patternVariable:
     action: view
     srcFolder: usability
     security: false
+db:
+    pattern: /db/{entryMsg}
+    controller:  dbController
+    action: view
+    srcFolder: usability
+    security: false
