@@ -18,10 +18,13 @@ class dbController extends Controller
 			$em->flush();
 		//select an entry
 			$entryObject = $em->find('id',1);
+		//select all entries by an proberty
+			$entryObjects = $em->findAll('test1', 'entry');
 		return $this->render("usability:db.html",
 							array(
 								'entryMsg' => $entryMsg,
-								'entryObject' => $entryObject
+								'entryObject' => $entryObject,
+								'entryObjects' => $entryObjects
 								));
 	}
 }

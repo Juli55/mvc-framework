@@ -137,7 +137,7 @@ class EntityManager
 	public function findAll($finder = '',$target = '')
 	{
 		//get the dbEntry
-			$query = "SELECT * FROM $this->db_user.$this->entityObjectName";
+			$query = "SELECT * FROM $this->dbUser.$this->entityObjectName";
 			if(!empty($finder)){
 			
 				$query .= " WHERE $finder = '$target'";
