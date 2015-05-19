@@ -23,7 +23,10 @@ final class App
 	public function __construct()
 	{
 		//set the uri
-			if(isset($_SERVER['PATH_INFO'])){
+			if(isset($_SERVER['REDIRECT_URL'])){
+
+				self::$uri = $_SERVER['REDIRECT_URL'];
+			}elseif(isset($_SERVER['PATH_INFO'])){
 
 				self::$uri = $_SERVER['PATH_INFO'];
 
