@@ -11,12 +11,17 @@ class httpController extends Controller
 	{
 		$request = new Request();
 		$post = "";
+		$get  = "";
 		if($request->post['post']){
 			$post = $request->post['post'];
 		}
+		if($request->get['get']){
+			$get = $request->get['get'];
+		}
 		return $this->render("usability:http.html",
 							array(
-								'post' => $post
+								'post' => $post,
+								'get'  => $get
 								)
 							);
 	}
