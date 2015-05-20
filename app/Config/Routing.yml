@@ -119,3 +119,9 @@ render:
     action: view
     srcFolder: usability
     security: false
+render:
+    pattern: /JsonResponse
+    controller:  JsonResponseController
+    action: view
+    srcFolder: usability
+    security: false
