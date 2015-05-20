@@ -113,3 +113,9 @@ http:
     action: view
     srcFolder: usability
     security: false
+render:
+    pattern: /render
+    controller:  renderController
+    action: view
+    srcFolder: usability
+    security: false
