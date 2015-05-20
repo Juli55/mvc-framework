@@ -161,7 +161,7 @@ class Request
 	 * @return void
 	 */
 	public function setCookie($key, $value, $time){
-		$this->cookie[$key] = array($value, $time);
+		$this->cookie[$key] = $value;
 		self::setGlobalcookie($key, $value, $time);
 	}
 
@@ -187,7 +187,7 @@ class Request
 	 */
 	public function destroyCookie($key){
 		unset($this->cookie[$key]);
-		self::setGlobalcookie($key);
+		self::destroyGlobalCookie($key);
 	}
 
 	/**
