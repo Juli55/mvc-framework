@@ -23,11 +23,18 @@ class httpController extends Controller
 			$cookie = $request->cookie['test'];
 		//destroy cookie
 			$request->destroyCookie('test');
+		//check if an file was sent
+			if(isset($request->files['file'])){
+				$fileset = 'true';
+			}else{
+				$fileset = 'false';
+			}
 		return $this->render("usability:http.html",
 							array(
 								'post' 	 => $post,
 								'get'  	 => $get,
-								'cookie' => $cookie
+								'cookie' => $cookie,
+								'fileset'	 => $fileset
 								)
 							);
 	}
