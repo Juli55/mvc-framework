@@ -30,13 +30,17 @@ class httpController extends Controller
 				$fileset = 'false';
 			}
 		$server = $request->server;
+		//set session
+			$request->setSession('test', 'testSessionValue');
+			$session = $request->session['test'];
 		return $this->render("usability:http.html",
 							array(
 								'post' 	  => $post,
 								'get'  	  => $get,
 								'cookie'  => $cookie,
 								'fileset' => $fileset,
-								'server'  => $server
+								'server'  => $server,
+								'session' => $session
 								)
 							);
 	}
