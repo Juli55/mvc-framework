@@ -18,10 +18,16 @@ class httpController extends Controller
 		if($request->get['get']){
 			$get = $request->get['get'];
 		}
+		//set cookie
+			$request->setCookie('test', 'testValue', 300);
+			$cookie = $request->cookie['test'];
+		//destroy cookie
+			$request->destroyCookie('test');
 		return $this->render("usability:http.html",
 							array(
-								'post' => $post,
-								'get'  => $get
+								'post' 	 => $post,
+								'get'  	 => $get,
+								'cookie' => $cookie
 								)
 							);
 	}
