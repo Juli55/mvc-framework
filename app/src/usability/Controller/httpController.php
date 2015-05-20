@@ -29,12 +29,14 @@ class httpController extends Controller
 			}else{
 				$fileset = 'false';
 			}
+		$server = $request->server;
 		return $this->render("usability:http.html",
 							array(
-								'post' 	 => $post,
-								'get'  	 => $get,
-								'cookie' => $cookie,
-								'fileset'	 => $fileset
+								'post' 	  => $post,
+								'get'  	  => $get,
+								'cookie'  => $cookie,
+								'fileset' => $fileset,
+								'server'  => $server
 								)
 							);
 	}
