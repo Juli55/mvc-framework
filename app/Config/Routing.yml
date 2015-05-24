@@ -119,9 +119,15 @@ render:
     action: view
     srcFolder: usability
     security: false
-render:
+JsonResponse:
     pattern: /JsonResponse
     controller:  JsonResponseController
+    action: view
+    srcFolder: usability
+    security: false
+authentification:
+    pattern: /authentification
+    controller:  authentificationController
     action: view
     srcFolder: usability
     security: false
