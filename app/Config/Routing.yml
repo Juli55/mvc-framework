@@ -46,10 +46,88 @@ scrollBottom:
     action: view
     srcFolder: test
     security: false
-404:
-    controller: test1Controller
-    action: test1
-    srcFolder: test
+setVariable:
+    pattern: /setVariable
+    controller: setVariableController
+    action: view
+    srcFolder: usability
+    security: false
+import:
+    pattern: /import
+    controller: importController
+    action: view
+    srcFolder: usability
+    security: false
+include:
+    pattern: /include
+    controller: includeController
+    action: view
+    srcFolder: usability
+    security: false
+for:
+    pattern: /for
+    controller: forController
+    action: view
+    srcFolder: usability
+    security: false
+block:
+    pattern: /block
+    controller: blockController
+    action: view
+    srcFolder: usability
+    security: false
+use:
+    pattern: /use
+    controller: useController
+    action: view
+    srcFolder: usability
+    security: false
+translation:
+    pattern: /translation
+    controller: translationController
+    action: view
+    srcFolder: usability
     security: false
 404:
     template: 404.html
+404:
+    controller: notFoundController
+    action: view
+    srcFolder: usability
+    security: false
+patternVariable:
+    pattern: /patternVariable/{variable}
+    controller:  patternVariableController
+    action: view
+    srcFolder: usability
+    security: false
+db:
+    pattern: /db/{entryMsg}
+    controller:  dbController
+    action: view
+    srcFolder: usability
+    security: false
+http:
+    pattern: /http
+    controller:  httpController
+    action: view
+    srcFolder: usability
+    security: false
+render:
+    pattern: /render
+    controller:  renderController
+    action: view
+    srcFolder: usability
+    security: false
+JsonResponse:
+    pattern: /JsonResponse
+    controller:  JsonResponseController
+    action: view
+    srcFolder: usability
+    security: false
+authentification:
+    pattern: /authentification
+    controller:  authentificationController
+    action: view
+    srcFolder: usability
+    security: false

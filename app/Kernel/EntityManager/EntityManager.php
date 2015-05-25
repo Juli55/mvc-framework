@@ -137,7 +137,7 @@ class EntityManager
 	public function findAll($finder = '',$target = '')
 	{
 		//get the dbEntry
-			$query = "SELECT * FROM $this->db_user.$this->entityObjectName";
+			$query = "SELECT * FROM $this->dbUser.$this->entityObjectName";
 			if(!empty($finder)){
 			
 				$query .= " WHERE $finder = '$target'";
@@ -194,7 +194,7 @@ class EntityManager
 				$allKeys = ltrim($allKeys,',');
 			}
 		//set the queryVariable
-			$this->query = "INSERT INTO $this->dbUser.$this->entityObject_name($allKeys) VALUES($allValues)";
+			$this->query = "INSERT INTO $this->dbUser.$this->entityObjectName($allKeys) VALUES($allValues)";
 	}
 
 	/**
@@ -210,15 +210,15 @@ class EntityManager
 		if(!empty($this->query)){
 			//when the query isn't empty then it creates an new dbEntry
 				//send the request
-					$this->db->query($this->query) or die ($this->db->error);
+					$this->db->query($this->query) or die ('It went something wrong with the DataBase');
 		}elseif(is_object($this->entityObject)){
 			//when it is an object, then it is one Entity to update in the database
 				//parse the entityObject in an Array and update the changes in database
 					$cleanEntityObject = $this->cleanEntityObject($this->entityObject);
 					foreach ($cleanEntityObject as $key => $value){          
 						if($value !== $entityFirst[$key]){
-							$query = "UPDATE $this->db_user.$this->entityObject_name SET $key = '$cleanEntityObject[$key]' WHERE ID = $cleanEntityObject[ID] ";
-							$request = $this->db->query($query) or die($this->db->error);
+							$query = "UPDATE $this->db_user.$this->entityObjectName SET $key = '$cleanEntityObject[$key]' WHERE ID = $cleanEntityObject[ID] ";
+							$request = $this->db->query($query) or die('It went something wrong with the DataBase');
 						}
 					}     
 		}elseif(is_array($this->entityObject)){
@@ -232,8 +232,8 @@ class EntityManager
 					foreach ($entityFirst as $key => $value){
 						foreach($value as $key2 => $value2){
 							if($value2 !== $entityObject[$key][$key2]){
-								$query = "UPDATE $this->db_user.$this->entityObject_name SET $key2 = '".$entityObject[$key][$key2]."' WHERE ID = ".$value['ID'];
-								$request = $this->db->query($query) or die($this->db->error);
+								$query = "UPDATE $this->db_user.$this->entityObjectName SET $key2 = '".$entityObject[$key][$key2]."' WHERE ID = ".$value['ID'];
+								$request = $this->db->query($query) or die('It went something wrong with the DataBase');
 							}
 						}
 					}           
