@@ -250,7 +250,7 @@ class EntityManager
 					foreach ($entityFirst as $key => $value){
 						foreach($value as $key2 => $value2){
 							if($value2 !== $entityObject[$key][$key2]){
-								$query = "UPDATE $this->db_user.$this->entityObjectName SET $key2 = '".$entityObject[$key][$key2]."' WHERE ID = ".$value['ID'];
+								$query = "UPDATE $this->dbUser.$this->entityObjectName SET $key2 = '".$entityObject[$key][$key2]."' WHERE ID = ".$value['ID'];
 								$request = $this->db->query($query) or die('It went something wrong with the DataBase');
 							}
 						}
