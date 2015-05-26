@@ -167,6 +167,21 @@ class EntityManager
 
 	/**
 	 *
+	 * The delete Function sets an query to delete an entry
+	 *
+	 * @param string $finder, $target
+	 *
+	 * @return void
+	 */
+	public function delete($finder = '', $target = '')
+	{
+		//set the queryVariable
+			$this->query = "DELETE FROM $this->dbUser.$this->entityObjectName WHERE $finder = '$target'";
+
+	}
+
+	/**
+	 *
 	 * The persist Function gets the updatet entityObject, generates an queryString and sets the queryVariable 
 	 *
 	 * @param object $entity
@@ -203,8 +218,11 @@ class EntityManager
 	 *
 	 * @return void
 	 */
-	public function flush()
+	public function flush($entityObject = '')
 	{
+		if($entityObject){
+			$this->entityObject = $entityObject;
+		}
 		//init the entityFirst
 			$entityFirst = $this->entityFirst;
 		if(!empty($this->query)){
@@ -217,7 +235,7 @@ class EntityManager
 					$cleanEntityObject = $this->cleanEntityObject($this->entityObject);
 					foreach ($cleanEntityObject as $key => $value){          
 						if($value !== $entityFirst[$key]){
-							$query = "UPDATE $this->db_user.$this->entityObjectName SET $key = '$cleanEntityObject[$key]' WHERE ID = $cleanEntityObject[ID] ";
+							$query = "UPDATE $this->dbUser.$this->entityObjectName SET $key = '$cleanEntityObject[$key]' WHERE ID = $cleanEntityObject[id] ";
 							$request = $this->db->query($query) or die('It went something wrong with the DataBase');
 						}
 					}     
@@ -232,7 +250,7 @@ class EntityManager
 					foreach ($entityFirst as $key => $value){
 						foreach($value as $key2 => $value2){
 							if($value2 !== $entityObject[$key][$key2]){
-								$query = "UPDATE $this->db_user.$this->entityObjectName SET $key2 = '".$entityObject[$key][$key2]."' WHERE ID = ".$value['ID'];
+								$query = "UPDATE $this->dbUser.$this->entityObjectName SET $key2 = '".$entityObject[$key][$key2]."' WHERE ID = ".$value['ID'];
 								$request = $this->db->query($query) or die('It went something wrong with the DataBase');
 							}
 						}
