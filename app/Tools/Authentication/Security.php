@@ -1,6 +1,6 @@
 <?php
 
-namespace Tools\Authentification;
+namespace Tools\Authentication;
 
 use Kernel\HttpKernel\Request;
 use Kernel\EntityManager\EntityManager;
@@ -61,10 +61,12 @@ class Security{
 							$request->setSession('userid',$entity->getID());
 							return true;
 						}else{
-							$this->errorNumber = 1;
+							//the identificatior is empty or password
+								$this->errorNumber = 1;
 						} 
 				}else{
-					$this->errorNumber = 2;
+					//one of the postParameters is/are empty
+						$this->errorNumber = 2;
 				}
 			}else{
 				//set the userObject
@@ -83,7 +85,7 @@ class Security{
 	 * 
 	 * @return void
 	 */
-	public function logout($cookie)
+	public function logout($cookie = '')
 	{
 		$request = new Request;
 		session_destroy();
@@ -92,7 +94,9 @@ class Security{
 				$request->destroyCookie($cookieName);
 			}
 		}else{
-			$request->destroyCookie($cookie);
+			if(!empty($cookie)){
+				$request->destroyCookie($cookie);
+			}
 		}
 	}
 }

@@ -137,3 +137,21 @@ validationTest:
     action: view
     srcFolder: usability
     security: false
+authentication:
+    pattern: /authentication
+    controller:  authenticationController
+    action: view
+    srcFolder: usability
+    security: false
+safesite:
+    pattern: /safesite
+    controller:  safesiteController
+    action: view
+    srcFolder: usability
+    security: true
+logout:
+    pattern: /logout
+    controller:  logoutController
+    action: view
+    srcFolder: usability
+    security: true
