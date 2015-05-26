@@ -161,3 +161,9 @@ fileUpload:
     action: upload
     srcFolder: usability
     security: false
+fillElement:
+    pattern: /fillElement
+    controller:  fillElementController
+    action: view
+    srcFolder: usability
+    security: false
