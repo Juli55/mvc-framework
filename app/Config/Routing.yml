@@ -167,3 +167,15 @@ fillElement:
     action: view
     srcFolder: usability
     security: false
+longpolling:
+    pattern: /longpolling
+    controller:  longPollController
+    action: longpoll
+    srcFolder: usability
+    security: false
+poll:
+    pattern: /poll
+    controller:  testPollController
+    action: view
+    srcFolder: usability
+    security: false

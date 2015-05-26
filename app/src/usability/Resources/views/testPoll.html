@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>testpoll</title>
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js" type="text/javascript"></script>
+		<script src="/js/polling.js" type="text/javascript"></script>
+	</head>
+	<body>
+		<h1>test polling</h1>
+		<p>Set an db-entry in the user-table with the first_name: test</p>
+		<script>
+			var polling = new polling();
+			$(document).ready(function(){
+				polling.poll('/longpolling', alerts, true);
+			});
+			var alerts = function(data){
+				alert(data.name);
+			};
+	</script>
+	</body>
+</html>
