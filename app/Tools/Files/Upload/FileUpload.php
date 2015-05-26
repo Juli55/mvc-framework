@@ -153,12 +153,9 @@ class FileUpload
 				if(move_uploaded_file($file['tmp_name'], $uploadFile)){
 					return true;
 				}else{
-					echo $file['error'];
-					echo 'hey';
 					return false;
 				}
 		}
-		echo "hey";
 		return false;
 	}
 }

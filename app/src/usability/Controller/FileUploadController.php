@@ -16,7 +16,6 @@ class FileUploadController extends Controller
 		$message = '';
 		//fileUpload
 			if(isset($request->files['file'])){
-				var_dump($request->files['file']);
 				$upload = new FileUpload('files', $request->files['file']);
 				if($upload->upload()){
 					$message =  "Uploaden ist geglückt!";
