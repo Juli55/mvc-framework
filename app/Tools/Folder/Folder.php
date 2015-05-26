@@ -15,8 +15,8 @@ class Folder
 		        	throw new InvalidArgumentException("$dirPath must be a directory");
 		    }
 	    //delete
-		    if (substr($dirPath, strlen($dirPath) - 1, 1) != '/') {
-		        $dirPath .= '/';
+		    if (substr($dirPath, strlen($dirPath) - 1, 1) != DIRECTORY_SEPARATOR) {
+		        $dirPath .= DIRECTORY_SEPARATOR;
 		    }
 		    $files = glob($dirPath . '*', GLOB_MARK);
 		    foreach ($files as $file) {
