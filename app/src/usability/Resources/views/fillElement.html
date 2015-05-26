@@ -1,0 +1,26 @@
+{% use 'usability:fillBlock.html' %}
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>fill-element</title>
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js" type="text/javascript"></script>
+		<script src="/js/fillElement.js" type="text/javascript"></script>
+	</head>
+	<body>
+		<form method="post" id="fillElement" action="">
+			<input type="submit" value="click!" />
+		</form>
+		<script>
+ 			var fillElement = new fillElement();
+ 			$(document).ready(function(){
+		  		$(document).on('submit', 'form#fillElement', function(){
+				    	fillElement.setElement("{{block fillBlock}}");
+				    	fillElement.setContent("div", "javascript");
+				    	var element = fillElement.getElement();
+				    	$(element).appendTo('body');
+					return false;
+				});
+			});
+ 		</script>
+	</body>
+</html>

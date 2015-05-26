@@ -1,4 +1,4 @@
-identificator: 
-passwordKey: 
-entityShortcut: test:user
-redirectTo:  
+identificator: email
+passwordKey: password
+entityShortcut: usability:user
+redirectTo:  authentication

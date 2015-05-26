@@ -1,50 +1,14 @@
-test: 
-    pattern: /test/{hey}
-    controller: testController
-    action: test
-    srcFolder: test
-    security: false	
-test1:
-    pattern: /test1
-    controller: test1Controller
-    action: test1
-    srcFolder: test
-    security: false
-test2:
-    pattern: /test2
-    controller: test2Controller
-    action: test2
-    srcFolder: test
-    security: false
-longpoll:
-    pattern: /longpoll
-    controller: longPollController
-    action: longpoll
-    srcFolder: test
-    security: false
-testLongpoll:
-    pattern: /testlongpoll
-    controller: testLongPollController
-    action: testlongpoll
-    srcFolder: test
-    security: false
-dragdropfileuploadBackend:
-    pattern: /fileupload
-    controller: DragDropFileUploadController
-    action: upload
-    srcFolder: test
-    security: false
-dragdropfileuploadFrontEnd:
-    pattern: /fileupload/dragdrop
-    controller: DragDropFileUploadFrontEndController
+root:
+    pattern: /
+    controller: menuController
     action: view
-    srcFolder: test
+    srcFolder: usability
     security: false
-scrollBottom:
-    pattern: /scrollBottom
-    controller: scrollBottomController
+menu:
+    pattern: /menu
+    controller: menuController
     action: view
-    srcFolder: test
+    srcFolder: usability
     security: false
 setVariable:
     pattern: /setVariable
@@ -125,9 +89,63 @@ JsonResponse:
     action: view
     srcFolder: usability
     security: false
-authentification:
-    pattern: /authentification
-    controller:  authentificationController
+validation:
+    pattern: /validation
+    controller:  validationController
+    action: view
+    srcFolder: usability
+    security: false
+validationTest:
+    pattern: /validationTest
+    controller:  validationTestController
+    action: view
+    srcFolder: usability
+    security: false
+authentication:
+    pattern: /authentication
+    controller:  authenticationController
+    action: view
+    srcFolder: usability
+    security: false
+safesite:
+    pattern: /safesite
+    controller:  safesiteController
+    action: view
+    srcFolder: usability
+    security: true
+logout:
+    pattern: /logout
+    controller:  logoutController
+    action: view
+    srcFolder: usability
+    security: true
+fileUpload:
+    pattern: /fileUpload
+    controller:  FileUploadController
+    action: upload
+    srcFolder: usability
+    security: false
+fillElement:
+    pattern: /fillElement
+    controller:  fillElementController
+    action: view
+    srcFolder: usability
+    security: false
+longpolling:
+    pattern: /longpolling
+    controller:  longPollController
+    action: longpoll
+    srcFolder: usability
+    security: false
+poll:
+    pattern: /poll
+    controller:  testPollController
+    action: view
+    srcFolder: usability
+    security: false
+scrollBottom:
+    pattern: /scrollBottom
+    controller: scrollBottomController
     action: view
     srcFolder: usability
     security: false

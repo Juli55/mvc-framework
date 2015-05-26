@@ -4,7 +4,7 @@ namespace Kernel\RoutingEngine;
 
 use Kernel\Config;
 use Kernel\View;
-use Tools\Authentification\Security;
+use Tools\Authentication\Security;
 
 /**
  * @author Julian Bertsch <julian.bertsch42@gmail.de>

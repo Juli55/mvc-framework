@@ -136,6 +136,11 @@ class FileUpload
 				}
 			}
 		}
+		if(empty($whiteList)){
+			$fileExtensionValid	 = true;
+			$mimeTypeValid		 = true;
+			$fileSizeValid		 = true;
+		}
 		if($fileExtensionValid && $mimeTypeValid && $fileSizeValid){
 			//if the folder doesn't exist then create it
 				if(!is_dir($folder)){			
@@ -148,7 +153,6 @@ class FileUpload
 				if(move_uploaded_file($file['tmp_name'], $uploadFile)){
 					return true;
 				}else{
-					echo $file['error'];
 					return false;
 				}
 		}
