@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>scrollBottom</title>
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js" type="text/javascript"></script>
+        <script src="/js/scrollBottom.js" type="text/javascript"></script>
+		<style>
+			p{
+				height: 1000px;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>scroll bottom</h1>
+		<h2>Page Top</h2>
+		<p class="content">scroll to the bottom</p>
+		<h2>Page Bottom</h2>
+		<script>
+            var scrollBottom = new scrollBottom();
+            var i = 0;
+            $(document).ready(function(){
+                scrollBottom.detect(scrolledToBottom);
+            });
+            var scrolledToBottom = function(){     
+                 document.title = i;
+                 i++;
+                 var height = $('p.content').height();
+                 $('p.content').height(height+100);
+            };
+        </script>
+	</body>
+</html>

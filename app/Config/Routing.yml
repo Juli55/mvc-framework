@@ -40,12 +40,6 @@ dragdropfileuploadFrontEnd:
     action: view
     srcFolder: test
     security: false
-scrollBottom:
-    pattern: /scrollBottom
-    controller: scrollBottomController
-    action: view
-    srcFolder: test
-    security: false
 setVariable:
     pattern: /setVariable
     controller: setVariableController
@@ -176,6 +170,12 @@ longpolling:
 poll:
     pattern: /poll
     controller:  testPollController
+    action: view
+    srcFolder: usability
+    security: false
+scrollBottom:
+    pattern: /scrollBottom
+    controller: scrollBottomController
     action: view
     srcFolder: usability
     security: false
