@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Validation</title>
+	 	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js" type="text/javascript"></script>
+		<script src="/js/formValidate.js" type="text/javascript"></script>
+	</head>
+	<body>
+		<form method="post" id="testForm" name="testForm" action="">
+	    	<input type="text" name="email" />
+	    	<p class='error ui-widget-content'></p>
+	    	<input type="submit" name="form" value="submit" />
+  		</form>
+  		<script>
+		 	var formValidate = new formValidate();	
+		 	$(document).ready(function(){
+		 		var form = {};
+		 		$(document).on('submit', 'form#testForm', function(){
+					formValidate.getData($(this), '/validation', validate, form);
+					return false;
+				});
+		 	});
+		 	var validate = function(change, form){
+				$.each(change, function(name, value){
+					if(change.email.valid){
+						$('p').html(change.email.valid);
+					}else{
+						$('p').html('false');
+					}
+				});
+			}
+		</script>
+	</body>
+</html>

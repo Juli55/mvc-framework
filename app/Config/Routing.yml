@@ -125,9 +125,15 @@ JsonResponse:
     action: view
     srcFolder: usability
     security: false
-authentification:
-    pattern: /authentification
-    controller:  authentificationController
+validation:
+    pattern: /validation
+    controller:  validationController
+    action: view
+    srcFolder: usability
+    security: false
+validationTest:
+    pattern: /validationTest
+    controller:  validationTestController
     action: view
     srcFolder: usability
     security: false
