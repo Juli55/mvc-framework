@@ -22,8 +22,6 @@ final class App
 	 */
 	public function __construct()
 	{
-		//set timezone
-			define('DEFAULT_TZ', new DateTimeZone('Europe/Berlin'));
 		//set the uri
 			if(isset($_SERVER['REDIRECT_URL'])){
 
