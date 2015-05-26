@@ -155,3 +155,9 @@ logout:
     action: view
     srcFolder: usability
     security: true
+fileUpload:
+    pattern: /fileUpload
+    controller:  FileUploadController
+    action: upload
+    srcFolder: usability
+    security: false
