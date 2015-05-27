@@ -45,6 +45,13 @@ class user
 	private $password;
 
 	/**
+	 * @var string
+	 * @prob('name' = register_date)
+	 * @prob('type' = datetime)
+	 */
+	private $register_date;
+
+	/**
 	 * Set id
 	 *
 	 * @param string $id
@@ -157,5 +164,28 @@ class user
 	public function getPassword()
 	{
 		return $this->password;
+	}
+
+	/**
+	 * Set register_date
+	 *
+	 * @param string $register_date
+	 * @return user
+	 */
+	public function setRegister_date($register_date)
+	{
+		$this->register_date = $register_date;
+
+		return $this;
+	}
+
+	/**
+	 * Get register_date
+	 *
+	 * @return string
+	 */
+	public function getRegister_date()
+	{
+		return $this->register_date;
 	}
 }

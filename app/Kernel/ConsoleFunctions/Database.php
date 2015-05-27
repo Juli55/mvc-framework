@@ -343,7 +343,11 @@ class Database
 								$type = $field['type'];
 								$length = $field['length'];	
 						//add new fields
-							$queryArray[] = "ALTER TABLE $dbUser.$entityName ADD $fieldName $type($length)";
+							if($type === 'datetime' || $type === 'time'){
+								$queryArray[] = "ALTER TABLE $dbUser.$entityName ADD $fieldName $type";
+							}else{
+								$queryArray[] = "ALTER TABLE $dbUser.$entityName ADD $fieldName $type($length)";
+							}
 					}
 				}
 				if(isset($entityChangeData['proberty'])){
@@ -352,7 +356,11 @@ class Database
 							$type = $field['type'];
 							$length = $field['length'];		
 						//add modify probertys
-							$queryArray[] = "ALTER TABLE $dbUser.$entityName MODIFY $fieldName $type($length)";
+							if($type === 'datetime' || $type === 'time'){
+								$queryArray[] = "ALTER TABLE $dbUser.$entityName MODIFY $fieldName $type";
+							}else{
+								$queryArray[] = "ALTER TABLE $dbUser.$entityName MODIFY $fieldName $type($length)";
+							}
 					}
 				}
 				//update Database
@@ -368,9 +376,17 @@ class Database
 						$type 	= $value['type'];
 						$length = $value['length'];
 						if(strtolower($key) == 'id'){
-							$sql .= "`id` $type($length) NOT NULL AUTO_INCREMENT,\n";
+							if($type === 'datetime' || $type === 'time'){
+								$sql .= "`id` $type NOT NULL AUTO_INCREMENT,\n";
+							}else{
+								$sql .= "`id` $type($length) NOT NULL AUTO_INCREMENT,\n";
+							}
 						}else{
-							$sql .= "`$key` $type($length) NOT NULL,\n";
+							if($type === 'datetime' || $type === 'time'){
+								$sql .= "`$key` $type NOT NULL,\n";
+							}else{
+								$sql .= "`$key` $type($length) NOT NULL,\n";
+							}
 						}
 					}
 					$sql .= "PRIMARY KEY (`id`) )";
