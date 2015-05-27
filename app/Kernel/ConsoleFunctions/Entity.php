@@ -12,7 +12,7 @@ class Entity
 	 */
 	public static function generate()
 	{
-		$fieldTypes = array('int','varchar','text','date','tinyint');
+		$fieldTypes = array('int','varchar','text','date','tinyint', 'datetime');
 		//ask for the Entity shortcut name
 			echo "First you need to give the entity name you want to generate.\nYou must use the shortcut notation like SourceFolder:User\n";
 			echo "The Entity shortcut name: ";
