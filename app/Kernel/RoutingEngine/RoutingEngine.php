@@ -160,7 +160,18 @@ class RoutingEngine
 														//at the last continuous call the Controller
 															if($i === $patternPartsCount-1){
 																if($patternParts[0] === $uriParts[0]){
-																	return $this->callController($dir, $value);	
+																	if($ajax){
+
+																	}
+																	if(isset($value['ajax'])){
+																		if($value['ajax']){
+																			if(!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest'){
+																				return $this->callController($dir, $value);
+																			}
+																		}
+																	}else{
+																		return $this->callController($dir, $value);	
+																	}
 																}
 															}
 													}
