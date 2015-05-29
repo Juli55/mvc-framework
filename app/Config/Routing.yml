@@ -95,6 +95,7 @@ validation:
     action: view
     srcFolder: usability
     security: false
+    ajax: true
 validationTest:
     pattern: /validationTest
     controller:  validationTestController
