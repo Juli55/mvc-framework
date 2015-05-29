@@ -77,13 +77,13 @@ class DateTime
 
 	/**
 	 *
-	 * The getTimeDefault function returns the time from parameter and returns the time with default timezone
+	 * The getDateTime function returns the time from parameter with the correct informations
 	 * 
-	 * @param string $datetime, $format
+	 * @param string $datetime, $timezone, $format
 	 *
 	 * @return string 
 	 */
-	public function getTimeDefault($datetime, $format = '')
+	public function getDateTime($datetime, $format = '')
 	{
 		$dateTime = new \DateTime($datetime, new \DateTimeZone($this->defaultTimezone));
 		if(empty($format)){
@@ -92,22 +92,6 @@ class DateTime
 		return $dateTime->format($format);
 	}
 
-	/**
-	 *
-	 * The getTimeSpecific function returns the time from parameter and returns the time with specific timezone
-	 * 
-	 * @param string $datetime, $timezone, $format
-	 *
-	 * @return string 
-	 */
-	public function getTimeSpecific($datetime, $timezone, $format = '')
-	{
-		$dateTime = new \DateTime($datetime, new \DateTimeZone($timezone));
-		if(empty($format)){
-			$format = $this->defaultFormat;
-		}
-		return $dateTime->format($format);
-	}
 
 	/**
 	 *
@@ -138,8 +122,8 @@ class DateTime
 	 */
 	public function changeToSpecific($datetime, $timezone, $format = '')
 	{
-		$dateTime = new \DateTime($time, new \DateTimeZone($this->defaultTimezone));
-		$dtz = new \DateTimeZone($timezone);
+		$dateTime = new \DateTime($datetime, new \DateTimeZone($this->defaultTimezone));
+		$dtz 	  = new \DateTimeZone($timezone);
 		$dateTime->setTimezone($dtz);
 		if(empty($format)){
 			$format = $this->defaultFormat;
