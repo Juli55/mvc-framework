@@ -1,6 +1,6 @@
 <?php
 
-namespace src\test\Validator;
+namespace src\usability\Validator;
 
 /**
  * @author Julian Bertsch <julian.bertsch42@gmail.de>
@@ -22,7 +22,6 @@ class emailValidator
 		}else{
 			$valid = true;
 		}
-		echo $valid;
 		$validArray = array(
 							'valid'   => $valid,
 							'errorMsg' => $errorMsg

@@ -2,7 +2,7 @@
 
 namespace src\usability\Form;
 
-use src\test\Validator\emailValidator;
+use src\usability\Validator\emailValidator;
 
 /**
  * @author Julian Bertsch <julian.bertsch42@gmail.de>
