@@ -149,3 +149,9 @@ scrollBottom:
     action: view
     srcFolder: usability
     security: false
+datetime:
+    pattern: /datetime
+    controller: dateTimeController
+    action: view
+    srcFolder: usability
+    security: false
