@@ -86,4 +86,17 @@ class Decoder
 			}
 		return $probertyCollection;
 	}
+
+	/**
+	 *
+	 * this function is to convert html tags to a format which won't interpretet
+	 *
+	 * @param String $value
+	 *
+	 * @return String
+	 */
+	public static function escapeStrings($value)
+	{
+		htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
+	}
 }
