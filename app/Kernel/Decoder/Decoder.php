@@ -95,8 +95,8 @@ class Decoder
 	 *
 	 * @return String
 	 */
-	public static function getAnnotationProbertys($value)
+	public static function escapeStrings($value)
 	{
-		htmlspecialchars($value, ENT_QUOTES);
+		htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
 	}
 }
