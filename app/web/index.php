@@ -2,10 +2,15 @@
 
 use Kernel\RoutingEngine\RoutingEngine;
 
-function __autoload($className)
+spl_autoload_register(function($class)
 {
-    include '..'.DIRECTORY_SEPARATOR.str_replace("\\", DIRECTORY_SEPARATOR, $className).'.php';
-}
+	$file = '..'.DIRECTORY_SEPARATOR.str_replace("\\", DIRECTORY_SEPARATOR, $class).'.php';
+	if (file_exists($file)){
+		require $file;
+	}else{
+		return;
+	}
+});
 
 final class App
 {

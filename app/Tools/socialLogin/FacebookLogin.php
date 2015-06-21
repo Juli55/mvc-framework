@@ -1,8 +1,6 @@
 <?php
-namespace usability\Controller;
+namespace Tools\socialLogin;
 
-require '../vendor/facebook/php-sdk-v4/autoload.php';
-use Kernel\Controller;
 use Facebook\FacebookSession;
 use Facebook\FacebookRedirectLoginHelper;
 use Facebook\FacebookRequest;
@@ -20,7 +18,7 @@ use Facebook\FacebookCurl;
 /**
  * @author Julian Bertsch <julian.bertsch42@gmail.de>
  */
-class fbLoginController extends Controller
+class FacebookLogin
 {
 	public function login()
 	{
