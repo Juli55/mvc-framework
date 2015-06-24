@@ -1,6 +1,8 @@
 <?php
 namespace Tools\socialLogin;
 
+require '../vendor/facebook/php-sdk-v4/autoload.php';
+use Kernel\HttpKernel\Request;
 use Facebook\FacebookSession;
 use Facebook\FacebookRedirectLoginHelper;
 use Facebook\FacebookRequest;
@@ -20,22 +22,26 @@ use Facebook\FacebookCurl;
  */
 class FacebookLogin
 {
-	public function login()
+	public function login($appId, $appSecret, $redirectUrl)
 	{
-		$app_id = '897845620276539';
-		$app_secret = '6766dbfd6ed7a4b556cf62e5c35179d4';
-		$redirect_url = 'http://localhost:8081/fblogin';
+		$request = new Request();
+		$redirectUrl = 'http://'.$_SERVER['HTTP_HOST'].$redirectUrl;
 
-		FacebookSession::setDefaultApplication($app_id, $app_secret);
-		$helper = new FacebookRedirectLoginHelper($redirect_url);
-		$sess = $helper->getSessionFromRedirect();
-		if(isset($sess)){
-			$request = new FacebookRequest($sess, 'GET', '/me');
+		FacebookSession::setDefaultApplication($appId, $appSecret);
+		$helper = new FacebookRedirectLoginHelper($redirectUrl);
+		try {
+		  $session = $helper->getSessionFromRedirect();
+		} catch(FacebookRequestException $ex) {
+		  // When Facebook returns an error
+		} catch(\Exception $ex) {
+		  // When validation fails or other local issues
+		}
+		if($session){
+			$request = new FacebookRequest($session, 'GET', '/me');
 			$response = $request->execute();
 			$graph = $response->getGraphObject(GraphUser::classname());
 			$name = $graph->getName();
-			echo "hi $name";
-
+			echo $name;
 		}else{
 			echo "<a href='".$helper->getLoginUrl()."'>Login with facebook</a>";
 		}
