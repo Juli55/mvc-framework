@@ -168,3 +168,9 @@ fbProtectedArea:
     action: view
     srcFolder: usability
     security: false
+fbLogout:
+    pattern: /fbLogout
+    controller: fbLogoutController
+    action: logout
+    srcFolder: usability
+    security: false
