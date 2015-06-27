@@ -156,3 +156,21 @@ datetime:
     action: view
     srcFolder: usability
     security: false
+fbLogin:
+    pattern: /fblogin
+    controller: fbLoginController
+    action: login
+    srcFolder: usability
+    security: false
+fbProtectedArea:
+    pattern: /fbProtectedArea
+    controller: fbProtectedAreaController
+    action: view
+    srcFolder: usability
+    security: false
+fbLogout:
+    pattern: /fbLogout
+    controller: fbLogoutController
+    action: logout
+    srcFolder: usability
+    security: false
