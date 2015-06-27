@@ -33,11 +33,11 @@ class FacebookLogin
 	public $graph;
 
 	/**
-	 * get the custom Parameters and call the init method with this parameter
+	 * login with facebook sdk
 	 *
 	 * @param String $appId, $appSecret, $redirectUrl
 	 *
-	 * @return true
+	 * @return boolean
 	 */
 	public function login($appId, $appSecret, $redirectUrl)
 	{
@@ -66,15 +66,21 @@ class FacebookLogin
 		}
 	}
 
-	public function loginWithToken($acces_token, $appId, $appSecret)
+	/**
+	 * login with token
+	 *
+	 * @param String $accessToken, $appId, $appSecret
+	 *
+	 * @return boolean
+	 */
+	public function loginWithToken($accessToken, $appId, $appSecret)
 	{
 		FacebookSession::setDefaultApplication($appId, $appSecret);
-		$session = new FacebookSession($acces_token);
+		$session = new FacebookSession($accessToken);
 		$FacebookRequest = new FacebookRequest($session, 'GET', '/me');
 		$response = $FacebookRequest->execute();
 		$this->graph = $response->getGraphObject(GraphUser::classname());
 		if($session){
-
 			return true;
 		}
 		return false;
