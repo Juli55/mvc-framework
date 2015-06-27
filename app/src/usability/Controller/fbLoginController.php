@@ -15,18 +15,15 @@ class fbLoginController extends Controller
 		$appId 		= '897845620276539';
 		$appSecret 	= '6766dbfd6ed7a4b556cf62e5c35179d4';
 		if($this->checkLogin($appId, $appSecret)){
-			header('Location:/fbchecklogin');
+			header('Location:/fbProtectedArea');
 		}
 		$redirectUrl 	= '/fblogin';
 		$FacebookLogin 	= new FacebookLogin;
 		$login 			= $FacebookLogin->login($appId, $appSecret, $redirectUrl);
 		if($login){
-			header('Location:/fbchecklogin');
-		}else{
-			echo "<a href='".$FacebookLogin->loginurl."'>Login with facebook</a>";
+			header('Location:/fbProtectedArea');
 		}
-	
-		return $this->render("usability:fblogin.html");
+		return $this->render("usability:fblogin.html", array('loginUrl' => $FacebookLogin->loginurl));
 	}
 
 	private function checkLogin($appId, $appSecret)
