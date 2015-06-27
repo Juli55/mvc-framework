@@ -162,3 +162,9 @@ fbLogin:
     action: login
     srcFolder: usability
     security: false
+fbCheckLogin:
+    pattern: /fbchecklogin
+    controller: fbCheckLoginController
+    action: view
+    srcFolder: usability
+    security: false
