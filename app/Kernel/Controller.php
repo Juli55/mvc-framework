@@ -1,8 +1,6 @@
 <?php
 
-namespace Kernel;
 
-use Kernel\View;
 
 /**
  * @author Julian Bertsch <julian.bertsch42@gmail.de>
