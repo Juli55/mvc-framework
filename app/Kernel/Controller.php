@@ -1,6 +1,6 @@
 <?php
 
-
+namespace Kernel;
 
 /**
  * @author Julian Bertsch <julian.bertsch42@gmail.de>
